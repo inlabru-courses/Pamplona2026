@@ -1,0 +1,189 @@
+/* ===================================== */
+/* Flatly-based color variables */
+/* ===================================== */
+
+:root {
+  --incorrect: var(--bs-danger);
+  --incorrect-alpha: rgba(var(--bs-danger-rgb), 0.15);
+
+  --correct: var(--bs-success);
+  --correct-alpha: rgba(var(--bs-success-rgb), 0.15);
+
+  --highlight: var(--bs-primary);
+}
+
+
+/* ===================================== */
+/* Webex container */
+/* ===================================== */
+
+.webex-box {
+  border: 2px solid var(--highlight);
+  padding: 0.5em 0.75em;
+  margin: 1em 0;
+  border-radius: 0.5rem;
+  background-color: var(--bs-light);
+}
+
+.webex-total_correct {
+  margin-left: 1em;
+}
+
+.unchecked .webex-total_correct {
+  display: none;
+}
+
+
+/* ===================================== */
+/* Unchecked state */
+/* ===================================== */
+
+.unchecked .webex-incorrect,
+.unchecked .webex-correct {
+  border: 2px dotted var(--bs-secondary);
+  background-color: white !important;
+}
+
+
+/* ===================================== */
+/* Inputs */
+/* ===================================== */
+
+.webex-select,
+input.webex-solveme,
+.unchecked .webex-radiogroup label.webex-incorrect,
+.unchecked .webex-radiogroup label.webex-correct {
+  border: 2px dotted var(--bs-secondary);
+  background-color: white;
+  border-radius: 0.5rem;
+}
+
+
+/* ===================================== */
+/* Incorrect state */
+/* ===================================== */
+
+.webex-incorrect,
+input.webex-solveme.webex-incorrect,
+.webex-radiogroup label.webex-incorrect {
+  border: 2px dotted var(--incorrect);
+  background-color: var(--incorrect-alpha);
+  color: black;
+  border-radius: 0.5rem;
+}
+
+
+/* ===================================== */
+/* Correct state */
+/* ===================================== */
+
+.webex-correct,
+input.webex-solveme.webex-correct,
+.webex-radiogroup label.webex-correct {
+  border: 2px solid var(--correct);
+  background-color: var(--correct-alpha);
+  color: black;
+  border-radius: 0.5rem;
+}
+
+
+/* ===================================== */
+/* Icons */
+/* ===================================== */
+
+.unchecked .webex-incorrect span::before,
+.unchecked .webex-correct span::before {
+  content: "";
+}
+
+.webex-incorrect span::before {
+  content: "\274C  ";
+}
+
+.webex-correct span::before {
+  content: "\2705  ";
+}
+
+
+/* ===================================== */
+/* Hidden solutions */
+/* ===================================== */
+
+.webex-solution {
+  height: 2.5em;
+  overflow-y: hidden;
+  padding: 0.75em;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.webex-solution.open {
+  height: auto;
+  border: 2px solid var(--highlight);
+}
+
+.webex-solution button,
+.webex-check-button {
+  height: 2em;
+  margin-bottom: 0.5em;
+  border-radius: 0.5rem;
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  padding: 0 0.75em;
+}
+
+.webex-solution pre.sourceCode {
+  border-color: var(--correct);
+}
+
+
+/* ===================================== */
+/* Radio groups */
+/* ===================================== */
+
+.webex-radiogroup {
+  margin: 1em 0;
+}
+
+.webex-radiogroup label {
+  margin-left: 2em;
+  text-indent: -1em;
+  padding: 0.5em;
+  display: block;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+}
+
+.webex-radiogroup label input {
+  position: relative;
+  left: -1em;
+}
+
+
+/* ===================================== */
+/* Navbar adjustments */
+/* ===================================== */
+
+.navbar-brand img {
+  max-height: 90px !important;
+}
+
+.navbar {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+}
+
+
+.tiny {
+  font-size: 0.3em;  /* adjust as needed */
+}
