@@ -1,7 +1,7 @@
 ---
 title: "Spatio-temporal models with `inlabru`"
 author: "Jafet Belmont, Sara Martino and Janine Illian"
-subtitle: "Noumea (New Caledonia) 9-12 March 2026"
+subtitle: "Pamplona (Spain) October 2026"
 format: 
   html:
     mainfont: "12"
@@ -16,7 +16,7 @@ editor_options:
 
 # Welcome to the course!
 
--   Welcome to the `inlabru` workshop in New Caledonia!
+-   Welcome to the `inlabru` workshop in Pamplona!
 -   The aim of this workshop is to introduce you to a range of statistical modelling approaches, in particular the temporal, spatial and spatio-temporal modelling as implemented in the `inlabru` package.
 -   Workshop materials are available in the github repository
 
@@ -48,7 +48,7 @@ No knowledge of `R-INLA` or `inlabru` is required.
 
 # Schedule {#schedule-tabs}
 
-**NOTE** The schedule is indicative and some changes might come!
+**NOTE** THIS HAS TO BE UPDATED!!!!
 
 
 ::: panel-tabset
