@@ -1,0 +1,240 @@
+---
+title: ""
+format: 
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+  PrettyPDF-pdf:
+    keep-tex: true
+    number-sections: true
+embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| purl: false
+
+library(webexercises)
+
+```
+
+In this practical we will:
+
+-   Explore tools for geostatistical spatial data wrangling and visualization.
+
+First, lets load some useful libraries for data wrangling and visualization
+
+```{r}
+#| message: false
+#| warning: false
+
+# For plotting
+library(mapview)
+library(ggplot2)
+library(scico) # for colouring palettes
+
+# Data manipulation
+library(dplyr)
+
+
+```
+
+## Georeferenced data
+
+Tobler's first law of geography states that:
+
+"*Everything is related to everything else, but near things are more related than distant things*"
+
+Spatial patterns are fundamental in environmental and ecological data. In many ecological and environmental settings, measurements from fixed sampling units, aiming to quantify spatial variation and interpolate values at unobserved sites.
+
+**Georefernced** data are the most common form of spatial data found in environmental setting. In these data we regularly take measurements of a spatial ecological or environmental process at a set of fixed locations. This could be data from transects (e.g, where the height of trees is recorded), samples taken across a region (e.g., water depth in a lake) or from monitoring stations as part of a network (e.g., air pollution). In each of these cases, our goal is to estimate the value of our variable across the entire space.
+
+Let $D$ be our two-dimensional region of interest. In principle, there is aninfinite number of locations within $D$, each of which can be represented by mathematical coordinates (e.g., latitude and longitude). We then can identify any individual location as $s_i = (x_i, y_i)$, where $x_i$ and $y_i$ are their coordinates.
+
+We can treat our variable of interest as a random variable, $Z$ which can be observed at any location as $Z(\mathbf{s}_i)$.
+
+Our geostatistical process can therefore be written as: $$\{Z(\mathbf{s}); \mathbf{s} \in D\}$$
+
+In practice, our data are observed in a finite number of locations, $m$, and can be denoted as:
+
+$$z = \{z(\mathbf{s}_1), \ldots z(\mathbf{s}_m) \}$$
+
+In the next example, we will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package and contains the presence/absence records of the Pacific Cod during each surveys along with the biomass density of Pacific cod in the area swept (kg/Km$^2$). The `qcs_grid` data contain the depth values stored as $2\times 2$ km grid for Queen Charlotte Sound.
+
+```{r}
+#| message: false
+#| warning: false
+library(sdmTMB)
+
+pcod_df = sdmTMB::pcod 
+qcs_grid = sdmTMB::qcs_grid
+
+```
+
+### Georeferrenced data
+
+Let's create an initial `sf` spatial object using the standard geographic coordinate system (`EPSG:4326`). This correctly defines the point locations based on latitude and longitude.
+
+```{r}
+#| message: false
+#| warning: false
+library(sf)
+pcod_sf =   st_as_sf(pcod_df, coords = c("lon","lat"), crs = 4326)
+```
+
+Now we can transform to the standard UTM Zone 9N projection (EPSG:32609) which uses meters:
+
+```{r}
+pcod_sf_proj <- st_transform(pcod_sf, crs = 32609)
+st_crs(pcod_sf_proj)$units
+```
+
+We can change the spatial units to *km* to better reflect the scale of our ecological study and to make resulting distance/area values more intuitive to interpret:
+
+```{r}
+pcod_sf_proj = st_transform(pcod_sf_proj,
+                            gsub("units=m","units=km",
+                                 st_crs(pcod_sf_proj)$proj4string)) 
+st_crs(pcod_sf_proj)$units
+```
+
+Instead of first setting an EPSG code and then transforming, we can define the target Coordinate Reference System (CRS) directly using a `proj4string`. This allows us to customize non-standard parameters in a single step, in this case, explicitly setting the projection units to kilometers (`+units=km`).
+
+```{r}
+pcod_sf = st_transform(pcod_sf,
+                       crs = "+proj=utm +zone=9 +datum=WGS84 +no_defs +type=crs +units=km" )
+st_crs(pcod_sf)$units
+
+```
+
+Spatial `sf` objects can be manipulated the same way we manipulate standard data frame objects via the `dplyr` package. For example, you can select a specific year using the `filter` function from `dplyr`. Let's map the present/absence of the Pacific Cod in 2017 using the `mapview` function:
+
+```{r}
+#| fig-width: 4
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+#| warning: false
+#| 
+pcod_sf %>% 
+  filter(year== 2017) %>%
+  mutate(present = as.factor(present)) %>%
+mapview(zcol = "present",
+        layer.name = "Occupancy status of Pacific Cod in 2017")
+```
+
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
+
+Use `ggplot` and the `sf` library to map the biomass density of the pacific cod across years.
+
+`r hide("hint")`
+
+You can plot an`sf` object by adding a `geom_sf` layer to a ggplot object. You can also use the `facet_wrap` argument to plot an arrange of plots according to a grouping variable.
+
+`r unhide()`
+
+```{r}
+#| webex.hide: "Click here to see the solution"  
+#| purl: false   
+#| message: false
+#| warning: false
+#| fig-width: 8 
+#| fig-height: 8
+#| fig-align: center  
+
+ggplot()+ 
+  geom_sf(data=pcod_sf,aes(color=density))+ 
+  facet_wrap(~year)+
+  theme(legend.position = "bottom")
+
+```
+:::
+
+### Raster Data
+
+Environmental data are typically stored in raster format, which represents spatially continuous phenomena by dividing a region into a grid of equally-sized cells, each storing a value for the variable of interest. In R, the `terra` package is a modern and powerful tool for efficiently working with raster data. The function `rast()`, can be used both to read raster files from standard formats (e.g., `.tif` or `.tiff`) and to create a new raster object from a data frame. For instance, the following code creates a raster from the `qcs_grid` grid data for Queen Charlotte Sound.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(terra)
+depth_r <- rast(qcs_grid, type = "xyz")
+depth_r
+```
+
+The raster object contains three layers corresponding to the (i) depth values, (ii) the scaled depth values and (iii) the squared depth values.
+
+Notice that there are no CRS associated with the raster. Thus, we can assign appropriate CRS using the `crs` function. Additionally, we also want the raster CRS to match the CRS in the survey data (recall that we have previously reprojected our data to utm coordinates). We can assign an appropiate CRS that matches the CRS of the `sf` object as follows:
+
+```{r}
+crs(depth_r) <- crs(pcod_sf)
+```
+
+We can use the `tidyterra` package to plot raster data using `ggplot` by adding a `geom_spatraster` function and then select an appropriate `fill` and `color` palettes:
+
+```{r}
+#| fig-width: 8 
+#| fig-height: 8
+#| fig-align: center  
+
+
+library(tidyterra)
+
+ggplot()+ 
+  geom_spatraster(data=depth_r$depth)+
+  geom_sf(data=pcod_sf,aes(color=factor(present))) +
+  facet_wrap(~year)+
+    scale_color_manual(name="Occupancy status for the Pacific Cod",
+                     values = c("black","orange"),
+                     labels= c("Absence","Presence"))+
+  scale_fill_scico(name = "Depth",
+                   palette = "nuuk",
+                   na.value = "transparent" )
+
+```
+
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
+
+Map the scaled depth and the presence/absence records of the Pacific cod for 2003 to 2005 only.
+
+`r hide("hint")`
+
+The different layers of a raster can be accessed using the `$` symbol.
+
+`r unhide()`
+
+```{r}
+#| webex.hide: "Click here to see the solution"  
+#| purl: false   
+#| message: false
+#| warning: false
+#| fig-width: 8 
+#| fig-height: 5
+#| fig-align: center  
+
+
+ggplot()+ 
+  geom_spatraster(data=depth_r$depth_scaled)+
+  geom_sf(data=pcod_sf %>% filter(year %in% 2003:2005),
+          aes(color=factor(present)))+ 
+  facet_wrap(~year)+
+  scale_color_manual(name="Occupancy status for the Pacific Cod",
+                     values = c("black","orange"),
+                     labels= c("Absence","Presence"))+
+    scale_fill_scico(name = "Scaled Depth",
+                     palette = "davos",
+                     na.value = "transparent" )
+
+
+```
+:::
+
+### 

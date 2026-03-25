@@ -1,0 +1,56 @@
+---
+title: "Practical 5 - Spatial Models"
+format: 
+  html:
+    mainfont: "12"
+  PrettyPDF-pdf:
+    keep-tex: false
+    number-sections: true
+embed-resources: true
+execute: 
+  warning: false
+  message: false
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| purl: false
+#| results: hide
+
+library(webexercises)
+knitr::purl("day3_practical_5.qmd")
+```
+
+<font size="5"> **Aim of this practical:** </font>
+
+In this first practical we are going to fit spatial models for 
+
+1. [Areal data](#areal)
+2. [Geostatistical data](#geostat)
+3. [Point-Process Data](#pproc)
+
+
+
+
+
+{{< downloadthis day3_practical_5.R dname="day3_practical_5.R" label="Download Practical 5 R script" icon="database-fill-down" type="success" >}}
+
+## {#areal}
+
+```{r child="practicals/Areal_ex.qmd"}
+```
+
+## {#geostat}
+
+```{r child="practicals/Geostat_ex.qmd"}
+```
+
+## {#pproc}
+
+```{r child="practicals/PointProcess_ex.qmd"}
+```

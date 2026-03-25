@@ -1,0 +1,15 @@
+---
+title: "Selected Papers"
+bibliography: bibliography.bib
+suppress-bibliography: true
+---
+
+## References
+
+### Theory
+::: {#refs nocite="@rue2009inla @vanniekerk2023inla"}
+:::
+
+### Data
+::: {#refs nocite="@lindgren2024inlabru"}
+:::
