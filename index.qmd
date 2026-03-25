@@ -125,15 +125,3 @@ No knowledge of `R-INLA` or `inlabru` is required.
 
 # Citation
 
-Belmont J., Martino S., Illian, J. F (2026). _inlabruCourseMarch2026: Course Materials for Noumea inlabru Course 10-14 March 2026_.
-https://inlabru-courses.github.io/NewCaledonia2026/
-
-
-```bibtex
- @Manual{Belmont2026inlabru,
-   title = {inlabruCourseMarch2026: Course Materials for Noumea inlabru Course 10-14 March 2026},
-   author = {Belmont, Jafet and Martino, Sara and Illian, Janine},
-   year = {2026},
-   url = {https://inlabru-courses.github.io/NewCaledonia2026/}
-}
-```
