@@ -54,15 +54,20 @@ library(scico)
 
 ## The data
 
-We consider data on respiratory hospitalizations for Greater Glasgow and Clyde in 2007. The data are available from the `CARBayesdata` R Package:
+We consider data on respiratory hospitalizations for Greater Glasgow and Clyde in 2007. The data are available from the `CARBayesdata` R Package or by clicking on the link below:
+
+{{< downloadthis datasets/pollutionhealthdata.RData dname="pollutionhealthdata" label="Download pollutionhealthdata Data" >}}
+
 
 ```{r}
+#| message: false
+#| warning: false
 
-library(CARBayesdata)
+load(here::here("datasets/pollutionhealthdata.RData"))
 
-data(pollutionhealthdata)
-data(GGHB.IZ)
 ```
+
+
 
 The `pollutionhealthdata` contains the spatiotemporal data on respiratory hospitalizations, air pollution concentrations and socio-economic deprivation covariates for the 271 Intermediate Zones (IZ) that make up the Greater Glasgow and Clyde health board in Scotland. Data are provided by the [Scottish Government](http://statistics.gov.scot.) and the available variables are:
 

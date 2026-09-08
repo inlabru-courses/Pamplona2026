@@ -1,0 +1,18 @@
+---
+title: "References"
+bibliography: references.bib
+format:
+  html:
+    css: styles.css
+    body-classes: no-banner
+  PrettyPDF-pdf:
+    keep-tex:  true
+    number-sections: true
+nocite: |
+  @*
+---
+
+This page lists all references cited across the workshop materials.
+
+::: {#refs}
+:::

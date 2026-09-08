@@ -4,7 +4,7 @@ execute:
   freeze: auto
 format: 
   html: 
-    mainfont: "12"
+    body-classes: no-banner
   PrettyPDF-pdf:
     keep-tex: false
     number-sections: true
@@ -37,7 +37,13 @@ we are going to learn:
 -   How to set PC priors in `inlabru`
 -   Forecast future observations using the posterior predictive density
 
-{{< downloadthis day2_practical_3.R dname="practical_3.R" label="Download Practical 3 R script" icon="database-fill-down" type="success" >}}
+::: supplementary
+
+You can download the R-script of this practical by clicking the button below:
+
+{{< downloadthis day2_practical_3.R dname="practical_3" label="Download Practical 3 R script" icon="database-fill-down" type="success" >}}
+
+:::
 
 ```{r child="practicals/Ar1_ex.qmd"}
 ```

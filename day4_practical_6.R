@@ -10,7 +10,7 @@ library(INLA)
 library(inlabru) 
 library(sf)
 library(terra)
-
+library(fmesher)
 
 # load some libraries to generate nice map plots
 library(scico)
@@ -24,10 +24,9 @@ library(tidyterra)
 ## -----------------------------------------------------------------------------
 #| message: false
 #| warning: false
-library(sdmTMB)
 
-pcod_df = sdmTMB::pcod  %>% filter(year<=2005)
-qcs_grid = sdmTMB::qcs_grid
+
+load(here::here("datasets/pcod.RData"))
 
 
 

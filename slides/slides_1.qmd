@@ -4,7 +4,6 @@ from: markdown+emoji
 subtitle: "Introduction" 
 format:
   revealjs:
-    margin: 0
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -35,6 +34,8 @@ embed-resources: true
 execute:
   allow-html: true
   freeze: auto
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup}
@@ -56,6 +57,7 @@ library(INLA)
 library(BAS)
 library(patchwork)
 library(inlabru)
+library(fmesher)
 
 ```
 
@@ -73,7 +75,7 @@ library(inlabru)
 
 > INLA is a fast method to do Bayesian inference with latent Gaussian models and `inlabru` is an `R`-package that implements this method with a flexible and simple interface.
 
-\pause
+:::{.fragment}
 
 **The (much) longer answer:**
 
@@ -81,6 +83,8 @@ library(inlabru)
 -   Van Niekerk, J., Krainski, E., Rustand, D., & Rue, H. (2023). A new avenue for Bayesian inference with INLA. *Computational Statistics & Data Analysis*, 181, 107692.
 -   Lindgren, F., Bachl, F., Illian, J., Suen, M. H., Rue, H., & Seaton, A. E. (2024). inlabru: software for fitting latent Gaussian models with non-linear predictors. *arXiv preprint* arXiv:2407.00791.
 -   Lindgren, F., Bolin, D., & Rue, H. (2022). The SPDE approach for Gaussian and non-Gaussian fields: 10 years and still running. *Spatial Statistics*, 50, 100599.
+
+:::
 
 ## Where? {.smaller}
 
@@ -114,19 +118,22 @@ library(inlabru)
 
 ## So... Why should you use `inlabru`? {auto-animate="true"}
 
+
+<br>
+<br>
+
 ::: incremental
 -   What type of problems can we solve?
 -   What type of models can we use?
 -   When can we use it?
 :::
 
-## So... Why should you use `inlabru`? {auto-animate="true"}
+:::{.fragment}
 
--   What type of problems can we solve?
--   What type of models can we use?
--   When can we use it \`inlabru'?
+> To properly answer these questions, we need to start at the very beginning...
 
-> To give proper answers to these questions, we need to start at the very beginning...
+:::
+
 
 ## The core {auto-animate="true"}
 
@@ -198,7 +205,7 @@ These questions are **not** independent.
 
 In this course we embrace the Bayesian perspective
 
--   There are no "*true but unknown*" parameters !
+-   There are no "*true but unknown*" parameters!
 
 ```{r}
 temp <-expression(y == paste(beta[0], " + ", beta[1], "x"))
@@ -233,7 +240,7 @@ In this course we embrace the Bayesian perspective
 
 -   There are no "*true but unknown*" parameters!
 -   Every parameter is described by a probability distribution!
--   Evidence from the data is used to update the belief we had before observing the data!
+-   Evidence from the data is used to update the beliefs we had before observing the data!
 
 ```{r}
 #| message: false
@@ -548,7 +555,7 @@ The elements of an `inlabru`-friendly statistical model are:
 
 ## Let's formalize this a bit... {auto-animate="true"}
 
-The elements of a `inlabru` friendly statistical model are:
+The elements of an `inlabru` friendly statistical model are:
 
 1.  The observational model $y_i|\eta_i,\sigma^2\sim\mathcal{N}(\eta_i,\sigma^2),\qquad i = 1,\dots,n$
 
@@ -562,7 +569,7 @@ $$
 
 ## Let's formalize this a bit... {auto-animate="true"}
 
-The elements of a `inlabru` friendly statistical model are:
+The elements of an `inlabru` friendly statistical model are:
 
 1.  The observational model $y_i|\eta_i,\sigma^2\sim\mathcal{N}(\eta_i,\sigma^2),\qquad i = 1,\dots,n$
 
@@ -574,7 +581,7 @@ The elements of a `inlabru` friendly statistical model are:
 
 ## Let's formalize this a bit... {auto-animate="true"}
 
-The elements of a `inlabru` friendly statistical model are:
+The elements of an `inlabru` friendly statistical model are:
 
 1.  The observational model $y_i|\eta_i,\sigma^2\sim\mathcal{N}(\eta_i,\sigma^2),\qquad i = 1,\dots,n$
 
@@ -756,10 +763,10 @@ Pallid[1:3,c("w","tl")]
 #| warning: false
 #| message: false
 
-# define model components
+# define the model components
 cmp =  ~ -1 + beta0(1) + beta1(tl, model = "linear")
 
-# define model predictor
+# define the model predictor
 eta = w ~ beta0 + beta1
 
 # build the observation model
@@ -981,6 +988,7 @@ fit = bru(cmp, lik)
 
 prior = data.frame(x = seq(-50,50)) %>%
   mutate(y = dnorm(x,0,sqrt(1/0.001)))
+
 p_int = fit$marginals.fixed$beta0 %>% ggplot() + geom_line(aes(x,y)) +
   geom_line(data = prior, aes(x,y), linetype= "dashed") + xlab("") + ylab("") +
   ggtitle("Intercept")
@@ -988,7 +996,7 @@ p_int = fit$marginals.fixed$beta0 %>% ggplot() + geom_line(aes(x,y)) +
 
 p_cov = fit$marginals.fixed$beta1 %>% ggplot() + geom_line(aes(x,y)) +
   geom_line(data = prior, aes(x,y), linetype= "dashed") + xlab("") + ylab("") +
-  ggtitle("Covariate") + coord_cartesian(xlim = c(0,0.005))
+  ggtitle("Covariate") + coord_cartesian(xlim = c(0.15,0.35))
 
 
 preds = predict(fit, data.frame(tl = seq(90,165)), ~ beta0 + beta1)
@@ -1030,16 +1038,16 @@ p3 = p_pred +
 
 Data can have several dependence structures: temporal, spatial,...
 
-**Using a Bayesian framework**:
+**Using a Bayesian framework** we will:
 
--   Build (hierarchical) models to account for potentially complicated dependency structures in the data.
+-   build (hierarchical) models to account for potentially complicated dependency structures in the data.
 
--   Attribute uncertainty to model parameters and latent variables using priors.
+-   attribute uncertainty to model parameters and latent variables using priors.
 
 **Two main challenges**:
 
--   Need computationally efficient methods to calculate posteriors (this is where INLA helps!).
--   Select priors in a sensible way (we'll talk about this)
+-   We need computationally efficient methods to calculate posteriors (this is where INLA helps!).
+-   We select priors in a sensible way (we'll talk about these later)
 
 ## The good news!! {.smaller auto-animate="true"}
 
@@ -1047,7 +1055,7 @@ In many cases complicated spatio-temporal models are *just* special cases of the
 
 -   **Stage 1**: What is the distribution of the responses?
 
--   **Stage 2**: What are the model components? and what is their distribution?
+-   **Stage 2**: What are the model components? And what is their distribution?
 
 -   **Stage 3**: What are our prior beliefs about the parameters controlling the components in the model?
 
@@ -1075,8 +1083,7 @@ In many cases complicated spatio-temporal models are *just* special cases of the
 -   **Stage 1**: What is the distribution of the responses?
 
     -   We assume data to be *conditionally* independent given the model components and some hyperparameters
-    -   This means that all dependencies in data are explained in Stage
-        2.  
+    -   This means that all dependencies in data are explained in Stage 2.  
 
 -   **Stage 2**: What are the model components? and what is their distribution?
 
@@ -1111,9 +1118,9 @@ In many cases complicated spatio-temporal models are *just* special cases of the
 
 -   **Stage 3**: What are our prior beliefs about the parameters controlling the components in the model?
 
-    The likelihood and the latent model typically have hyperparameters that control their behavior.
+    The likelihood and the latent model typically have hyperparameters that control their behaviour.
 
-    They can include:
+    These can include:
 
     -   Variance of observation noise
     -   Dispersion parameter in the negative binomial model
@@ -1180,7 +1187,7 @@ lik <- bru_obs(formula = pred,
 fit <- bru(comps, lik, ...)
 ```
 
-**NOTE** we will see later that this function can also be non-linear....:grin:
+**NOTE** we will see later that this function can also be non-linear... :grin:
 
 # Examples
 
@@ -1476,7 +1483,7 @@ fit = bru(cmp, lik)
 
 ## Example: disease mapping
 
-We observed larynx cancer mortality counts for males in 544 district of Germany from 1986 to 1990 and want to make a model.
+We observed larynx cancer mortality counts for males in 544 districts of Germany from 1986 to 1990 and want to model these in space.
 
 ::::: columns
 ::: {.column width="50%"}
@@ -1484,9 +1491,9 @@ We observed larynx cancer mortality counts for males in 544 district of Germany 
 
 -   $E_i$: An offset; expected number of cases in district $i$.
 
--   $c_i$: A covariate (level of smoking consumption) at $i$
+-   $c_i$: A covariate (level of smoking consumption) at $i$.
 
--   $\boldsymbol{s}_i$: spatial location $i$ .
+-   $\boldsymbol{s}_i$: spatial location $i$.
 :::
 
 ::: {.column width="50%"}
@@ -2058,6 +2065,10 @@ p1 + p2
 
 ## Take home message!
 
+
+<br>
+<br>
+
 -   Many of the models you have used (and some you have never used but will learn about) are *just* special cases of the large class of Latent Gaussian models
 
--   *inlabru* provides an efficient and unified way to fit all these models!
+-   `inlabru` provides an efficient and unified way to fit all these models!

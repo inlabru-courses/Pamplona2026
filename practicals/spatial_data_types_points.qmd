@@ -40,7 +40,8 @@ library(scico) # for colouring palettes
 # Data manipulation
 library(dplyr)
 
-
+# Spatial Data manipulation
+library(sf)
 ```
 
 ## Spatial Point pattern data
@@ -67,15 +68,29 @@ Here we will focus on the distribution of the Ringlet butterfly species, which h
 
 **Reading shapefiles into R**
 
-First, we load the geographical region of interest which can be downloaded [here](https://maps.gov.scot/ATOM/shapefiles/SG_CairngormsNationalPark_2010.zip) (i.e., CNP boundaries). We can use thre `st_read` function from the `sf` library to load the `.shp` file by specifying the directory where you downloaded the files:
+First, we load the geographical region of interest which can be downloaded [here](https://maps.gov.scot/ATOM/shapefiles/SG_CairngormsNationalPark_2010.zip) (i.e., CNP boundaries). Then, we can use the `st_read` function from the `sf` library to load the `.shp` file by specifying the directory where you downloaded the files:
 
 ```{r}
 #| message: false
 #| warning: false
-library(sf)
+#| eval: false
+#| 
+
 shp_SGC <-  st_read("datasets/SG_CairngormsNationalPark/SG_CairngormsNationalPark_2010.shp",quiet =T)
 
 ```
+
+
+Alternatively, you can download the files by clicking the button below:
+
+{{< downloadthis datasets/SG_CairngormsNationalPark_2010.RData dname="SG_CairngormsNationalPark_2010" label="Download SG Cairngorms National Park Data" >}}
+
+and load it directly into R
+
+```{r}
+load(here::here("datasets/SG_CairngormsNationalPark_2010.RData"))
+```
+
 
 Then, we can use appropriate CRS for the UK (i.e., EPSG code: 27700) :
 

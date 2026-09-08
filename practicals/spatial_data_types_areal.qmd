@@ -31,15 +31,17 @@ In this practical we will:
 
 Areal data our measurements are summarised across a set of discrete, non-overlapping spatial units such as postcode areas, health board or pixels on a satellite image. In consequence, the spatial domain is a countable collection of (regular or irregular) areal units at which variables are observed. Many public health studies use data aggregated over groups rather than data on individuals - often this is for privacy reasons, but it may also be for convenience.
 
-In the next example we are going to explore data on respiratory hospitalisations for Greater Glasgow and Clyde between 2007 and 2011. The data are available from the `CARBayesdata` R Package:
+In the next example we are going to explore data on respiratory hospitalisations for Greater Glasgow and Clyde between 2007 and 2011. The data are available from the `CARBayesdata` R Package or by clicking on the link below:
+
+{{< downloadthis datasets/pollutionhealthdata.RData dname="pollutionhealthdata" label="Download pollutionhealthdata Data" >}}
+
 
 ```{r}
 #| message: false
 #| warning: false
-library(CARBayesdata)
 
-data(pollutionhealthdata)
-data(GGHB.IZ)
+load(here::here("datasets/pollutionhealthdata.RData"))
+
 ```
 
 The `pollutionhealthdata` contains the spatiotemporal data on respiratory hospitalisations, air pollution concentrations and socio-economic deprivation covariates for the 271 Intermediate Zones (IZ) that make up the Greater Glasgow and Clyde health board in Scotland. Data are provided by the [Scottish Government](http://statistics.gov.scot.) and the available variables are:

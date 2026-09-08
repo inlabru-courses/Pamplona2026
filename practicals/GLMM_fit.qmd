@@ -2,11 +2,11 @@
 title: "Practical 2 - GLMM"
 format: 
   html:
+    body-classes: no-banner
     theme:
       light: flatly
       dark: darkly
   PrettyPDF-pdf:
-    keep-tex: true
     number-sections: true
 embed-resources: true
 editor_options: 
@@ -17,8 +17,19 @@ editor_options:
 #| echo: false
 #| message: false
 #| warning: false
-
+#| purl: false
+#| results: hide
 library(webexercises)
+
+fname <- knitr::current_input()
+
+# Only run purl during render
+if (!is.null(fname)) {
+  base  <- tools::file_path_sans_ext(basename(fname))
+  rfile <- paste0(base, ".R")
+  knitr::purl(fname, output = rfile)
+}
+
 
 ```
 
@@ -30,6 +41,11 @@ We are going to:
 - Change the prior distributions for the model hyperparameters (both for fixed and random effects)
 - Compute and visualize posterior densities and summaries for marginal effects
  
+::: supplementary
+You can download the R-script of this practical by clicking the button below:
+
+{{< downloadthis "GLMM_fit.R" dname="day1_practical_2" label="Download Practical 2 R script" >}}
+:::
  
  We start by loading some useful libraries 
  
@@ -42,39 +58,42 @@ library(INLA)
 library(ggplot2)
 library(patchwork)
 library(inlabru)     
-library(lme4)
-
 
 ```
 
-In this practical we are going to analyse the dataset `grouseticks`. The data, contained  in the library `lme4`, Number of ticks on the heads of red grouse chicks sampled in the field. See `?grouseticks` for details. 
+In this practical we are going to analyse the dataset `grouseticks`  contained  in the library `lme4` or if your prefer you can download the data by clicking the button below:
+
+
+{{< downloadthis ../datasets/grouseticks.csv dname="grouseticks" label="Download grouseticks Data" >}}
+
+
+
+The data contains the number of ticks on the heads of red grouse chicks sampled in the field. See `?grouseticks` for details. 
+
 
 The data are analysed in the paper 
 
-Elston et al. “Analysis of aggregation, a worked example: numbers of ticks on red grouse chicks.” Parasitology
+Elston et al. "Analysis of aggregation, a worked example: numbers of ticks on red grouse chicks." Parasitology
 
 and in this practical we will follow their analysis.
 
 
 
 ```{r}
-data(grouseticks)
-?grouseticks
-head(grouseticks)
+grouseticks<- read.csv(here::here("datasets/grouseticks.csv"))
 ```
 
-## Fitting Poisson regression
+# Fitting Poisson regression
 
 We assume that the number of ticks $y_{ijk}$ counted on chick $i$ of brood $j$ in
 year $k$ follows a Poisson distribution with mean $\lambda_{ijk}$
 $$
 y_{ijk}|\lambda_{ijk}\sim\text{Poisson}(\lambda_{ijk})
 $$
-We then model log mean counts $\eta_{ijk} = \log(\lambda_{ijk})$ as a linear function of year, altitude, brood, and
-individual chick within brood. 
-We assume a fixed effect $\alpha_k$ of year $k$, a linear effect of altitude $x_{ij}$, 
-two random effects $e_{jk}$ and $\epsilon_{ijk}$ brood and
-individual within brood respectively. Thus:
+We then model log mean counts $\eta_{ijk} = \log(\lambda_{ijk})$ as a linear function of year, altitude, brood, and individual chick within brood. 
+
+We assume a fixed effect $\alpha_k$ of year $k$, a linear effect of altitude $x_{ij}$,  two random effects $e_{jk}$ and $\epsilon_{ijk}$ brood and individual within brood respectively. Thus:
+
 $$
 \eta_{ijk} = \log(\lambda_{ijk}) = \alpha_k + \beta x_{ij} + e_{jk} + \epsilon_{ijk}
 $${#eq-linpred}
@@ -86,12 +105,12 @@ We first fit the model using the default priors for fixed and random effects.
 To fit the model we first have to create two more variable, one that indexes the combination $jk$ of brood and year and another that indexes the combination $ijk$ of individuals per brood per year.
 
 ```{r}
-
 grouseticks  = grouseticks %>%
   group_by(BROOD, YEAR) %>%
   mutate(ij = cur_group_id()) %>%
   ungroup() %>%
-  mutate(ijk = seq_along(INDEX))
+  mutate(ijk = seq_along(INDEX)) 
+
 ```
 
 now we can fit the model.
@@ -105,6 +124,8 @@ Complete the code to fit the model in @eq-linpred. You need to define the compon
 ```{r}
 #| echo: true
 #| eval: false
+
+bru_options_set(control.compute = list(dic = T, waic = T))
 
 cmp= ~ -1 + year(...) +
   height(...) + 
@@ -126,98 +147,325 @@ fit = bru(cmp, lik)
 #| webex.hide: "Click here to see the solution"
 #| code-fold: show
 #| purl: false
-cmp= ~ -1 + year(YEAR, model = "iid", initial = log(0.01), fixed = T) +
+
+bru_options_set(control.compute = list(dic = T, waic = T))
+
+
+cmp= ~ -1 +  year(YEAR, model = "iid", initial = log(0.01), fixed = T) +
   height(cHEIGHT, model =  "linear") + 
   brood_year(ij , model = "iid") +
   brood_year_chicken(ijk, model= "iid")
 
 lik = bru_obs(TICKS ~ .,
-              data = grouseticks,
+              data = grouseticks ,
               family = "Poisson")
 
   
 fit = bru(cmp, lik)
+
 ```
 :::
 
 
-Now we can check the results. 
+## Posterior Summaries & model fit
+
+Now we can check the results using the `summary` function directly by calling `model$summary.hyperpar`, `model$summary.fixed` and `model$summary.random`. In addition, `inlabru` objects can be passed to the `tidy()` function to produce posterior summaries of the hyperparameters and fixed effects in a `tibble` format:
+
+```{r}
+tidy(fit)
+```
 
 
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
 
-Plot the posterior distribution of the fixed effects: $\beta$ and $\alpha_k$. 
+Use the `tidy()` function to produce posterior summaries of the hyperparameters
 
+```{r}
+#| webex.hide: "Click here to see the solution"
+#| purl: false
+
+tidy(fit, "hyperpar")
+  
+```
+:::
+
+We can also use the `glance()` function from `broom` to obtain our model's goodness-of-fit metrics in a tibble (provided we set `bru_options_set(control.compute = list(dic = TRUE, waic = TRUE))`).
+
+```{r}
+glance(fit)
+```
+
+## Visualizing the posterior marginals
+
+Posterior marginal distributions of the fixed effects parameters and the hyperparameters can be visualized using the `plot()` function by calling the name of the component. For example, if want to visualize the posterior density of the height effect we can type:
+
+```{r}
+#| fig-width: 4
+#| fig-align: center
+#| fig-height: 4
+plot(fit, "height")
+
+```
+
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
+
+Plot the posterior marginals for the precision parameters of (i) the brood random effect $\tau^{-1}_e$ and (ii) within-brood $\epsilon_{ijk}$
+
+`r hide("Take hint")`
+
+See the `summary()` output to check the names for the different model components.
+
+`r unhide()`
+
+```{r}
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
+#| webex.hide: "Click here to see the solution"
+#| purl: false
+
+plot(fit, "Precision for brood_year") +
+plot(fit, "Precision for brood_year_chicken")
+```
+:::
+
+You can also use the `plot()` function to visualize the mode and quantiles for random effect. For example we can visualize the brood random effects as:
+
+```{r}
+#| fig-width: 6
+#| fig-height: 4
+#| fig-align: center
+#| code-fold: show
+
+plot(fit, "brood_year") 
+
+```
+
+
+Another useful way to retrieve marginals densities of hyperparameters, fixed and random effects is by calling `model$marginals.hyperpar`,`model$marginals.fixed` and `model$marginals.random` respectively. The output can then be plotted as follows:
+
+```{r}
+#| code-fold: show
+fit$marginals.fixed$height %>% 
+  ggplot() +
+  geom_line(aes(x,y)) + 
+  ggtitle("Linear effect of altitude")
+```
+
+Notice that this is the same density plot we produced by using the `plot()` function above.
+
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
+Plot the posterior distribution of the year random effect $\alpha_k$ . 
 
 ```{r}
 #| webex.hide: "Click here to see the solution"
 #| code-fold: show
 #| purl: false
 
-fit$marginals.fixed$height %>% ggplot() + geom_line(aes(x,y)) + ggtitle("Linear effect of altitude")
 
 ggplot() + geom_line(data = fit$marginals.random$year[[1]], aes(x,y, color = "96") )+
   geom_line(data = fit$marginals.random$year[[2]], aes(x,y, color = "97")) +
   geom_line(data = fit$marginals.random$year[[3]], aes(x,y, color = "98")) 
   
-
 ```
 :::
 
-We now want to look at the hyperparameters of the model
 
+## Applying transformations to marginal densities
 
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
-
-Plot the posterior estimated of the standard deviation $\sigma_e = \sqrt{1/\tau_e}$ and $\sigma_\epsilon = \sqrt{1/\tau_\epsilon}$ of the two random effects.
-
-`r hide("Take hint")`
-
-You can use the function `inla.tmarginal()` or the `generate()` function
-
-`r unhide()`
+For theoretical and computational purposes, INLA works with the precision which is the inverse of the variance. To obtain the posterior summaries on the SDs scale we can apply a transformation using the `inla.tmarginal` function to transform the precision posterior distributions.Transforming the samples is necessary because some quantities such as the mean and mode are not invariant to monotone transformation.
 
 ```{r}
-#| webex.hide: "Click here to see the solution"
-#| code-fold: show
+#| purl: false
+#| code-fold: false
+
+
+sd_e <- fit$marginals.hyperpar$`Precision for brood_year`%>%
+  inla.tmarginal(function(x)sqrt(1/x),.) 
+
+sd_eps <- fit$marginals.hyperpar$`Precision for brood_year_chicken` %>%
+  inla.tmarginal(function(x) sqrt(1/x),.) 
+
+ggplot() +
+  geom_line(data = sd_e, aes(x,y, color = "sd_e")) + 
+  geom_line(data = sd_eps, aes(x,y, color = "sd_epsilon"))
+
+
+```
+
+
+Then, we can compute posterior summaries using `inla.zmarginal` function as follows:
+
+```{r}
+#| purl: false
+post_var_summaries <- cbind( inla.zmarginal(sd_e,silent = T),
+                             inla.zmarginal(sd_eps,silent = T))
+colnames(post_var_summaries) <- c("sigma_e","sigma_eps")
+post_var_summaries
+```
+
+
+::: {.callout-note collapse="true" icon="false"}
+## Supplementary material
+
+To obtain the posterior summaries on the SDs scale we can also sample from the posterior distribution for the precision while back-transforming the samples and then computing the summary statistics.  We can use the `generate()` function to draw samples from the approximated joint posterior for the hyperparameters, then invert them to get variances and lastly compute the mean, std. dev., quantiles, etc.
+
+To get the right name for the hyperparameters to use in the `generate()` function, you can use the function `bru_names()`.
+
+```{r}
+#| purl: false
+
+bru_names(fit)
+```
+
+ We then obtain the samples:
+```{r}
 #| purl: false
 
 
-# Method 1 : use the inla.tmarginal() function
-
-sd_e = inla.tmarginal(fun = function(x)sqrt(1/x), fit$marginals.hyperpar$`Precision for brood_year`)
-
-sd_eps = inla.tmarginal(fun = function(x)sqrt(1/x), fit$marginals.hyperpar$`Precision for brood_year_chicken`)
-
-ggplot() + geom_line(data = sd_e, aes(x,y, color = "sd_e")) + geom_line(data = sd_eps, aes(x,y, color = "sd_epsilon"))
-
-
-# Method 1 : use the generate() function
-
-
-# we use this to get the correct name of the parameters
-bru_names(fit)
-
-out = generate(fit, formula = ~ data.frame(sd_e = sqrt(1/Precision_for_brood_year),
-                                     sd_eps = sqrt(1/Precision_for_brood_year_chicken)),
-               n.samples = 10000)
+out = generate(fit, formula = ~ 
+                 data.frame(sd_e = sqrt(1/Precision_for_brood_year),
+                            sd_eps = sqrt(1/Precision_for_brood_year_chicken)),
+               n.samples = 1000)
 
 sd_sample = data.frame(sd_e = unlist(sapply(out, function(x) x[1])),
                        sd_eps = unlist(sapply(out, function(x) x[2])))
-                       
+
+```
+
+Compute posterior summaries:
+
+```{r}
+#| purl: false
+
+sd_sample %>%
+  summarise(across(
+    everything(),
+    list(
+      mean = ~ mean(.x),
+      q025 = ~ quantile(.x, 0.025),
+      q975 = ~ quantile(.x, 0.975)
+    )
+  ))
+
+```
+
+And finally, overlay the densities obtained with `inla.tmarginal` and `generate`: 
+
+```{r}
+#| purl: false
+
 
 ggplot() + geom_line(data = sd_e, aes(x,y, color = "sd_e")) + 
   geom_density(data = sd_sample, aes(x = sd_e, color = "sd_e"), linetype = "dashed") +
   geom_line(data = sd_eps, aes(x,y, color = "sd_epsilon"))+ 
   geom_density(data = sd_sample, aes(x = sd_eps, color = "sd_epsilon"), linetype = "dashed")
 
+```
 
-# Note that, if one is interested in hyperparameters, sampling is not always the best choice!
+Note that, if one is interested in hyperparameters, sampling is not always the best choice!
+ 
+:::
+
+
+
+## Model fitted values and predictions
+
+An easy way to obtain fitted or predicted values is through the recently added compatibility with the broom-style `augment()` function, which extends the original data with posterior fitted values, or adds posterior summaries of the linear predictor to a prediction grid.
+
+First, lets have a look at the expected counts $\mathbb{E}(\widehat \lambda_{ijk}) = \exp \widehat \eta_{ijk}$ using our existing data:
+
+```{r}
+fitted_values <- augment(
+  fit,
+  data = grouseticks,
+  pred_formula = ~ exp(year + height + brood_year + brood_year_chicken),
+  n_samples = 500L,
+  seed = 1L
+)
+
+head(fitted_values)
+```
+
+
+Then we can plot the observed counts vs. the expected counts as follows:
+
+```{r}
+#| code-fold: show
+ggplot(fitted_values, aes(x = TICKS, y = .fitted)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "grey50") +
+  geom_pointrange(aes(ymin = .fitted_low, ymax = .fitted_high),
+                  alpha = 0.4, colour = "#1B4F5E") +
+  labs(x = "Observed ticks", y = "Expected counts") +
+  theme_minimal(base_size = 14)
+
+```
+
+The `augment()` function in `inlabru` calls `predict()`  (which in turn calls `generate()` to draw posterior samples) so we can use `predict()` directly to look at the conditional height effect per year. To compute model predictions we can create a **prediction grid** containing a range of values of the covariate (height) where we want the response to be predicted for each year. Then we simply call the `predict` function while specifying the model components.
+
+```{r}
+#| code-fold: show
+#| message: false
+#| warning: false
+#| 
+# grid across the observed height range
+yh_grid <- expand.grid(YEAR= c("95","96","97"),
+  cHEIGHT = seq(min(grouseticks$cHEIGHT),
+                max(grouseticks$cHEIGHT), 
+                length.out = 100))
+
+# predict the height and year components only
+
+pred_yh <- predict(fit, yh_grid, ~ exp(height+year))
+
+ggplot(pred_yh, aes(cHEIGHT, mean)) +
+  geom_ribbon(aes(ymin = q0.025, ymax = q0.975), alpha = 0.25, fill = "#1B4F5E") +
+  geom_line(colour = "#1B4F5E", linewidth = 0.8) +
+  labs(x = "Height (centred)", y = "Expected Ticks") +
+  geom_point(data=grouseticks,aes(cHEIGHT,TICKS),alpha=0.25)+
+  facet_wrap(~YEAR)
+  
+```
+
+
+
+
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
+
+Another useful quantity we can compute is the intraclass correlation coefﬁcient (ICC) which help us determine how much the response varies within groups compared to between groups. The intraclass correlation coefﬁcient is defined as:
+
+$$
+\text{ICC} = \frac{\sigma^2_u}{\sigma^2_u + \sigma^2_e}
+$$
+
+Compute the mean, median, and quantiles for the ICC by drawing posterior samples for $\sigma^2_e$ and $\sigma^2_eps$ using the `predict` function.
+
+```{r}
+#| webex.hide: "Click here to see the solution"
+#| code-fold: show
+#| purl: false
+
+
+ICC <-  predict(fit,grouseticks, ~ {
+   tau_e <- Precision_for_brood_year
+   tau_eps <- Precision_for_brood_year_chicken
+   sigma_e = 1/tau_e
+   sigma_eps = 1/tau_eps
+   list(ICC = sigma_e/ (sigma_e+sigma_eps))
+   },
+   n.samples = 1000
+  )
+
+ICC
 
 ```
 :::
+
+
 
 # Change prior distributions
 
@@ -273,7 +521,8 @@ Note that we can use the same observation model as before since both the formula
 :::
 
 
-**Changing the  precision  for the random effects** 
+## Change the precision for random effects
+
 
 Priors on the hyperparameters of the random effects  model must be passed by defining argument `hyper` within component of interest
 
@@ -299,37 +548,5 @@ fit3 = bru(cmp3, lik)
 Note that for `model = "linear"` the value for the precision is expressed in natural scale while for `model = "iid'` (and all other random effects) the value is expressed in log scale.
 
 
-### Visualizing the posterior marginals
 
-Posterior marginal distributions of the ﬁxed effects parameters and the hyperparameters can be visualized also using the `plot()` function by calling the name of the component. For example, if want to visualize the posterior density of the slope $\beta$ we can type:
 
-```{r}
-#| fig-width: 4
-#| fig-align: center
-#| fig-height: 4
-#| code-fold: show
-
-plot(fit, "height")
-```
-
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
-
-Plot the posterior marginals for  the precision of brood and individual random effect  $\pi(\tau_e|y)$
-
-`r hide("Take hint")`
-
-See the `summary()` output to check the names for the different model components.
-
-`r unhide()`
-
-```{r}
-#| fig-width: 6
-#| fig-height: 4
-#| fig-align: center
-#| webex.hide: "Click here to see the solution"
-#| code-fold: show
-#| purl: false
-plot(fit, "Precision for brood_year")
-```
-:::

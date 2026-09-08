@@ -173,7 +173,7 @@ ggplot(pred_ar1,aes(y=mean,x=x))+
 
 ```
 
-### **Forecasting**
+### Forecasting
 
 A common goal in time series modelling is forecasting into the future. Forecasting can be treated as a missing data problem where future values of the response variable are missing. Let $y_m$ be the missing response, then, by fitting a statistical model to the observed data $\mathbf{y}_{obs}$, we condition on its parameters to obtain the posterior predictive distribution:
 

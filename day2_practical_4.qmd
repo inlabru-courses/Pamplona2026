@@ -4,7 +4,7 @@ execute:
   freeze: auto
 format: 
   html:
-    mainfont: "12"
+    body-classes: no-banner
   PrettyPDF-pdf:
     keep-tex: false
     number-sections: true
@@ -34,7 +34,14 @@ knitr::purl("day2_practical_4.qmd")
 
 4.  Manipulate and visualize raster data in R.
 
+::: supplementary
+You can download the R-script of this practical by clicking the button below:
+
+<br>
+
 {{< downloadthis day2_practical_4.R dname="practical_4.R" label="Download Practical 3 R script" icon="database-fill-down" type="success" >}}
+
+:::
 
 ```{r child="practicals/spatial_data_types_areal.qmd"}
 ```

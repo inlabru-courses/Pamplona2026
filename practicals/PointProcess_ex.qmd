@@ -45,11 +45,10 @@ library(dplyr)
 library(INLA)
 library(ggplot2)
 library(patchwork)
-library(inlabru)     
-library(spatstat)
+library(inlabru) 
+library(fmesher)
 library(sf)
 library(scico)
-library(spatstat)
 library(lubridate)
 library(terra)
 library(tidyterra)
@@ -62,28 +61,28 @@ library(tidyterra)
 In this practical we consider the data `clmfires` in the `spatstat`
 library.
 
+
 This dataset is a record of forest fires in the Castilla-La Mancha
 region of Spain between 1998 and 2007. This region covers approximately
-400 by 400 kilometres. The coordinates are recorded in kilometres. For
-more info about the data you can type:
+400 by 400 kilometres. The coordinates are recorded in kilometres. (For
+more info about the data you can type `?clmfires`)
 
-```{r}
-#| echo: true
-#| eval: false
-#| purl: false
-?clmfires
-```
+
 
 We first read the data and transform them into an `sf` object. We also
 create a polygon that represents the border of the Castilla-La Mancha
 region. We select the data for year 2004 and only those fires caused by
 lightning.
 
+
+
 ```{r}
 #| label: fig-points
 #| fig-cap: "Distribution of the observed forest fires caused by lightning in Castilla-La Mancha in 2004"
-#| 
+
+library(spatstat)
 data("clmfires")
+
 pp = st_as_sf(as.data.frame(clmfires) %>%
                 mutate(x = x, 
                        y = y),
@@ -492,6 +491,7 @@ the spatial GRF `r unhide()`
 #| webex.hide: "Click here to see the solution"
 #| code-fold: show
 #| purl: false
+
 
 cmp = ~ Intercept(1) + space(geometry, model = spde_model) + elev(elev_raster, model = "linear")
 

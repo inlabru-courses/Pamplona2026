@@ -2,9 +2,10 @@
 title: "Software Installation"
 author: ""
 subtitle: ""
-format: 
+format:
   html:
-    mainfont: "12"
+    css: styles.css
+    body-classes: no-banner
   PrettyPDF-pdf:
     keep-tex:  true
     number-sections: true

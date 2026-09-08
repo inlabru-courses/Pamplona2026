@@ -4,7 +4,7 @@ execute:
   freeze: false
 format: 
   html:
-    mainfont: "12"
+    body-classes: no-banner
   PrettyPDF-pdf:
     keep-tex: false
     number-sections: true
@@ -33,22 +33,21 @@ if (!is.null(fname)) {
 
 ```
 
-
-In this practical we are going to fit linear (mixed) models in `inlabru`. 
-We are going to to:
+In this practical we are going to fit linear (mixed) models in `inlabru`. We are going to to:
 
 - Fit a [simple linear regression](#SLR)
 - Fit a [linear regression with discrete covariates and interactions](#LM_int)
 - Fit a [linear mixed model](#LMM).
 - [Compare models using DIC and WAIC](#MOD_COMP)
 
-::: {.callout-note icon="false"}
+::: supplementary
 You can download the R-script of this practical by clicking the button below:
 
-{{< downloadthis `r rfile` dname=`r rfile` label="Download R script" >}}
+<br>
+
+{{< downloadthis "LMM_ex.R" dname="day1_practical_1" label="Download Practical 1 R script" >}}
+
 :::
-
-
 
 Start by loading useful libraries:
 
@@ -66,9 +65,7 @@ library(tidyverse)
 library(scico)
 ```
 
-
-
-At the end of this exercise we are going to  compare the different models we fit using DIC and WAIC. Therefore we neet to tell the `bru()` function to compute those scores, we can do that by the `bru_options_set()` functions:
+At the end of this exercise we are going to compare the different models we fit using DIC and WAIC. Therefore we need to tell the `bru()` function to compute those scores, we can do that by the `bru_options_set()` functions:
 
 ```{r}
 #| echo: true
@@ -76,33 +73,30 @@ At the end of this exercise we are going to  compare the different models we fit
 bru_options_set(control.compute = list(dic = T, waic = T))
 ```
 
-This is a global option that will make `bru()` compute scores everytime. It is also possble to set the option locally as
+This is a global option that will make `bru()` compute scores everytime. It is also possible to set the option locally as
 
 ```{r}
 #| echo: true
 #| eval: false
+#| purl: false
 
 fit = bru(cmp, lik,
           options = list(control.compute = list(dic = TRUE)))
 ```
 
-
-## Simple linear regression{#SLR}
+## Simple linear regression {#SLR}
 
 We consider a simple linear regression model with Gaussian observations
 
-$$
-y_i\sim\mathcal{N}(\mu_i, \sigma^2), \qquad i = 1,\dots,N
-$$
+$$y_i\sim\mathcal{N}(\mu_i, \sigma_y^2), \qquad i = 1,\dots,N$$
 
-where $\sigma^2$ is the observation error, and the mean parameter $\mu_i$ is linked to the **linear predictor** ($\eta_i$) through an identity function:
-$$
-\eta_i = \mu_i = \beta_0 + \beta_1 x_i.
-$$
+where $\sigma^2y$ is the observation error, and the mean parameter $\mu_i$ is linked to the **linear predictor** ($\eta_i$) through an identity function:
+
+$$\eta_i = \mu_i = \beta_0 + \beta_1 x_i.$$
 
 Here $\mathbf{x}= (x_1,\dots,x_N)$ is a continuous covariate and $\beta_0, \beta_1$ are parameters to be estimated.
 
-To finalize the Bayesian model we assign prior distribution as $\tau = 1/\sigma^2\sim\text{Gamma}(a,b)$  and $\beta_0,\beta_1\sim\mathcal{N}(0,1/\tau_{\beta})$ (we will use the default prior settings in INLA for now).
+To finalize the Bayesian model we assign prior distribution as $\tau_y = 1/\sigma_y^2\sim\text{Gamma}(a,b)$ and $\beta_0,\beta_1\sim\mathcal{N}(0,1/\tau_{\beta})$ (we will use the default prior settings in `R-INLA` for now).
 
 ::: {.callout-tip icon="false"}
 ## {{< bi question-octagon color=#6dc83c >}} Question
@@ -111,14 +105,14 @@ What is the dimension of the hyperparameter vector and latent Gaussian field?
 
 `r hide("Answer")`
 
-The hyperparameter vector has dimension 1, $\pmb{\theta} = (\tau)$ while the latent Gaussian field $\pmb{u} = (\beta_0, \beta_1)$ has dimension 2, $0$ mean, and sparse precision matrix:
+The hyperparameter vector has dimension 1, $\pmb{\theta} = (\tau_y)$ while the latent Gaussian field $\pmb{u} = (\beta_0, \beta_1)$ has dimension 2, $0$ mean, and sparse precision matrix:
 
-$$
-\pmb{Q} = \begin{bmatrix}
+$$\pmb{Q} = \begin{bmatrix}
 \tau_{\beta_0} & 0\\
 0 & \tau_{\beta_1}
-\end{bmatrix}
-$$ Note that, since $\beta_0$ and $\beta_1$ are fixed effects, the precision parameters $\tau_{\beta_0}$ and $\tau_{\beta_1}$ are fixed.
+\end{bmatrix}$$
+
+Note that, since $\beta_0$ and $\beta_1$ are fixed effects, the precision parameters $\tau_{\beta_0}$ and $\tau_{\beta_1}$ are fixed.
 
 `r unhide()`
 :::
@@ -126,8 +120,7 @@ $$ Note that, since $\beta_0$ and $\beta_1$ are fixed effects, the precision par
 ::: callout-note
 We can write the linear predictor vector $\pmb{\eta} = (\eta_1,\dots,\eta_N)$ as
 
-$$
-\pmb{\eta} = \pmb{A}\pmb{u} = \pmb{A}_1\pmb{u}_1 + \pmb{A}_2\pmb{u}_2 = \begin{bmatrix}
+$$\pmb{\eta} = \pmb{A}\pmb{u} = \pmb{A}_1\pmb{u}_1 + \pmb{A}_2\pmb{u}_2 = \begin{bmatrix}
 1 \\
 1\\
 \vdots\\
@@ -137,20 +130,18 @@ x_1 \\
 x_2\\
 \vdots\\
 x_N
-\end{bmatrix} \beta_1
-$$
+\end{bmatrix} \beta_1$$
 
 Our linear predictor consists then of two components: an intercept and a slope.
 :::
-
 
 ## Modelling penguins bodymass
 
 Let's look at the dataset `penguins` in `R`.
 
-These are data  on adult penguins covering three species found on three islands in the Palmer Archipelago, Antarctica, including their size (flipper length, body mass, bill dimensions), and sex.
+These are data on adult penguins covering three species found on three islands in the Palmer Archipelago, Antarctica, including their size (flipper length, body mass, bill dimensions), and sex.
 
-
+![](/Image/lter_penguins.png){fig-align="center" width="617"}
 
 ```{r}
 #| code-fold: show
@@ -159,26 +150,26 @@ These are data  on adult penguins covering three species found on three islands 
 data("penguins")
 glimpse(penguins)
 
-```
 
+```
 
 The dataset contains the following variables:
 
-**species** a factor denoting penguin species (Adélie, Chinstrap and Gentoo)
+- `species` a factor denoting penguin species (Adélie, Chinstrap and Gentoo)
 
-**island** a factor denoting island in Palmer Archipelago, Antarctica (Biscoe, Dream or Torgersen)
+- `island` a factor denoting island in Palmer Archipelago, Antarctica (Biscoe, Dream or Torgersen)
 
-**bill_length** a number denoting bill length (millimeters)
+- `bill_length` a number denoting bill length (millimeters)
 
-**bill_depth_mm** a number denoting bill depth (millimeters)
+- `bill_depth_mm` a number denoting bill depth (millimeters)
 
-**flipper_length** an integer denoting flipper length (millimeters)
+- `flipper_length` an integer denoting flipper length (millimeters)
 
-**body_mass** an integer denoting body mass (grams)
+- `body_mass` an integer denoting body mass (grams)
 
-**sex** a factor denoting penguin sex (female, male)
+- `sex` a factor denoting penguin sex (female, male)
 
-**year** and integer indicating the study year: (2007, 2008, 2009)
+- `year` and integer indicating the study year: (2007, 2008, 2009)
 
 We are going to use the bodymass as our response variable. To make the interpretation easier we are going to express the bodymass in Kg instead of grams.
 
@@ -186,24 +177,26 @@ We are going to use the bodymass as our response variable. To make the interpret
 penguins$body_mass = penguins$body_mass/1000
 ```
 
+In general, while INLA can fit models with missing observations in the response by computing their predictive distribution, it cannot directly handle missing observations in the covariates, since these enter the latent field. For this reason, we will remove rows with missing values before fitting.
 
+```{r}
+penguins = penguins %>%  drop_na()
+```
 
+::: callout-important
+Note that you should be careful when removing NA's from your data. Dropping incomplete rows is generally safe when the values are missing at random. However, if missingness is related to the outcome or to the covariates themselves, discarding those rows can bias the results, so the pattern of missing data should always be inspected before removing anything.
+:::
 
 ### Fitting a linear regression model with `inlabru`
 
 ------------------------------------------------------------------------
 
-
 In a first step we want to fit a simple linear regression model to link the body mass (`body_mass`) to flipper length (`flipper_len`).
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 y_i & \sim\mathcal{N}(\mu_i,\sigma_y^2)\\
 \mu_i & = \beta_0 + \beta_ix_i
-\end{aligned}
-$$
-where $y_i$ indicates the body mass and $x_i$ the flipper length of penguin $i$.
-
+\end{aligned}$$ where $y_i$ indicates the body mass and $x_i$ the flipper length of penguin $i$.
 
 **Step1: Defining model components**
 
@@ -212,7 +205,7 @@ The first step is to define the two model components: The intercept and the line
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
 
-Define an object called `cmp` that includes and (i) intercept `beta_0` and (ii) and a  linear effect `beta_1` of the `flipper_len`.
+Define an object called `cmp` that includes and (i) intercept `beta_0` and (ii) and a linear effect `beta_1` of the `flipper_len`.
 
 `r hide("Take hint")`
 
@@ -238,8 +231,9 @@ Note that we have excluded the default Intercept term in the model by typing `-1
 cmp =  ~  Intercept(1) + beta_1(flipper_len, model = "linear")
 
 ```
+:::
 
-another way to code this model would be to use the `model = "fixed"`. In this case we would define the components as:
+Another way to code this model would be to use the `model = "fixed"`. In this case we would define the components as:
 
 ```{r}
 #| eval: true
@@ -247,13 +241,10 @@ another way to code this model would be to use the `model = "fixed"`. In this ca
 
 cmp = ~ -1 + effects(~ flipper_len, model = "fixed")
 
+
 ```
 
-
-**NOTE** In the following we are going to use this last way of defining the components!
-:::
-
-
+Specifying components this way, generate a model matrix automatically via `MatrixModels::model.Matrix(formula, data = .data.)`. This lets users define individual fixed effects and their interactions concisely, drawing on functionality already provided by the `MatrixModels` package. Also notice that we have explicitly removed the global intercept from the model components. This is because specifying `model = "fixed"` calls the `model.Matrix` function which automatically creates an `(Intercept)` column in the design matrix.
 
 **Step 2: Build the observation model**
 
@@ -290,9 +281,9 @@ Define the observational model likelihood in an object called `lik` using the `b
 
 The `bru_obs` is expecting three arguments:
 
--   The linear predictor `eta` we defined in the previous task
--   The data likelihood (this can be specified by setting `family = "gaussian"`)
--   The data set `df`
+- The linear predictor `eta` we defined in the previous task
+- The data likelihood (this can be specified by setting `family = "gaussian"`)
+- The data set `penguins`
 
 `r unhide()`
 
@@ -302,47 +293,27 @@ The `bru_obs` is expecting three arguments:
 #| purl: false
 lik = bru_obs(formula = formula,
               data = penguins,
-              family = "gaussian")
+              family = "Gaussian")
 
 ```
 :::
-
 
 **Step 3: Fit the model**
 
 We fit the model using the `bru()` functions which takes as input the components and the observation model:
 
 ```{r}
-#| eval: false
-fit1 = bru(cmp, lik)
-```
-
-**NOTE** running the code above we are going to get an *error* !!
-
-This error is liked to the fact that, when using `model = "fixed"` the default option for `model.matrix()` is to remove all lines with NAs.
-
-NAs are not a problem in `inlabru` they just don't make any contribtion to the likelihood....but matrix of the wrong dimension are :smile:.
-
-To avoid this we  can tell `R` to keep all missing values as follows:
-
-```{r}
 #| eval: true
-#| echo: true
 
-options(na.action = 'na.pass')
 fit1 = bru(cmp, lik)
 
 ```
-
-
 
 **Step 4: Extract results**
 
-
 There are several ways to extract and examine the results of a fitted `inlabru` object.
 
-The most natural place to start is to use the
- `summary()` which gives access to some basic information about model fit and estimates
+The most natural place to start is to use the `summary()` function which gives access to some basic information about model fit and estimates
 
 ```{r }
 #| code-summary: "Model summaries"
@@ -350,47 +321,43 @@ The most natural place to start is to use the
 summary(fit1)
 ```
 
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
+We can further inspect posterior summaries of hyperparameters, fixed and random effects by calling `model$summary.hyperpar`, `model$summary.fixed` and `model$summary.random` respectively.
 
-Plot the posterior marginals for the estimated intercept and slope
+::: callout-not`
+Note that for implementation technical reasons, `model = "fixed"` will make the estimated parameters to appear in `summary.random` instead of the normal `summary.fixed` part of the `inlabru` output object. E.g.,
 
-
-
-```{r}
-#| webex.hide: "Click here to see the solution"
-#| code-fold: show
+```{r }
 #| purl: false
-
-p1 = fit1$marginals.random$effects$index.1 %>% ggplot() + geom_line(aes(x,y)) + ggtitle("Intercept")
-p2 = fit1$marginals.random$effects$index.2 %>% ggplot() + geom_line(aes(x,y)) + ggtitle("slope")
-p1 + p2
+fit1$summary.random
 ```
 :::
 
+### Predictions with `inlabru`
+
+------------------------------------------------------------------------
+
 Another way, which gives access to more complicated (and useful) output is to use the `predict()` function.
 
-Below we  take the fitted `bru` object and use the `predict()` function to produce predictions for $\eta$ given a new set of values for the years of service
+Below we take the fitted `bru` object and use the `predict()` function to produce predictions for $\eta$ given a new set of values for the penguins flipper length
 
 ```{r}
 new_data = data.frame(flipper_len  = 170:240)
+
 pred = predict(fit1, new_data, ~ effects,
                n.samples = 1000)
-
 ```
 
-The `predict()` function generate samples from the fitted model and then summarizes those samples by computing some statistics like posterior mean, standard deviation, quantiles etc.
-In this case we set the number of samples to 1000.
+The `predict()` function generates samples from the fitted model and then summarizes those samples by computing some statistics like posterior mean, standard deviation, quantiles etc. In this case we set the number of samples to 1000.
 
+::: callout-note
+Note that we are predicting within the range of our covariate, as extrapolating beyond the observed data is risky because the model has no information there, so predictions rely entirely on the assumed functional form, and their uncertainty can be badly understated
+:::
 
 We can plot the predictions for $\eta$ together with the observed data:
-
-## Plot
 
 ```{r}
 #| code-fold: true
 #| fig-cap: Data and 95% credible intervals
-#| echo: false
 #| message: false
 #| warning: false
 #| fig-align: center
@@ -402,9 +369,8 @@ pred %>% ggplot() +
   geom_ribbon(aes(flipper_len, ymin = q0.025, ymax = q0.975), alpha = 0.5) +
   xlab("Flipper length") + ylab("body_mass") +
   geom_point(data = penguins, aes(flipper_len, body_mass))
+
 ```
-
-
 
 **NOTE:** The uncertainty we have computed now is relative to the prediction of $\eta$. If we want to predict new body mass, we need to add the observation (likelihood) uncertainty $\sigma_y^2$. We can do this using `predict()` again:
 
@@ -427,7 +393,6 @@ Let's compare the two predictions:
 ```{r}
 #| code-fold: true
 #| fig-cap: Data and 95% credible intervals
-#| echo: false
 #| message: false
 #| warning: false
 #| fig-align: center
@@ -446,39 +411,10 @@ ggplot() +
   geom_point(data = penguins, aes(flipper_len, body_mass))
 ```
 
-
-
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
 
-Use the function `generate()` to create a sample of 100 possible regression lines from the fitted model
-
-```{r}
-#| webex.hide: "Click here to see the solution"
-#| code-fold: show
-#| purl: false
-
-new_data = data.frame(flipper_len = 193)
-gen = generate(fit1, new_data, ~ effects,
-               n.samples = 100)
-
-data.frame(flipper_len = new_data$flipper_len,
-           gen) %>%
-  pivot_longer(-flipper_len) %>%
-  ggplot() + geom_line(aes(flipper_len, value, group = name))
-
-```
-
-
-:::
-
-
-
-
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
-
-Generate predictions for the mean body mass $\eta$ when the flipper length is  $x_0 = 193$ mm
+Compute predictions for the mean body mass $\eta$ when the flipper length is $x_0 = 193$ mm
 
 What is the predicted value for $\eta$? And what is the uncertainty?
 
@@ -501,13 +437,24 @@ pred
 
 ```
 
-You can see the predicted mean and sd by examining the produced `pred` object. In this case the mean is ca `{r} round(pred$mean)` kg with sd  ca  `{r} round(pred$sd,2)`. This gives a 95% CI ca [`{r} round(pred$q0.025,2)`, `{r} round(pred$q0.975,2)`].
+You can see the predicted mean and sd by examining the produced `pred` object. In this case the mean is ca `{r} round(pred$mean)` kg with sd ca `{r} round(pred$sd,2)`. This gives a 95% CI ca \[`{r} round(pred$q0.025,2)`, `{r} round(pred$q0.975,2)`\].
 :::
 
+::: {.callout-warning icon="false"}
+## {{< bi pencil-square color=#c8793c >}} Task
 
-**NOTE** Now we have produced a credible interval for the expected mean $\eta$ if we want to produce a _prediction_ interval for  a new observation $y$ we need to add the uncertainty that comes from the likelihood with precision $\tau = 1/\sigma_y^2$. To do this we can again use the `predict()` function to compute  a 95% prediction interval for $y$.
+On the previous task you computed a credible interval for the expected mean $\eta$ when the flipper length is $x_0 = 193$ mm. Now produce a 95% *prediction* interval for a new observation $y_0$ (i.e., prediction interval for the body mass of a new penguin's whose flipper length is $x_0 = 193$ mm) by adding the uncertainty that comes from the likelihood with precision $\tau_y = 1/\sigma_y^2$
+
+`r hide("Take hint")`
+
+You can use the `bru_names(fit1)` function to check the names for the different model components.
+
+`r unhide()`
 
 ```{r}
+#| webex.hide: "Click here to see the solution"
+#| code-fold: show
+#| purl: false
 
 pred2 = predict(fit1, new_data,
                formula = ~ {
@@ -516,39 +463,32 @@ pred2 = predict(fit1, new_data,
                  list(q1 = qnorm(0.025, mean = mu, sd = sigma),
                       q2 =  qnorm(0.975, mean = mu, sd = sigma))},
                n.samples = 1000)
+# Notice that now the interval we obtain is much bigger!
 round(c(pred2$q1$mean, pred2$q2$mean),2)
 ```
-Notice that now the interval we obtain is much bigger! ahahah
+:::
 
-## Linear model with discrete variables and  interactions{#LM_int}
+## Linear model with discrete variables and interactions {#LM_int}
 
 Now we want to check if there is any difference, both in mean body_mass and in mean increase of the body_mass with flipper length, between males and females
 
 To do this we have to fit a model with interactions:
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 y_i & \sim \mathcal{N}(\eta_i, \sigma_y^2)\\
 \eta_i & = \beta_0 + \beta_{0,\text{Male}} + \beta_1 x_i + \beta_{1,\text{Male}} x_i
-\end{aligned}
-$$
+\end{aligned}$$
 
+Let's first look at an exploratory plot
 
-
-Let's first look at an exploratuve plot
 ```{r}
-
+#| code-fold: true
 penguins %>% 
-  filter(!is.na(sex)) %>%
   ggplot() + geom_point(aes(flipper_len, body_mass, color= sex)) +
   facet_wrap(.~sex)
 ```
 
-
 We fit the model using the `model = "fixed"` option.
-
-
-
 
 ```{r}
 #| eval: true
@@ -563,9 +503,7 @@ fit2 = bru(cmp, lik)
 ```
 
 
-
-
-
+Note that specifying a full stop in the linear predictor `~ .`. is equivalent to summing all the components defined in the model specification. Instead of listing each component by name, the dot acts as a shorthand for "*include every component*" so `~ .` expands to the sum of all the effects you defined in `cmp`.
 
 We can get the results looking at the `summary.random` object as follows:
 
@@ -573,126 +511,104 @@ We can get the results looking at the `summary.random` object as follows:
 fit2$summary.random
 ```
 
-
-
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
 
-Use the `predict()` function to get an estimate of the  mean increase of body_mass per mm of flipper length  for males and females.
+Use the `predict()` function to obtain the two regression lines for each sex. Would you conclude that there are differences between males and females?
 
-Would you conclude that there are differences between males and females?
+```{r}
+#| webex.hide: "Click here to see the solution"
+#| code-fold: false
+#| purl: false
 
-`r hide("Give me a hint")`
+
+pred = predict(fit2, penguins, ~ effects)
+
+pred %>% ggplot() + geom_line(aes(flipper_len, mean, group = sex, color = sex)) +
+  geom_ribbon(aes(flipper_len, ymin = q0.025, ymax = q0.975, 
+                  group = sex, fill = sex), alpha = 0.5) +
+  geom_point(aes(flipper_len, body_mass,color = sex))
+
+# Differences on baseline body mass only, not in the slope.
+
+```
+:::
+
+We can also use the `predict()` function to get an estimate of the mean increase of body_mass per mm of flipper length for males and females, i.e.,
+
+- $\beta_0$: mean body mass for females
+
+- $\beta_0 + \beta_{0,\text{Male}}$ : mean body mass for males
+
+- $\beta_1$: effect of flipper length on body mass for females
+
+- $\beta_1 + \beta_{1,\text{Male}}$: effect of flipper length on body mass for males
 
 Since we are not interested in prediction but just on the parameters values, we can use the `_latent` suffix to get only the estimated parameters
 
-`r unhide()`
-
 ```{r}
-#| webex.hide: "Click here to see the solution"
 #| code-fold: show
-#| purl: false
 
-# Here we use the _latent "trick" to recovere the parameters
+# Here we use the _latent "trick" to recover the parameters
 # here we do not need any new data to predict for, we can use an
 # empty data frame
 
-params = predict(fit2, data.frame() , ~ data.frame( intercept_female = effects_latent[1],
-                                             intercept_male = effects_latent[1] + effects_latent[2],
-                                             slope_female = effects_latent[3] ,
-                                             slope_male = effects_latent[3] + effects_latent[4]))
+params = predict(fit2, data.frame() ,
+   ~ data.frame( intercept_female = effects_latent[1],
+                 intercept_male = effects_latent[1] + effects_latent[2],
+                 slope_female = effects_latent[3] ,
+                 slope_male = effects_latent[3] + effects_latent[4]))
 
 ```
-
-
 
 Two things to notice here:
 
-1. We have used a empty object as `newdata` in the `predict()` function.
-2. The suffix `_latent` indicates that we are interested in the latent model efffect.
+1.  We have used a empty object as `newdata` in the `predict()` function.
+2.  The suffix `_latent` indicates that we are interested in the latent model effect.
 
-:::
-
-
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
-
-Use the `predict()` function again, this time to obtain the two regression lines.
+Another way to fit this model is to realize that a fixed effect can be seen as an iid effect with fixed precision, one of the `inlabru` ways to fit the model is:
 
 ```{r}
-#| webex.hide: "Click here to see the solution"
-#| code-fold: show
-#| purl: false
-
-new_data = data.frame(flipper_len = rep(170:240, 2),
-                      sex = rep(c("Male", "Female"), each = 71))
-
-pred = predict(fit2, new_data , ~ effects)
-
-
-ggplot() + geom_point(data = penguins, aes(flipper_len, body_mass, color = sex)) +
-  geom_line(data = pred, aes(flipper_len, mean, color = sex, group = sex)) +
-  geom_ribbon(data = pred, aes(flipper_len, ymin = q0.025, ymax = q0.975, fill = sex, group = sex),
-              alpha = 0.4)
-
-
-```
-:::
-
-
-
-Another way to fit this model is to realize that a fixed effect can be seen as an iid effect with fixed precision, one of  the `inlabru` ways to fit the model is:
-
-```{r}
-
 cmp = ~ -1 + sex_intercept(sex, model = "iid", initial = log(0.001), fixed = T) +
   sex_slope(sex, flipper_len,  model = "iid", fixed = T, initial = log(0.001))
+
 lik = bru_obs(formula = body_mass ~ .,
-              data = penguins %>% filter(!is.na(sex)))
+              data = penguins)
+
 fit2b = bru(cmp, lik)
 ```
+
 Notice that we fix the precision of the `iid` effect to the same value as the precision of the linear effects which is 0.001.
-
-
-
 
 The fitted values can be inspected as
 
 ```{r}
 fit2b$summary.random$sex_intercept
 fit2b$summary.random$sex_slope
-
 ```
 
+The results from the `fit2b` model are not the same we got from the `fit2` model. What is happening? It is just a matter of parametrization. You can go from one parametrization to the other by using the `predict()` function as we saw earlier.
 
-
-The results from the `fit2b` model is not the same we get from the `fit` model. What is happening? It is just a matter of parametrization.
-
-You can go from one parametrization to the other by using the `predict()` function as we saw earlier
-
-## Linear Mixed Model{#LMM}
+## Linear Mixed Model {#LMM}
 
 When looking at the data we see that there are differences in body mass depending on the species.
 
 ```{r}
-#| echo: false
+#| echo: true
+#| code-fold: true
 penguins %>%
-  filter(!is.na(sex)) %>%
   ggplot() + 
   geom_point(aes(flipper_len, body_mass, color = species)) + 
   facet_wrap(.~sex)
+
 ```
 
-
 To account for this we introduce `species` as a random effect in the model.
-
-
 
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
 
 Modify the code below to include an iid random effect for species:
-
 
 ```{r}
 #| echo: true
@@ -706,31 +622,50 @@ lik = bru_obs(formula = formula,
 fit3 = bru(cmp, lik)
 ```
 
-
-
-
 ```{r}
 #| webex.hide: "Click here to see the solution"
-#| code-fold: show
+#| code-fold: false
 #| purl: false
+
 cmp = ~ -1 + effects( ~ sex*flipper_len, model = "fixed") + 
   species(species, model = "iid")
+
 formula = body_mass ~ .
 lik = bru_obs(formula = formula,
               data = penguins
               )
+
 fit3 = bru(cmp, lik)
 ```
 :::
 
-
-We now look at the results for the fixed effecs and compare with those from the previous model
+We now look at the results for the fixed effects and compare with those from the previous model
 
 ```{r}
 fit3$summary.random$effects[,c(1,3,5)]
 fit2$summary.random$effects[,c(1,3,5)]
 
 ```
+
+We can also visualize the fitted values using the `predict` function as we did before:
+
+```{r}
+#| echo: true
+#| code-fold: true
+
+# Predict
+pred = predict(fit3, penguins, formula = ~ effects + species) 
+
+pred %>%
+  ggplot(aes(x=flipper_len,y=mean,color=factor(sex)))+
+  geom_line()+
+  geom_ribbon(aes(flipper_len,ymin = q0.025, ymax= q0.975,fill=factor(sex)), alpha = 0.5) + 
+  geom_point(data=penguins,aes(x=flipper_len,y=body_mass,colour=factor(sex)))+
+  facet_wrap(~species,scales="free_x")
+
+```
+
+
 
 
 ::: {.callout-warning icon="false"}
@@ -741,33 +676,43 @@ We want to include a random effect, dependent on species, also on the slope. Mod
 ```{r}
 #| echo: true
 #| eval: false
+
+
 cmp = ~ -1 + effects( ~ sex*flipper_len, model = "fixed") + 
   species1(species, ... ) +
   species2(species, ... ) 
+
 formula = ...
+
 lik = bru_obs(formula = formula,
               data = penguins
               )
+
 fit4 = bru(cmp, lik)
 ```
-
-
-
 
 ```{r}
 #| webex.hide: "Click here to see the solution"
 #| code-fold: show
 #| purl: false
+#| 
 cmp = ~ -1 + effects( ~ sex*flipper_len, model = "fixed") + 
   species1(species, model = "iid") + 
   species2(species, flipper_len, model = "iid")
+
 formula = body_mass ~ .
+
 lik = bru_obs(formula = formula,
               data = penguins
               )
+
 fit4 = bru(cmp, lik)
+
+
 ```
 :::
+
+
 
 ## Model comparison {#MOD_COMP}
 
@@ -779,11 +724,8 @@ These scores take into account goodness-of-fit and a penalty term that is based 
 
 The lower the value of the score, the better the model is rated.
 
-
 ```{r}
 deltaIC(fit1, fit2, fit3, fit4, criterion = c("DIC","WAIC"))
 
 ```
-
-
 

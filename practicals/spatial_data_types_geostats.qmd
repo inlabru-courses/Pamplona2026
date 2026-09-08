@@ -64,15 +64,21 @@ In practice, our data are observed in a finite number of locations, $m$, and can
 
 $$z = \{z(\mathbf{s}_1), \ldots z(\mathbf{s}_m) \}$$
 
-In the next example, we will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package and contains the presence/absence records of the Pacific Cod during each surveys along with the biomass density of Pacific cod in the area swept (kg/Km$^2$). The `qcs_grid` data contain the depth values stored as $2\times 2$ km grid for Queen Charlotte Sound.
+In the next example, we will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package. Or can be downloaded by clicking the button below:
+
+
+{{< downloadthis datasets/pcod.RData dname="pcod" label="Download pcod Data" >}}
+
+
+
+The dataset contains the presence/absence records of the Pacific Cod during each surveys along with the biomass density of Pacific cod in the area swept (kg/Km$^2$). The `qcs_grid` data contain the depth values stored as $2\times 2$ km grid for Queen Charlotte Sound.
 
 ```{r}
 #| message: false
 #| warning: false
-library(sdmTMB)
 
-pcod_df = sdmTMB::pcod 
-qcs_grid = sdmTMB::qcs_grid
+load(here::here("datasets/pcod.RData"))
+
 
 ```
 

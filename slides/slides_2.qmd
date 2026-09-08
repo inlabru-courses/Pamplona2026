@@ -1,10 +1,9 @@
 ---
 title: "Lecture 2"
 from: markdown+emoji
-subtitle: "Some practical tips on `inlabru` " 
+subtitle: "`inlabru` workflow " 
 format:
   revealjs:
-    margin: 0
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -38,6 +37,8 @@ embed-resources: true
 execute:
   allow-html: true
   freeze: auto
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -220,9 +221,10 @@ lik = bru_obs(formula = y~.,
               data = df)
 fit = bru(cmp, lik)
 ```
+
 . . .
 
-1.  You *don't have to* define a formula outside of the `bru_obs()` function..it can be defines also inside the function!
+1.  You *don't have to* define a formula outside of the `bru_obs()` function ...it can be defines also inside the function!
 
 ```{r}
 #| echo: true
@@ -232,6 +234,7 @@ lik = bru_obs(formula = y~  beta0 + beta1,
               famuly  = "gaussian",
               data = df)
 ```
+
 . . .
 
 2.  The expression `y ~ .` just means "_take all the components and sum them together_". It also tells the `bru()` function that your predictor is *linear*.
@@ -246,7 +249,6 @@ lik = bru_obs(formula = y~  beta0 + beta1,
 ## One wrong and two correct  ways of coding{.smaller}
 
 ```{r}
-
 df = data.frame(covariate = runif(100))
 df  = df %>% mutate(y = 1 + 0.5 *covariate + rnorm(100))
 ```
@@ -256,22 +258,28 @@ df  = df %>% mutate(y = 1 + 0.5 *covariate + rnorm(100))
 
 # This is WRONG as we get an intercept too much :-)
 cmp = ~ beta0(1) + beta1(covariate, model = "linear") 
-lik = bru_obs(formula = y ~ . ,
-              data = df)
+
+lik = bru_obs(formula = y ~ . , data = df)
+
 m1 = bru(cmp, lik)
+
 round(m1$summary.fixed[,c(1,2)],3)
 
-# This is correct..
-cmp = ~ Intercept(1) + beta1(covariate, model = "linear") 
-lik = bru_obs(y~ .,
-              data = df)
+# This is correct ...
+
+cmp = ~ Intercept(1) + beta1(covariate, model = "linear")
+
+lik = bru_obs(y~ ., data = df)
+
 m1 = bru(cmp, lik)
+
 round(m1$summary.fixed[,c(1,2)],3)
 
 # This is also correct
 cmp = ~  -1 + beta0(1) + beta1(covariate, model = "linear")
-lik = bru_obs(y~. ,
-              data = df)
+
+lik = bru_obs(y~. ,data = df)
+
 m1 = bru(cmp, lik)
 round(m1$summary.fixed[,c(1,2)],3)
 
@@ -288,30 +296,35 @@ round(m1$summary.fixed[,c(1,2)],3)
 
 . . .
 
-Let's look at the `mtcars` dataset that is in `R`
+Let's look at the `iris` dataset that is in `R`
 
 ```{r}
 
-head(mtcars)
+head(iris)
 
 ```
 
 ## Effects of categorical variables in `inlabru`
 
-We want to fit a model where `gear` is the only covariate.
+We want to fit a model where `Species` is the only covariate.
 
-  - `gear` has three categories: `3`, `4` and `5 `
+  - `Species` has three categories: `setosa`, `versicolor` and `virginica`
   - We want to model it as a factor effect
 
 ```{r}
 #| echo: true
 
-mtcars$gear = factor(mtcars$gear)
-m1 = lm(mpg~ gear, data = mtcars)
+iris$Species = factor(iris$Species)
+m1 = lm(Sepal.Length ~ Species, data = iris)
 m1$coef
 ```
 
+Here *I. setosa* is our reference category!
+
+:::{.fragment}
 How do we do this in `inlabru`?
+:::
+
 
 ## Effects of categorical variables in `inlabru`{.smaller}
 
@@ -323,20 +336,25 @@ How do we do this in `inlabru`?
 #| echo: true
 # create the model matrix
 
-cmp1 = ~ -1 + gear0(~ gear, model = "fixed")
-lik1 = bru_obs(formula = mpg ~.,
-               data = mtcars)
+cmp1 = ~ -1 + spp(~ Species, model = "fixed")
+
+lik1 = bru_obs(formula = Sepal.Length ~.,
+               data = iris)
+
 fit1 = bru(cmp1, lik1)
-fit1$summary.random$gear0[,c(1:3)]
+
+fit1$summary.random$spp[,c(1:3)]
 ```
 
 . . .
 
 
-   **NOTE**
+:::{.callout-note}
 
-- `gear0(~ gear, model = "fixed")` is a `lm` style model definition! So  an intercept is automatically included
+- `spp(~ Species, model = "fixed")` is a `lm` style model definition! So  an intercept is automatically included
 - The results are stored in the `summary.random` part of the model, not the `summary.fixed`
+
+:::
 
 
 ## Effects of categorical variables in `inlabru`{.smaller}
@@ -346,12 +364,12 @@ fit1$summary.random$gear0[,c(1:3)]
 ```{r}
 #| echo: true
 
-cmp2 = ~ -1 +  gear_effect(gear, model = "iid", fixed = T,initial = -6)
-# or: cmp2 = ~ Intercept(1) +  gear_effect(gear_id, model = "iid", fixed = T,initial = -6, constr = T)
-lik2 = bru_obs(formula = mpg ~.,
-               data = mtcars)
+cmp2 = ~ -1 +  spp(Species, model = "iid", fixed = T,initial = -6)
+# or: cmp2 = ~ Intercept(1) +  spp(Species, model = "iid", fixed = T,initial = -6, constr = T)
+lik2 = bru_obs(formula = Sepal.Length ~.,
+               data = iris)
 fit2 = bru(cmp2, lik2)
-fit2$summary.random$gear_effect$mean
+fit2$summary.random$spp$mean
 ```
 
 What is happening here??
@@ -360,11 +378,34 @@ What is happening here??
 
 This is just a re-parametrization problem
 
+::::::: columns
+:::: {.column width="40%"}
+
 ```{r}
 #| echo: true
 #| eval: false
-c(m1$coef[1], m1$coef[1] + m1$coef[2],m1$coef[1] + m1$coef[3])
+c(m1$coef[1],
+  
+  m1$coef[1] + m1$coef[2],
+  
+  m1$coef[1] + m1$coef[3])
 ```
+
+::::
+:::: {.column width="60%"}
+
+::: {style="font-size: 0.7em;"}
+- $\beta_0$: mean sepal length for *I. setosa*
+
+- $\beta_0 + \beta_{0,\text{versicolor}}$ : mean sepal length for for *I. versicolor*
+
+- $\beta_0 + \beta_{0,\text{virginica}}$:  mean sepal length for for *I. virginica*
+:::
+
+::::
+::::::: 
+
+
 
 
 ## Effects of categorical variables in `inlabru`{.smaller}
@@ -376,14 +417,15 @@ Alternative (and equivalent) coding options
 #| echo: true
 #| eval: false
 
-cmp1 = ~ -1 + gear(~ gear, model = "fixed")     #One reference category
-cmp2 = ~ -1 + gear( ~ gear -1, model = "fixed") # No common intercept 
-cmp3 = ~ -1 + gear(gear, model = "iid", fixed = T,initial = -6) # No common intercept 
+cmp1 = ~ -1 + spp(~ Species, model = "fixed")     # One reference category
+cmp2 = ~ -1 + spp( ~ Species -1, model = "fixed") # No common intercept 
+cmp3 = ~ -1 + spp(  Species , model = "iid", fixed = T,initial = -6) # No common intercept 
+
 ```
 
 . . .
 
-**NOTE**
+:::{.callout-note}
 
 When using the `fixed` model, `inlabru` internally creates a model matrix using the function `MatrixModels::model.Matrix()`. The syntax
 
@@ -392,7 +434,7 @@ When using the `fixed` model, `inlabru` internally creates a model matrix using 
 #| echo: true
 #| eval: false
 
-cmp1 = ~ -1 + gear(main = ~ gear, 
+cmp1 = ~ -1 + spp(main = ~ Species, 
                    model = "fixed")     #One reference category
 ```
 
@@ -403,9 +445,13 @@ is equivalent to
 #| echo: true
 #| eval: false
 
-cmp1 = ~ -1 + gear(main = ~ MatrixModels::model.Matrix(gear, .data.),
+cmp1 = ~ -1 + spp(main = ~ MatrixModels::model.Matrix(Species, .data.),
                    model = "fixed")     #One reference category
 ```
+
+
+:::
+
 
 ## Interactions of linear covariates in `inlabru`{.smaller}
 
@@ -413,128 +459,106 @@ Here the easiest option is to use again the `fixed` model type.
 
 . . . 
 
-**Example 1**
 
-Say we want to fit a model with interactions between (**categorical**) `gear` and (**bivariate**) `vs`.
+Say we want to fit a model with interactions between (**categorical**) `Species` and and (**continuous**) `Petal.Length`.
 
-In `lm` we can do
+
+::: {.panel-tabset}
+
+## `lm` 
 
 ```{r}
 #| echo: true
-m2 = lm(mpg ~ gear * vs, data = mtcars)
+m2 = lm(Sepal.Length ~ Species * Petal.Length, data = iris)
 m2$coefficients
 ```
 
-. . .
-
-Similarly in `inlabru`
+## `inlabru` 
 
 ```{r}
 #| echo: true
 
-cmp = ~ -1 + fixed_effects( ~ (gear * vs), model = "fixed")
-lik = bru_obs(formula = mpg ~ .,
-              data = mtcars)
+cmp = ~ -1 + fixed_effects( ~ ( Species * Petal.Length), model = "fixed")
+lik = bru_obs(formula = Sepal.Length ~ .,
+              data = iris)
 fit = bru(cmp, lik)
 fit$summary.random$fixed_effects$mean
 fit$summary.random$fixed_effects$sd
 
 ```
 
-## Interactions of linear covariates in `inlabru`{.smaller}
-
-**Example 2**
-
-Another example, this time interaction between (**categorical**) `gear` and (**continuous**) `disp`.
-
-Using `lm`:
-
-```{r}
-#| echo: true
-m2 = lm(mpg ~ gear * disp, data = mtcars)
-m2$coef
-```
-
-. . .
-
-Using `inlabru` and the `fixed` model
-
-```{r}
-#| echo: true
-cmp = ~ -1 + fixed_effects(~gear * disp, model = "fixed")
-lik = bru_obs(formula = mpg ~ .,
-              data = mtcars)
-fit = bru(cmp, lik)
-fit$summary.random$fixed_effects$mean
-```
-
-## Interactions of linear covariates in `inlabru`{.smaller}
-
-We can also use the idea that "fixed effects are just random effects with fixed precision" :smile:
-
-**NOTE:** This idea can be very useful in more complex contexts where the `fixed` model does not work (for example if one wants to have  spatially varying effect of a covariate!)
-
-. . . 
-
-Let's look at the interaction between  (**categorical**) `gear` and (**continuous**) `disp`.
-
-$$
-\begin{aligned}
-\eta_i & =  \beta_0 + \beta_{0,\text{GEAR}_i} + \beta_1x_i +  \beta_{1,\text{GEAR}_i} x_i\\
-& = \beta^*_{0,\text{GEAR}_i} +\beta^*_{1,\text{GEAR}_i} x_i
-\end{aligned}
-$$
+:::
 
 
-## Interactions of linear covariates in `inlabru`{.smaller}
+## Interactions of linear covariates in `inlabru` 
 
+
+::: {style="font-size: 0.85em;"}
 We can also use the idea that "fixed effects are just random effects with fixed precision" :smile:
 
 **NOTE:** This idea can be very useful in more complex contexts where the `fixed` model does not work (for example if one wants to have  spatially varying effect of a covariate!)
 
 
-Let's look at the interaction between  (**categorical**) `gear` and (**continuous**) `disp`.
+Let's look at the interaction between  (**categorical**) `Species` and (**continuous**) `Petal.Length`.
 
 $$
 \begin{aligned}
-\eta_i & =  \beta_0 + \beta_{0,\text{GEAR}_i} + \beta_1x_i +  \beta_{1,\text{GEAR}_i} x_i\\
-& = \underbrace{\beta^*_{0,\text{GEAR}_i}}_{\text{iid}} +\underbrace{\beta^*_{1,\text{GEAR}_i}}_{\text{iid}}\ \underbrace{x_i}_{\text{weights}}
+\eta_i & =  \beta_0 + \beta_{0,\text{Species}_i} + \beta_1x_i +  \beta_{1,\text{Species}_i} x_i\\
+&\class{fragment}{= \beta^*_{0,\text{Species}_i} + (\beta_1 + \beta_{1,\text{Species}_i}) x_i}  \\
+& \class{fragment}{= \beta^*_{0,\text{Species}_i} +\beta^*_{1,\text{Species}_i} x_i }\\
+&  \class{fragment}{=\underbrace{\beta^*_{0,\text{Species}_i}}_{\text{iid}} + \underbrace{\beta^*_{1,\text{Species}_i}}_{\text{iid}} \underbrace{x_i}_{\text{Petal.Length}}}
 \end{aligned}
 $$
+
+:::
 
 
 ## Interactions of linear covariates in `inlabru`{.smaller}
 
+
+
+
+::: {.panel-tabset}
+
+
+## `inlabru` 
 
 The model for the linear predictor is:
 
 ```{r}
 #| echo: true
 #| eval: true
-cmp = ~ -1 + beta0(gear, model = "iid", initial = -6, fixed = T) +
-  beta1(gear, disp, model = "iid", initial = -6, fixed = T)
-lik = bru_obs(formula = mpg ~ .,
-              data = mtcars)
+cmp = ~ -1 + beta0(Species, model = "iid", initial = -6, fixed = T) +
+  beta1(Species, Petal.Length, model = "iid", initial = -6, fixed = T)
+
+lik = bru_obs(formula = Sepal.Length ~ .,
+              data = iris)
+
 fit = bru(cmp, lik)
 
-fit$summary.random$beta0$mean
-fit$summary.random$beta1$mean
+do.call("rbind",fit$summary.random)[,c(1,2)]
 
 ```
 
 
-. . .
+
+
+## `lm` 
+
 
 Compare with the `lm` results
 
 ```{r}
 #| echo: true
 #| eval: true
-m2$coefficients
+
+#-1 to remove baseline category
+lm(Sepal.Length~ -1 + Petal.Length*Species,iris) %>% coef()
 
 ```
 
-The difference is just in the different parametrization :smile:
+
+:::
 
 
 # Getting results from the fitted model
@@ -544,44 +568,27 @@ The difference is just in the different parametrization :smile:
 The fitted model is stored in an `inlabru` object
 
 
-:::: {.columns}
-::: {.column width="50%"}
-```{r}
-#| echo: true
-#| eval: true
-library(car)
-data("Salaries")
-# it is a good idea to scale the response
-Salaries$salary  = Salaries$salary/1000
-
-```
-:::
-
-::: {.column width="50%"}
+Let's 
 ```{r}
 #| echo: true
 #| eval: true
 
-Salaries[1:3,]
+# ask inlabru to compute DIC adn WAIC
+bru_options_set(control.compute = list(dic = T, waic = T))
 
-```
-:::
-::::
+cmp = ~ -1 + 
+  spp(Species, model = "iid", initial = -6, fixed = T) +
+  petal_length(Petal.Length, model = "linear") +
+  petal_width(Petal.Width, model = "linear")
 
 
+lik = bru_obs(formula =  Sepal.Length ~ .,
+              data = iris )
 
 
-
-```{r}
-#| echo: true
-#| eval: true
-
-cmp = ~ Intercept(1) + sex(sex, model = "iid", initial = -6, fixed = T) +
-  time(yrs.since.phd, model = "linear")
-lik = bru_obs(formula = salary ~ .,
-              data = Salaries)
 result = bru(cmp, lik)
 summary(result)
+
 ```
 
 ## Getting results I {.smaller}
@@ -600,16 +607,18 @@ result$summary.fixed
 - Summaries for random effects
 ```{r}
 #| echo: true
-result$summary.random$sex
+result$summary.random$spp
 ```
 
 . . .
 
-- Summaries for hyperparameters 
+- Summaries for hyperparameters
 ```{r}
 #| echo: true
 result$summary.hyperpar
 ```
+
+
 
 ## Getting results I {.smaller}
 
@@ -624,16 +633,250 @@ result$marginals.fixed$Intercept[1:3,]
 - Summaries for random effects
 ```{r}
 #| echo: true
-result$marginals.random$sex$index.1[1:3,]
+result$marginals.random$spp$index.1[1:3,]
 ```
 
 . . .
 
-- Summaries for hyperparameters 
+- Summaries for hyperparameters
 ```{r}
 #| echo: true
 result$marginals.hyperpar$`Precision for the Gaussian observations`[1:3,]
 ```
+
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `tidy()` — one row per model term (fixed effects or hyperparameters)
+
+- `glance()` — one row of model-level fit summaries
+
+- `augment()` — original data extended with posterior fitted values
+
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `tidy()` — one row per model term (fixed effects or hyperparameters)
+
+`tidy()` returns a tibble with one row per fixed-effect term, including the posterior mean, standard deviation, and 95 % credible interval.
+
+
+```{r}
+#| echo: true
+tidy(result)
+tidy(result,effects = "hyperpar")
+```
+
+:::{.fragment}
+future version will incorporate summaries for random effects
+:::
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `tidy()` — one row per model term (fixed effects or hyperparameters)
+
+`tidy()` returns a tibble with one row per fixed-effect term, including the posterior mean, standard deviation, and 95 % credible interval.
+
+Compatibility with `ggplot`
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| 
+tidy(result) |>
+  ggplot(aes(x = term, y = estimate, ymin = conf.low, ymax = conf.high)) +
+  geom_pointrange() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  coord_flip() +
+  labs(title = "Fixed-effect posterior summaries", x = NULL, y = "Estimate")
+```
+
+
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `glance()` — one row of model-level fit summaries
+
+returns a single-row tibble with the DIC, WAIC, marginal log-likelihood, the number of observations, and total wall-clock time.
+
+
+```{r}
+#| echo: true
+glance(result)
+```
+
+
+:::{.fragment}
+Useful for model comparison
+
+```{r}
+#| echo: true
+cmp2 = ~ -1 + 
+  spp(Species, model = "iid", initial = -6, fixed = T) +
+  petal_length(Petal.Length, model = "linear") 
+
+lik2 = bru_obs(formula = Sepal.Length ~ .,data = iris)
+
+result2 = bru(cmp2, lik2)
+
+bind_rows(
+  glance(result2) %>%  mutate(model = "Species + Petal Length"),
+  glance(result) %>% mutate(model = "Species + Petal Length + Petal Width")
+) %>%
+  select(model, dic, waic, marginal_loglik, nobs)
+
+```
+
+
+:::
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `augment()` — original data extended with posterior fitted values
+
+adds posterior summaries of the linear predictor to a data frame (or a prediction grid as we will see next). Note that you must supply a `pred_formula` that names what to predict
+
+<br>
+
+::::::: columns
+:::: {.column width="40%"}
+
+```{r}
+#| echo: true
+grid <- expand.grid(Petal.Length = seq(1,6.9,0.1) ,
+                 Species = c("setosa","versicolor","virginica"))
+
+augmented <- augment(
+  result2,
+  data = iris,
+  pred_formula = ~ spp + petal_length,
+  n_samples = 500L,
+  seed = 1L
+)
+
+```
+
+:::: 
+
+:::: {.column width="60%"}
+
+
+```{r}
+head(augmented)
+```
+
+
+
+-  `.fitted`: posterior mean
+
+-  `.fitted_low`  `.fitted_high`: 2.5 % and 97.5 % quantiles
+
+- `.fitted_sd`: posterior standard deviation.
+
+:::: 
+
+::::::: 
+
+## `inlabru` integration with `tidy` {.smaller auto-animate=true}
+
+As of  now (version 2.14.1.9005.+) `inlabru` also provides broom-style tidiers for `bru` model objects. 
+
+- `augment()` — original data extended with posterior fitted values
+
+adds posterior summaries of the linear predictor to a data frame (or a prediction grid as we will see next). Note that you must supply a `pred_formula` that names what to predict
+
+
+
+::::::: columns
+:::: {.column width="40%"}
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+augmented <- augment(
+  result2,
+  data = iris,
+  pred_formula = ~ spp + petal_length,
+  n_samples = 500L,
+  seed = 1L
+)
+
+
+```
+
+:::{.fragment}
+
+What can you put on `pred_formula`?
+
+:::{.incremental}
+- covariate can be accessed as `.data$x` 
+
+- the effect as `x` or `.effect$x` 
+
+- the latent variable as `x_latent` or `.latent$x` 
+
+- `glance()` $\rightarrow$ `predict()` $\rightarrow$ `generate()`
+
+:::
+
+:::
+
+:::: 
+
+:::: {.column width="60%"}
+
+
+We can use `ggplot` to plot the fitted line with a credible bands:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| fig-width: 8
+#| fig-height: 6
+
+ggplot() +
+  geom_point(data = iris,
+             aes(Petal.Length,
+                 Sepal.Length,
+                 color=Species),
+             alpha = 0.4, size = 0.8) +
+  geom_ribbon(
+    data = augmented,
+    aes(Petal.Length, 
+        ymin = .fitted_low, 
+        ymax = .fitted_high,
+        fill=Species),
+   , alpha = 0.3
+  ) +
+  geom_line(
+    data = augmented,
+    aes(Petal.Length,
+        .fitted,colour=Species),
+    , linewidth = 1
+  ) +
+  labs(
+    title = "Posterior fitted line with 95 % CrI",
+    x = "Petal Length", y = "Sepal Length"
+  ) +
+  facet_wrap(~Species,scales="free_x")
+
+```
+
+::::
+::::::: 
+
 
 ## `predict()` and `generate()` functions {.smaller}
 
@@ -642,13 +885,13 @@ Often one wants more "complex" results from the model.
 For example if we fit to the `mtcar` data, the model
 
 $$
-\eta_i = \beta_{0,\text{GEAR}_i} +  \beta_{1,\text{GEAR}_i}x_i,\ i =1,\dots,n  
+\eta_i = \beta_{0,\text{Species}_i} +  \beta_{1,\text{Species}_i}\text{Petal Length}_i,\ i =1,\dots,n
 $$
 
 We might want to recover the three regression lines
 
 $$
-\beta_{0,\text{GEAR}_i} +  \beta_{1,\text{GEAR}_i}x_i ,\ \text{GEAR} = 3,4,5
+\beta_{0,\text{Species}_i} +  \beta_{1,\text{Species}_i}\text{Petal Length}_i ,\ \text{Species} = 1,2,3
 $$
 
 . . .
@@ -669,28 +912,36 @@ To do this we can use the `predict()` and `generate()` functions.
 #| eval: true
 
 
-cmp = ~ -1 + fixed_effects(~gear * disp, model = "fixed")
-lik = bru_obs(formula = mpg ~ .,
-              data = mtcars)
+cmp = ~ -1 + fixed_effects(~Species * Petal.Length, model = "fixed")
+
+lik = bru_obs(formula = Sepal.Length ~ .,
+              data = iris)
+
 fit = bru(cmp, lik)
 
-new_data  = data.frame(gear = factor(rep(3:5, each = 400)),
-           disp = seq(71,470,1))
-res = predict(fit, new_data, ~ fixed_effects)
+pred_grid <- iris %>%
+  group_by(Species) %>%
+  reframe(Petal.Length = seq(min(Petal.Length), 
+                             max(Petal.Length), by = 0.1))
+
+res = predict(fit, pred_grid, ~ fixed_effects)
 
 res[1:5,]
 
 ```
 
 
-## Example 1 
+## Example 1
+
+Notice that we predict only within the range of the covariate for each species:
 
 ```{r}
 #| echo: true
-res %>% ggplot() + geom_line(aes(disp, mean, group = gear, color = gear)) +
-  geom_ribbon(aes(disp, ymin = q0.025 , ymax = q0.975,
-                  group = gear, fill = gear), alpha = 0.5)
-
+res %>% ggplot() + geom_line(aes(Petal.Length, mean, group = Species, color = Species)) +
+  geom_ribbon(aes(Petal.Length, ymin = q0.025 , ymax = q0.975,
+                  group = Species, fill = Species), alpha = 0.5)+
+  facet_wrap(~Species,scales="free_x")
+  
 ```
 
 ## Example 2
@@ -700,13 +951,16 @@ res %>% ggplot() + geom_line(aes(disp, mean, group = gear, color = gear)) +
 #| eval: true
 
 
-cmp = ~ -1 + beta0(gear, model = "iid", initial = -6, fixed = T) +
-  beta1(gear, disp, model = "iid", initial = -6, fixed = T)
-lik = bru_obs(formula = mpg ~ .,
-              data = mtcars)
+cmp = ~ -1 + beta0(Species, model = "iid", initial = -6, fixed = T) +
+  beta1(Species, Petal.Length, model = "iid", initial = -6, fixed = T)
+
+
+lik = bru_obs(formula = Sepal.Length ~ .,
+              data = iris)
+
 fit = bru(cmp, lik)
 
-res = predict(fit, new_data, ~ beta0 + beta1)
+res = predict(fit, pred_grid, ~ beta0 + beta1)
 
 res[1:5,]
 
@@ -714,14 +968,15 @@ res[1:5,]
 ```
 
 
-## Example 2 
+## Example 2
 
 ```{r}
 #| echo: true
-res %>% ggplot() + geom_line(aes(disp, mean, group = gear, color = gear)) +
-  geom_ribbon(aes(disp, ymin = q0.025 , ymax = q0.975,
-                  group = gear, fill = gear), alpha = 0.5)
-
+res %>% ggplot() + geom_line(aes(Petal.Length, mean, group = Species, color = Species)) +
+  geom_ribbon(aes(Petal.Length, ymin = q0.025 , ymax = q0.975,
+                  group = Species, fill = Species), alpha = 0.5)+
+  facet_wrap(~Species,scales="free_x")
+  
 ```
 <!-- In the practicals you have used the *predict()* function to get results from the fitted model. -->
 
@@ -729,7 +984,8 @@ res %>% ggplot() + geom_line(aes(disp, mean, group = gear, color = gear)) +
 
 ## Yet another example {.smaller}
 
-Let's fit the model for the Tokyo rainfall data 
+Let's fit the model for the Tokyo rainfall data
+
 $$
 \begin{aligned}
 y_t|\eta_t&\sim\text{Bin}(n_t, p_t),\qquad i = 1,\dots,366\\
@@ -776,7 +1032,7 @@ or
 #| echo: true
 #| eval: true
 inv_logit = function(x) ((1 + exp(-x))^(-1))
-preds = predict(object = fit, newdata = Tokyo,
+preds = predict( fit, newdata = Tokyo,
                 ~ data.frame(time_eff = time,
                              lin_pred = Intercept + time,
                              probs = inv_logit(Intercept + time)),
@@ -799,12 +1055,13 @@ preds$probs %>% ggplot() + geom_line(aes(time, mean)) +
 ```{r}
 #| echo: true
 #| eval: true
-samples = generate(object = fit, newdata = Tokyo,
-                ~ data.frame(time_eff = time,
+
+samples = generate(fit, newdata =  Tokyo, ~ data.frame(time_eff = time,
                              lin_pred = Intercept + time,
                              probs = inv_logit(Intercept + time)),
-                n.samples = 20
-                )
+               n.samples = 20)
+
+
 # samples is now a list of length 20 (n.samples) each element of the list looks like:
 
 samples[[1]][1:3,]
@@ -834,7 +1091,7 @@ For example, the following code recovers the intercept and the time effect at da
 ```{r}
 #| echo: true
 
-p = predict(object = fit, newdata = c(), ~ data.frame(int = Intercept_latent,
+p = predict(fit, newdata = c(), ~ data.frame(int = Intercept_latent,
                                                       f_1 = time_latent[13]))
 ```
 
@@ -842,9 +1099,9 @@ p = predict(object = fit, newdata = c(), ~ data.frame(int = Intercept_latent,
 
 
 
-# Manipulating posterior marginals 
+# Manipulating posterior marginals
 
-## Manipulating posterior marginals 
+## Manipulating posterior marginals
 
 We can be interested in functions of the posterior marginals that are computed by the `bru()` function.
 
@@ -872,8 +1129,8 @@ Obtain the posterior marginal for the _standard deviation_ of the random effect,
 ```{r}
 #| echo: true
 post_prec = fit$marginals.hyperpar$`Precision for time`
-post_sd = inla.tmarginal(fun = function(x) 
-                          1/sqrt(x), 
+post_sd = inla.tmarginal(fun = function(x)
+                          1/sqrt(x),
                          post_prec)
 post_sd_mode = inla.mmarginal(post_sd)
 post_sd_mean = inla.emarginal(fun =function(x)x, post_sd )
@@ -894,11 +1151,11 @@ post_sd_sample = inla.rmarginal(1000, post_sd)
 #| fig-width: 8
 #| fig-height: 8
 ggplot() + geom_line(data = post_sd, aes(x,y))  +
-  geom_histogram(data = data.frame(samples = post_sd_sample), 
-                 aes(x = samples, y = after_stat(density)),      
+  geom_histogram(data = data.frame(samples = post_sd_sample),
+                 aes(x = samples, y = after_stat(density)),
                  color = "black", fill = "lightblue")+
-  geom_vline(xintercept = post_sd_mode, color = "red") + 
-    geom_vline(xintercept = post_sd_mean, color = "blue") 
+  geom_vline(xintercept = post_sd_mode, color = "red") +
+    geom_vline(xintercept = post_sd_mean, color = "blue")
 
 ```
 :::
@@ -949,7 +1206,7 @@ formula = y ~ Intercept + covariate + random
 
 - **`NA`'s in fixed effect `x`**
 
-  If `x[i] = NA` this means that `x[i]` is not part of the linear predictor for `y[i]`. 
+  If `x[i] = NA` this means that `x[i]` is not part of the linear predictor for `y[i]`.
   For fixed effects, this is equivalent to `x[i]=0`, hence internally we make this change: `x[is.na(x)] = 0`
 
 - **`NA`'s in random effect `z`**
@@ -959,54 +1216,57 @@ formula = y ~ Intercept + covariate + random
 
 ## Can `inlabru` deal with missing covariates?
 
-No, `inlabru` has no way to `impute' or integrate-out missing covariates. 
+No, `inlabru` has no way to `impute' or integrate-out missing covariates.
 
-You have to adjust your model to account for missing covariates. 
+You have to adjust your model to account for missing covariates.
 
-Sometimes, you can formulate a joint model for the data and the covariates, but this is case-specific. 
+Sometimes, you can formulate a joint model for the data and the covariates, but this is case-specific.
 
-## Missing values when using `model = "fixed"` {.smaller}
+<!-- ## Missing values when using `model = "fixed"` {.smaller} -->
 
-When we use the `model = "fixed"` missing values can give error:
+<!-- When we use the `model = "fixed"` missing values can give error: -->
 
 
-```{r}
-#| echo: true
-#| eval: true
-#| error: true
-#| 
-df = data.frame(y = rnorm(5),
-           x = as.factor(c("a","b", NA, "b", "a")))
-cmp = ~ -1  + fixed(~x, model = "fixed")
-lik = bru_obs(formula = y~.,
-              data = df)
-fit = bru(cmp, lik)
-```
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| eval: true -->
+<!-- #| error: true -->
+<!-- #| -->
+<!-- df = data.frame(y = rnorm(5), -->
+<!--            x = as.factor(c("a","b", NA, "b", "a"))) -->
 
-. . .
+<!-- cmp = ~ -1  + fixed(~x, model = "fixed") -->
 
-The problem here is related to the `model.matrix()` function that is internally run and that, by default, removes the missing values
+<!-- lik = bru_obs(formula = y~., -->
+<!--               data = df) -->
 
-```{r}
-#| echo: true
+<!-- fit = bru(cmp, lik) -->
+<!-- ``` -->
 
-dim(df)
-dim(model.matrix(~x, data = df))
-```
-This makes the length of the response (5) different from the length of the covariate (4).
+<!-- . . . -->
 
-. . . 
+<!-- The problem here is related to the `model.matrix()` function that is internally run and that, by default, removes the missing values -->
 
-One solution is to force `model.matrix()` not to remove the missing values
-```{r}
-#| echo: true
+<!-- ```{r} -->
+<!-- #| echo: true -->
 
-options(na.action = "na.pass")
-fit = bru(cmp, lik)
-fit$summary.random$fixed[,c(1:4)]
-```
+<!-- dim(df) -->
+<!-- dim(model.matrix(~x, data = df)) -->
+<!-- ``` -->
+<!-- This makes the length of the response (5) different from the length of the covariate (4). -->
 
-**WARNING** this is a **global** options, it might interfere with other part of your code!
+<!-- . . . -->
+
+<!-- One solution is to force `model.matrix()` not to remove the missing values -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+
+<!-- options(na.action = "na.pass") -->
+<!-- fit = bru(cmp, lik) -->
+<!-- fit$summary.random$fixed[,c(1:4)] -->
+<!-- ``` -->
+
+<!-- **WARNING** this is a **global** options, it might interfere with other part of your code! -->
 
 
 ## Getting help while using `inlabru`
@@ -1083,9 +1343,13 @@ inla.list.models("prior")
 
 - Linear models with interactions
 
-  - `inlabru` has a special model to implemement this
-  - but it is also worth to understand that "fixed effects are _just_ random efffects with fixed precision :smile:
+  - `inlabru` has a special model to implement this 
   
+  - but it is also worth to understand that "fixed effects are _just_ random effects with fixed precision :smile:
+  
+  - `inlabru` integrates with widely used broom-style tidiers (more features might be addedd soon)
+
 - `predict()` and `generate()` functions are powerful tools (based on sampling from the posterior distribution) to obtain many interesting results!
 
 - missing values are usually not a problem but in some cases have to be treated carefully.
+

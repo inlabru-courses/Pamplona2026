@@ -4,9 +4,13 @@ project:
   render:
   - index.qmd
   - Install_software.qmd
+  - slides/welcome.qmd
   - slides/slides_1.qmd
   - slides/slides_2.qmd
   - slides/slides_3.qmd
+  - slides/slides_intro_spatial.qmd
+  - slides/slides_areal.qmd
+  - slides/slides_geostats.qmd
   - slides/slides_spatioTemporal.qmd
   - slides/slides_Model_Comparison.qmd
   - slides/slides_Model_Comparison.qmd
@@ -16,11 +20,13 @@ project:
   - day2_practical_3.qmd
   - day2_practical_4.qmd
   - day3_practical_5.qmd
-  - day4_practical_6.qmd  
-  - day4_practical_7.qmd  
-  - practical_zero_inflated.qmd  
+  - day4_practical_6.qmd
+  - day4_practical_7.qmd
+  - practical_zero_inflated.qmd
+  - INLA_nutshell.qmd
+  - references.qmd
 website:
-  title: inlabru Workshop
+  title: "`inlabru` workshop"
   navbar:
     logo: Image/INLA_logo.png
     right:
@@ -34,23 +40,20 @@ website:
       href: Install_software.qmd
     - text: Slides
       menu:
-      - text: Slides Intro 
-        href: Slides_Janine_pdf/intro_slides_inlabru_course.pdf
+      - text: Welcome to the Course 
+        href: slides/welcome.qmd
       - text: Slides 1 - Introduction
         href: slides/slides_1.qmd
       - text: Slides 2 - Practical tips
         href: slides/slides_2.qmd
       - text: Slides 3 - Temporal Models
         href: slides/slides_3.qmd
-      - href: Slides_Janine_pdf/slides_session_4_inlabru.pdf
-        text: Lecture 4 - Intro to spatial modeling (PDF)
-        target: _blank
-      - href: Slides_Janine_pdf/slides_session_5_inlabru.pdf
-        text: Lecture 5 - Area Data (PDF)
-        target: _blank
-      - href: Slides_Janine_pdf/slides_session_6_inlabru.pdf
-        text: Lecture 6 - Geostatistics (PDF)
-        target: _blank
+      - text: Slides 4 - Intro to spatial modeling
+        href: slides/slides_intro_spatial.qmd
+      - text: Slides 5 - Area Data
+        href: slides/slides_areal.qmd
+      - text: Lecture 6 - Geostatistics
+        href: slides/slides_geostats.qmd
       - href: Slides_Janine_pdf/slides_session_7_inlabru.pdf
         text: Lecture 7 - Point Processes (PDF)
         target: _blank
@@ -81,12 +84,18 @@ website:
       - text: Practical 7 - Multiple Likelihoods Models
         href: day4_practical_7.qmd  
       - text: Practical 8 - Zero Inflated Models
-        href: practical_zero_inflated.qmd  
+        href: practical_zero_inflated.qmd 
+    - text: Supplementary Material
+      href: INLA_nutshell.qmd
+    - text: References
+      href: references.qmd
 format:
   html:
     theme: flatly
     respect-user-color-scheme: false
-    css: include/webex.css
+    css:
+      - include/webex.css
+      - styles.css
     include-after-body: include/webex.js
     toc: true
     toc-location: right

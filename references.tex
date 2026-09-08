@@ -1,0 +1,473 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+% load packages
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{sectsty}
+\usepackage{fontspec}
+\usepackage{titlesec}
+
+%% Set page size with a wider right margin
+\geometry{a4paper, total={170mm,257mm}, left=20mm, top=20mm, bottom=20mm, right=50mm}
+
+%% Let's define some colours
+\definecolor{light}{HTML}{E6E6FA}
+\definecolor{highlight}{HTML}{800080}
+\definecolor{dark}{HTML}{330033}
+
+%% Let's add the border on the right hand side 
+\AddToShipoutPicture{% 
+    \AtPageLowerLeft{% 
+        \put(\LenToUnit{\dimexpr\paperwidth-3cm},0){% 
+            \color{light}\rule{3cm}{\LenToUnit\paperheight}%
+          }%
+     }%
+     % logo
+    \AtPageLowerLeft{% start the bar at the bottom right of the page
+        \put(\LenToUnit{\dimexpr\paperwidth-2.25cm},27.2cm){% move it to the top right
+            \color{light}\includegraphics[width=1.5cm]{_extensions/nrennie/PrettyPDF/logo.png}
+          }%
+     }%
+}
+
+%% Style the page number
+\fancypagestyle{mystyle}{
+  \fancyhf{}
+  \renewcommand\headrulewidth{0pt}
+  \fancyfoot[R]{\thepage}
+  \fancyfootoffset{3.5cm}
+}
+\setlength{\footskip}{20pt}
+
+%% style the chapter/section fonts
+\chapterfont{\color{dark}\fontsize{20}{16.8}\selectfont}
+\sectionfont{\color{dark}\fontsize{20}{16.8}\selectfont}
+\subsectionfont{\color{dark}\fontsize{14}{16.8}\selectfont}
+\titleformat{\subsection}
+  {\sffamily\Large\bfseries}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
+  
+% left align title
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+  {\sffamily\huge\textbf{\MakeUppercase{\@title}}} \vspace{0.3cm} \newline
+  {\Large {\@subtitle}} \newline
+  \@author
+\end{flushleft}\egroup
+}
+\makeatother
+
+%% Use some custom fonts
+\setsansfont{Ubuntu}[
+    Path=_extensions/nrennie/PrettyPDF/Ubuntu/,
+    Scale=0.9,
+    Extension = .ttf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    ]
+
+\setmainfont{Ubuntu}[
+    Path=_extensions/nrennie/PrettyPDF/Ubuntu/,
+    Scale=0.9,
+    Extension = .ttf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    ]
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}{}
+\makeatother
+\makeatletter
+\@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
+\makeatother
+\makeatletter
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={References},
+  colorlinks=true,
+  linkcolor={highlight},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={highlight},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{References}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\pagestyle{mystyle}
+
+
+This page lists all references cited across the workshop materials.
+
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-bakka2018}
+Bakka, Haakon, Håvard Rue, Geir-Arne Fuglstad, et al. 2018. {``Spatial
+Modeling with {R-INLA}: A Review.''} \emph{WIREs Computational
+Statistics} 10 (6): e1443. \url{https://doi.org/10.1002/wics.1443}.
+
+\bibitem[\citeproctext]{ref-bakka2019non}
+Bakka, Haakon, Jarno Vanhatalo, Janine B Illian, Daniel Simpson, and
+Håvard Rue. 2019. {``Non-Stationary Gaussian Models with Physical
+Barriers.''} \emph{Spatial Statistics} 29: 268--88.
+
+\bibitem[\citeproctext]{ref-blangiardo2015}
+Blangiardo, Marta, and Michela Cameletti. 2015. \emph{Spatial and
+Spatio-Temporal {Bayesian} Models with {R-INLA}}. John Wiley \& Sons.
+\url{https://doi.org/10.1002/9781118950203}.
+
+\bibitem[\citeproctext]{ref-bryce2022unified}
+Bryce, Erin, Luigi Lombardo, Cees Van Westen, Hakan Tanyas, and Daniela
+Castro-Camilo. 2022. {``Unified Landslide Hazard Assessment Using Hurdle
+Models: A Case Study in the Island of Dominica.''} \emph{Stochastic
+Environmental Research and Risk Assessment} 36 (8): 2071--84.
+
+\bibitem[\citeproctext]{ref-cameletti2013spatio}
+Cameletti, Michela, Finn Lindgren, Daniel Simpson, and Håvard Rue. 2013.
+{``Spatio-Temporal Modeling of Particulate Matter Concentration Through
+the SPDE Approach.''} \emph{AStA Advances in Statistical Analysis} 97
+(2): 109--31.
+
+\bibitem[\citeproctext]{ref-fichera2023spatial}
+Fichera, Andrew, Rachel King, Jarrod Kath, David Cobon, and Kathryn
+Reardon-Smith. 2023. {``Spatial Modelling of Agro-Ecologically
+Significant Grassland Species Using the INLA-SPDE Approach.''}
+\emph{Scientific Reports} 13 (1): 4972.
+
+\bibitem[\citeproctext]{ref-goicoa2018spatio}
+Goicoa, Tomás, Aritz Adin, Marı́a Dolores Ugarte, and James S Hodges.
+2018. {``In Spatio-Temporal Disease Mapping Models, Identifiability
+Constraints Affect PQL and INLA Results.''} \emph{Stochastic
+Environmental Research and Risk Assessment} 32 (3): 749--70.
+
+\bibitem[\citeproctext]{ref-gomezrubio2020}
+Gómez-Rubio, Virgilio. 2020. \emph{Bayesian Inference with {INLA}}.
+Chapman \& Hall/CRC. \url{https://doi.org/10.1201/9781315175584}.
+
+\bibitem[\citeproctext]{ref-krainski2019}
+Krainski, Elias T., Virgilio Gómez-Rubio, Haakon Bakka, et al. 2019.
+\emph{Advanced Spatial Modeling with Stochastic Partial Differential
+Equations Using {R} and {INLA}}. Chapman \& Hall/CRC.
+\url{https://doi.org/10.1201/9780429031892}.
+
+\bibitem[\citeproctext]{ref-lamouroux2025addressing}
+Lamouroux, Jérémy, Alizée Geffroy, Sébastien Leblond, Caroline Meyer,
+and Isabelle Albert. 2025. {``Addressing Spatial Confounding in
+Geostatistical Regression Models: An r-INLA Approach.''} \emph{Methods
+in Ecology and Evolution} 16 (9): 2082--97.
+
+\bibitem[\citeproctext]{ref-laxton2023balancing}
+Laxton, Megan R, Óscar Rodrı́guez de Rivera, Andrea Soriano-Redondo, and
+Janine B Illian. 2023. {``Balancing Structural Complexity with
+Ecological Insight in Spatio-Temporal Species Distribution Models.''}
+\emph{Methods in Ecology and Evolution} 14 (1): 162--72.
+
+\bibitem[\citeproctext]{ref-lee2022bayesian}
+Lee, Sophie A, Theodoros Economou, and Rachel Lowe. 2022. {``A Bayesian
+Modelling Framework to Quantify Multiple Sources of Spatial Variation
+for Disease Mapping.''} \emph{Journal Of The Royal Society Interface} 19
+(194): 20220440.
+
+\bibitem[\citeproctext]{ref-lindgren2022spde}
+Lindgren, Finn, David Bolin, and Håvard Rue. 2022. {``The SPDE Approach
+for Gaussian and Non-Gaussian Fields: 10 Years and Still Running.''}
+\emph{Spatial Statistics} 50: 100599.
+
+\bibitem[\citeproctext]{ref-lindgren2010explicit}
+Lindgren, Finn, Johan Lindström, and Håvard Rue. 2010. \emph{An Explicit
+Link Between Gaussian Fields and Gaussian Markov Random Fields; the Spde
+Approach}.
+
+\bibitem[\citeproctext]{ref-miller2020understanding}
+Miller, David L, Richard Glennie, and Andrew E Seaton. 2020.
+{``Understanding the Stochastic Partial Differential Equation Approach
+to Smoothing: DL Miller Et Al.''} \emph{Journal of Agricultural,
+Biological and Environmental Statistics} 25 (1): 1--16.
+
+\bibitem[\citeproctext]{ref-moraga2019}
+Moraga, Paula. 2019. \emph{Geospatial Health Data: Modeling and
+Visualization with {R-INLA} and {Shiny}}. Chapman \& Hall/CRC.
+\url{https://doi.org/10.1201/9780429341823}.
+
+\bibitem[\citeproctext]{ref-moraga2021bayesian}
+Moraga, Paula, Christopher Dean, Joshua Inoue, Piotr Morawiecki, Shahzeb
+Raja Noureen, and Fengpei Wang. 2021. {``Bayesian Spatial Modelling of
+Geostatistical Data Using INLA and SPDE Methods: A Case Study Predicting
+Malaria Risk in Mozambique.''} \emph{Spatial and Spatio-Temporal
+Epidemiology} 39: 100440.
+
+\bibitem[\citeproctext]{ref-orozco2021scalable}
+Orozco-Acosta, Erick, Aritz Adin, and Marı́a Dolores Ugarte. 2021.
+{``Scalable Bayesian Modelling for Smoothing Disease Risks in Large
+Spatial Data Sets Using INLA.''} \emph{Spatial Statistics} 41: 100496.
+
+\bibitem[\citeproctext]{ref-palmi2025bayesian}
+Palmı́-Perales, Francisco, Finn Lindgren, and Virgilio Gómez-Rubio. 2025.
+{``Bayesian Inference for Case-Control Point Pattern Data in Spatial
+Epidemiology with the Inlabru r Package.''} \emph{arXiv Preprint
+arXiv:2503.14954}.
+
+\bibitem[\citeproctext]{ref-riebler2016}
+Riebler, Andrea, Sigrunn H. Sørbye, Daniel Simpson, and Håvard Rue.
+2016. {``An Intuitive {Bayesian} Spatial Model for Disease Mapping That
+Accounts for Scaling.''} \emph{Statistical Methods in Medical Research}
+25 (4): 1145--65. \url{https://doi.org/10.1177/0962280216660421}.
+
+\bibitem[\citeproctext]{ref-de2025spatio}
+Rivera, Óscar Rodrı́guez de, Juncal Espinosa, Javier Madrigal, Marta
+Blangiardo, and Antonio López-Quı́lez. 2025. {``Spatio-Temporal Marked
+Point Process Model to Understand Forest Fires in the Mediterranean
+Basin: {Ó}r d. Rivera Et Al.''} \emph{Journal of Agricultural,
+Biological and Environmental Statistics} 30 (3): 700--729.
+
+\bibitem[\citeproctext]{ref-rue2009}
+Rue, Håvard, Sara Martino, and Nicolas Chopin. 2009. {``Approximate
+{Bayesian} Inference for Latent {Gaussian} Models by Using Integrated
+Nested {Laplace} Approximations.''} \emph{Journal of the Royal
+Statistical Society: Series B (Statistical Methodology)} 71 (2):
+319--92. \url{https://doi.org/10.1111/j.1467-9868.2008.00700.x}.
+
+\bibitem[\citeproctext]{ref-rue2017}
+Rue, Håvard, Andrea Riebler, Sigrunn H. Sørbye, Janine B. Illian, Daniel
+P. Simpson, and Finn K. Lindgren. 2017. {``Bayesian Computing with
+{INLA}: A Review.''} \emph{Annual Review of Statistics and Its
+Application} 4: 395--421.
+\url{https://doi.org/10.1146/annurev-statistics-060116-054045}.
+
+\bibitem[\citeproctext]{ref-seaton2024spatio}
+Seaton, Fiona M, Susan G Jarvis, and Peter A Henrys. 2024.
+{``Spatio-Temporal Data Integration for Species Distribution Modelling
+in r-INLA.''} \emph{Methods in Ecology and Evolution} 15 (7): 1221--32.
+
+\bibitem[\citeproctext]{ref-simpson2016going}
+Simpson, Daniel, Janine Baerbel Illian, Finn Lindgren, Sigrunn H Sørbye,
+and Havard Rue. 2016. {``Going Off Grid: Computationally Efficient
+Inference for Log-Gaussian Cox Processes.''} \emph{Biometrika} 103 (1):
+49--70.
+
+\bibitem[\citeproctext]{ref-simpson2017}
+Simpson, Daniel, Håvard Rue, Andrea Riebler, Thiago G. Martins, and
+Sigrunn H. Sørbye. 2017. {``Penalising Model Component Complexity: A
+Principled, Practical Approach to Constructing Priors.''}
+\emph{Statistical Science} 32 (1): 1--28.
+\url{https://doi.org/10.1214/16-STS576}.
+
+\bibitem[\citeproctext]{ref-van2021new}
+Van Niekerk, Janet, Haakon Bakka, Håvard Rue, and Olaf Schenk. 2021.
+{``New Frontiers in Bayesian Modeling Using the INLA Package in r.''}
+\emph{Journal of Statistical Software} 100: 1--28.
+
+\bibitem[\citeproctext]{ref-vicente2020bayesian}
+Vicente, G, T Goicoa, and MD Ugarte. 2020. {``Bayesian Inference in
+Multivariate Spatio-Temporal Areal Models Using INLA: Analysis of
+Gender-Based Violence in Small Areas.''} \emph{Stochastic Environmental
+Research and Risk Assessment} 34 (10): 1421--40.
+
+\bibitem[\citeproctext]{ref-villejo2025data}
+Villejo, Stephen Jun, Sara Martino, Finn Lindgren, and Janine B Illian.
+2025. {``A Data Fusion Model for Meteorological Data Using the INLA-SPDE
+Method.''} \emph{Journal of the Royal Statistical Society Series C:
+Applied Statistics} 74 (4): 1021--56.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}

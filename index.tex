@@ -67,6 +67,7 @@
 
 
 \usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -251,14 +252,13 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, colback={codebgcolor}, boxrule=0pt, enhanced, breakable, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 \makeatother
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
   pdftitle={Spatio-temporal models with inlabru},
-  pdfauthor={Jafet Belmont, Sara Martino and Janine Illian},
   colorlinks=true,
   linkcolor={highlight},
   filecolor={Maroon},
@@ -274,8 +274,9 @@
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Pamplona (Spain) October 2026}
-\author{Jafet Belmont, Sara Martino and Janine Illian}
+\subtitle{19--22 October 2026 • Pamplona, SpainJafet Belmont · Sara
+Martino · Janine Illian}
+\author{}
 \date{}
 \begin{document}
 \maketitle
@@ -298,7 +299,7 @@
   Workshop materials are available in the github repository
 \end{itemize}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, colbacktitle=quarto-callout-warning-color!10!white, opacitybacktitle=0.6, bottomrule=.15mm, colback=white, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Important! ⚠️}, coltitle=black, breakable, bottomtitle=1mm, opacityback=0, toptitle=1mm, rightrule=.15mm, arc=.35mm, titlerule=0mm, leftrule=.75mm, colframe=quarto-callout-warning-color-frame, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Important! ⚠️}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
 
 Please use the instructions provided \href{Install_software.qmd}{here}
 to install and check your installation \emph{before} the course start.
@@ -333,7 +334,7 @@ spatio-temporal statistical modelling approaches.
 
 Participants should be familiar with the \texttt{R} environment, and
 general statistical approaches for modelling such as regression,
-analysis of (co)variance, and generalized linear models.\hspace{0pt}
+analysis of (co)variance, and generalized linear models.
 
 No knowledge of \texttt{R-INLA} or \texttt{inlabru} is required.
 
@@ -341,8 +342,9 @@ No knowledge of \texttt{R-INLA} or \texttt{inlabru} is required.
 
 \textbf{NOTE} THIS HAS TO BE UPDATED!!!!
 
-\subsubsection{Day 1}
+\subsubsection{\texorpdfstring{Monday 19\(^th\)}{Monday 19\^{}th}}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -356,22 +358,25 @@ Topic
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-10:00 - 10:30 &
-\href{Slides_Janine_pdf/intro_slides_inlabru_course.pdf}{\textbf{Welcome
-and intro to the course}} \\
-10:30 - 11:30 & \href{slides/slides_1.html}{\textbf{Session 1}:
+9:00 - 9:30 & \href{slides/welcome.html}{\textbf{Welcome and
+introduction to the course}} \\
+9:30 - 10:30 & \href{slides/slides_1.html}{\textbf{Session 1}:
 Introduction to \texttt{inlabru}} \\
-11:30 - 13:00 & \href{slides/slides_2.html}{\textbf{Session 2}: Some
-practical tips on \texttt{inlabru}} \\
-13:00 - 14:30 & Lunch break 🍽️ \\
-14:00 - 15:00 & \href{practicals/LMM_ex.qmd}{Practical Session 1} \\
-& \href{practicals/GLMM_fit.qmd}{Practical Session 2} \\
-15:00 - 16:00 & \href{slides/slides_3.html}{\textbf{Session 3}: Time
+10:30 - 10:45 & Coffee break ☕ \\
+10:45 - 12:00 & \href{practicals/LMM_ex.qmd}{Practical Session 1} \\
+12:00 - 13:00 & \href{slides/slides_2.html}{\textbf{Session 2}: The
+\texttt{inlabru} workflow} \\
+13:00 - 14:30 & Lunch 🍽️ \\
+14:30 - 15:30 & \href{practicals/GLMM_fit.qmd}{Practical Session 2} \\
+15:30 - 15:45 & Coffee break ☕ \\
+15:45 - 17:00 & \href{slides/slides_3.html}{\textbf{Session 3}: Time
 Series Models} \\
 \end{longtable}
+}
 
-\subsubsection{Day 2}
+\subsubsection{\texorpdfstring{Tuesday 20\(^th\)}{Tuesday 20\^{}th}}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -385,23 +390,23 @@ Topic
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-8:00 - 9:00 & \href{slides/slides_3.html}{\textbf{Session 3 cont.}: Time
-Series Models} \\
-9:00 - 11:00 & \href{day2_practical_3.html}{Practical Session 3} \\
-11:00 - 12:00 &
-\href{Slides_Janine_pdf/slides_session_4_inlabru.pdf}{\textbf{Session
+9:00 - 10:00 & \href{slides/slides_3.html}{\textbf{Session 3 cont.}:
+Time Series Models} \\
+10:00 - 11:30 & \href{day2_practical_3.html}{Practical Session 3} \\
+11:30 - 12:00 & Coffee break ☕ \\
+12:00 - 13:00 & \href{slides/slides_intro_spatial.html}{\textbf{Session
 4}: Introduction to Spatial Statistics} \\
-12:00 - 13:00 & Lunch \\
-13:00 - 14:00 &
-\href{Slides_Janine_pdf/slides_5_inlabru.pdf}{\textbf{Session 5}: Areal
-processes} \\
-14.00 - 15:00 &
-\href{Slides_Janine_pdf/slides_6_inlabru.pdf}{\textbf{Session 6}:
-Geostatistics} \\
+13:00 - 14:30 & Lunch 🍽️ \\
+14:30 - 15:30 & \href{day2_practical_4.html}{Practical Session 4} \\
+15:30 - 15:45 & Coffee break ☕ \\
+15:45 - 17:00 & \href{slides/slides_areal.html}{\textbf{Session 5}:
+Areal processes} \\
 \end{longtable}
+}
 
-\subsubsection{Day 3}
+\subsubsection{\texorpdfstring{Wednesday 21\(^st\)}{Wednesday 21\^{}st}}
 
+{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -415,52 +420,69 @@ Topic
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-8:00 - 09:00 &
-\href{Slides_Janine_pdf/slides_7_inlabru.pdf}{\textbf{Session 7}: Point
-Processes} \\
-09:00 - 11:00 & \href{day2_practical_4.html}{Practical Session 4} \\
-& \href{day3_practical_5.html}{Practical Session 5} \\
-11:00 - 12:00 & \href{slides/slides_spatioTemporal.qmd}{\textbf{Session
+09:00 - 10:00 & \href{slides/slides_geostats.html}{\textbf{Session 6}:
+Geostatistics} \\
+10:00 - 11:30 & \href{day3_practical_5.html}{Practical Session 5} \\
+11:30 - 12:00 & Coffee break ☕ \\
+12:00 - 13:00 & \href{slides/slides_points.html}{\textbf{Session 7}:
+Point Processes} \\
+13:00 - 14:30 & Lunch 🍽️ \\
+14:30 - 15:30 & \href{day3_practical_5.html}{Practical Session 5
+(cont.)} \\
+15:30- 15:45 & Coffee break ☕ \\
+15:45 - 17:00 & \href{slides/slides_spatioTemporal.qmd}{\textbf{Session
 8}: Spatiotemporal models} \\
-12:00 - 13:00 & Lunch break 🍽️ \\
-13:00 - 14:00 &
+\end{longtable}
+}
+
+\subsubsection{\texorpdfstring{Thursday 22\(^nd\)}{Thursday 22\^{}nd}}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Topic
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+09:00 - 10:00 &
 \href{slides/slides_Model_Comparison.qmd}{\textbf{Session 9}: Model
 comparison and evaluation} \\
-14:00 - 15:00 & \href{day4_practical_6.qmd}{Practical Session 6} \\
-\end{longtable}
-
-\subsubsection{Day 4}
-
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-Time
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Topic
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-8:00 - 9:00 &
+10:00 - 11:30 & \href{day4_practical_6.qmd}{Practical Session 6} \\
+11:30 - 12:00 & Coffee break ☕ \\
+12:00 - 13:00 &
 \href{Slides_Janine_pdf/slides_10_inlabru.pdf}{\textbf{Session 10}:
 Multi-likelihood/joint likelihood models} \\
+13:00 - 14:30 & Lunch 🍽️ \\
+14:30 - 15:30 & \href{day4_practical_7.qmd}{Practical Session 7} \\
 9:00 - 10:00 & \href{day4_practical_7.qmd}{Practical Session 7} \\
-10:00 - 11:00 & \href{slides/slides_Zero_Inflated.qmd}{\textbf{Session
-11}: Zero Inflated Models} \\
-12:00 - 13:00 & Lunch ☕ \\
-13:00 - 14:00 & \href{day4_practical_7.qmd}{Practical Session 7} \\
-14:00 - 15:00 & \href{slides/slides_Closing_Remarks.qmd}{Closing
+15:30- 15:45 & Coffee break ☕ \\
+15:45 - 17:00 & \href{slides/slides_Closing_Remarks.qmd}{Closing
 session} and discussion \\
 \end{longtable}
+}
 
 \section{Licence}\label{licence}
 
 \href{https://creativecommons.org/licenses/by/4.0/}{CC-BY-4.0}
 
 \section{Citation}\label{citation}
+
+Belmont J., Martino S., Illian, J. F (2026). \emph{inlabru Course
+October 2026: Course Materials for Pamplona inlabru 19-22 October 2026}.
+https://inlabru-courses.github.io/Pamplona2026/
+
+\section{Contact}\label{sec-contact}
+
+Questions about the workshop? Join the discussion on
+\href{https://github.com/inlabru-courses/Pamplona2026/discussions}{GitHub
+Discussions space}
 
 
 

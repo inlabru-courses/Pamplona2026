@@ -4,7 +4,7 @@ execute:
   freeze: auto
 format: 
   html:
-    mainfont: "12"
+    body-classes: no-banner
   PrettyPDF-pdf:
     keep-tex: true
     number-sections: true
@@ -28,7 +28,12 @@ knitr::purl("day4_practical_6.qmd")
 
 In this practical we are going to look at space-time model and model comparison and validation techniques.
 
+::: supplementary
+You can download the R-script of this practical by clicking the button below:
+
 {{< downloadthis day4_practical_6.R dname="day4_practical_6.R" label="Download Practical 6 R script" icon="database-fill-down" type="success" >}}
+
+:::
 
 ## Space time models
 

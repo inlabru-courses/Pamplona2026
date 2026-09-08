@@ -123,13 +123,8 @@ library(DAAG)
 
 
 ## -----------------------------------------------------------------------------
-data("greatLakes")
 
-greatLakes.df = data.frame(as.matrix(greatLakes),
-                           year = time(greatLakes)) %>%
-  pivot_longer(cols = c("Erie","michHuron","Ontario","StClair"),
-               names_to = "Lakes",
-               values_to = "height" ) 
+greatLakes.df<- read.csv(here::here("datasets/greatLakes.csv"))
 
 
 

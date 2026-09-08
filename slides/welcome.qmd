@@ -1,0 +1,125 @@
+---
+title: "Welcome"
+from: markdown+emoji
+subtitle: "Spatio-temporal models with `inlabru`" 
+format:
+  revealjs:
+    logo:  NTNU_UofG.png
+    theme: uofg_theme.scss
+    footer: "<a href='../index.html'>Back to Home</a>"
+    header-includes: |
+      <script src="custom.js" type="application/javascript"></script>
+    toc: false
+    toc-depth: 1
+    toc-title: ""
+slide-number: "c/t"
+title-slide-attributes:
+    data-background-size: cover
+    data-background-opacity: "0.55"
+author:
+  - name: Sara Martino
+    #orcid: 0000-0002-6879-4412
+    email: sara.martino@ntnu.no
+    affiliations: Dept. of Mathematical Science, NTNU
+  - name: Janine Illian
+    #orcid: 0000-0002-6879-4412
+    email: Janine.Illian@glasgow.ac.uk
+    affiliations: University of Glasgow 
+  - name: Jafet Belmont
+    #orcid: 0000-0002-6879-4412
+    email: Jafet.Belmont@glasgow.ac.uk
+    affiliations: University of Glasgow   
+# date: May 22, 2025
+# bibliography: references.bib
+embed-resources: true
+execute:
+  allow-html: true
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+bibliography: ../references.bib
+---
+
+## Introductions {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+**Sara Martino**
+
+Professor in Statistics
+
+*NTNU, Norway*:
+
+working on INLA development from the start, Rue Martino, Chopin (2009) spatial and spatio-temporal modelling with INLA and inlabru; applied context
+
+<br>
+
+**Finn Lindgren**
+
+Professor in Statistics
+
+LUSEM, Lund, Sweden:
+
+main technical developer of `inlabru`
+:::
+
+::: {.column width="50%"}
+**Jafet Belmont Osuna**
+
+lecturer in statistics
+
+*University of Glasgow, Scotland*:
+
+spatial and spatio-temporal modelling in ecology citizen science, species distribution modelling
+
+<br>
+
+**Janine Illian**
+
+Professor in Statistical Sciences
+
+*University of Glasgow, Scotland*:
+
+spatial and spatio-temporal modelling: focus on spatial point processes strong inter-disciplinary focus, applications in ecology
+:::
+:::::
+
+## Share with us your experience
+
+**Join Mentimeter**
+
+![](figures/clipboard-1900829112.png){fig-align="center" width="580"}
+
+:::{.notes}
+login via http://mentimeter.com/join/universityofglasgow
+:::
+
+## this course – aims and basic introduction
+
+what is this course about?
+
+::: incremental
+-   introduction to the `inlabru` toolbox
+
+-   the philosophy and concepts behind `inlabru`
+
+-   the scope of `inlabru` – showcase
+:::
+
+:::: fragment
+at the end of this course you will:
+
+::: incremental
+-   know basic and increasingly complex syntax structure that you can build on
+
+-   have an idea of
+
+    -   what types of basic and increasingly complex models can be fitted with `inlabru`
+
+    -   where to start if you want to fit your own complex models in `inlabru`
+:::
+::::
+
+
+# Questions ?
+

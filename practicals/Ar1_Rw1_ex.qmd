@@ -6,7 +6,6 @@ format:
       light: flatly
       dark: darkly
   PrettyPDF-pdf:
-    keep-tex: true
     number-sections: true
 embed-resources: true
 editor_options: 
@@ -42,18 +41,15 @@ library(inlabru)
 library(DAAG)
 ```
 
-In this exercise we will look at [greatLakes](https://rdrr.io/cran/DAAG/man/greatLakes.html) dataset from the `DAAG` package. The data set contains the water level heights for the lakes Erie, Michigan/Huron, Ontario and St Clair from 1918 to 2009.
+In this exercise we will look at [greatLakes](https://rdrr.io/cran/DAAG/man/greatLakes.html) dataset. The data set contains the water level heights for the lakes Erie, Michigan/Huron, Ontario and St Clair from 1918 to 2009. You can download the files using the link below:
+
+{{< downloadthis datasets/greatLakes.csv dname="greatLakes" label="Download great Lakes Data" >}}
 
 Lets begin by loading and formatting the data into a tidy format.
 
 ```{r}
-data("greatLakes")
 
-greatLakes.df = data.frame(as.matrix(greatLakes),
-                           year = time(greatLakes)) %>%
-  pivot_longer(cols = c("Erie","michHuron","Ontario","StClair"),
-               names_to = "Lakes",
-               values_to = "height" ) 
+greatLakes.df<- read.csv(here::here("datasets/greatLakes.csv"))
 
 ```
 

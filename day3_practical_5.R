@@ -21,11 +21,11 @@ library(scico)
 
 
 ## -----------------------------------------------------------------------------
+#| message: false
+#| warning: false
 
-library(CARBayesdata)
+load(here::here("datasets/pollutionhealthdata.RData"))
 
-data(pollutionhealthdata)
-data(GGHB.IZ)
 
 
 
@@ -161,7 +161,8 @@ pred_counts = data.frame(observed = resp_cases$observed,
 
 library(dplyr)
 library(INLA)
-library(inlabru) 
+library(inlabru)
+library(fmesher)
 library(sf)
 library(terra)
 
@@ -178,10 +179,9 @@ library(tidyterra)
 ## -----------------------------------------------------------------------------
 #| message: false
 #| warning: false
-library(sdmTMB)
 
-pcod_df = sdmTMB::pcod %>% filter(year==2003)
-qcs_grid = sdmTMB::qcs_grid
+load(here::here("datasets/pcod.RData"))
+
 
 
 
@@ -412,23 +412,22 @@ library(dplyr)
 library(INLA)
 library(ggplot2)
 library(patchwork)
-library(inlabru)     
-library(spatstat)
+library(inlabru) 
+library(fmesher)
 library(sf)
 library(scico)
-library(spatstat)
 library(lubridate)
 library(terra)
 library(tidyterra)
 
 
-
-
 ## -----------------------------------------------------------------------------
 #| label: fig-points
 #| fig-cap: "Distribution of the observed forest fires caused by lightning in Castilla-La Mancha in 2004"
-#| 
+
+library(spatstat)
 data("clmfires")
+
 pp = st_as_sf(as.data.frame(clmfires) %>%
                 mutate(x = x, 
                        y = y),

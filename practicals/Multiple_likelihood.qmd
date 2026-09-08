@@ -43,6 +43,7 @@ library(inlabru)
 library(sf)
 library(terra)
 library(tidyverse)
+library(fmesher)
 
 # load some libraries to generate nice map plots
 library(scico)

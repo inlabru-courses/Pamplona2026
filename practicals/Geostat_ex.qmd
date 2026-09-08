@@ -52,7 +52,8 @@ Libraries to load:
 
 library(dplyr)
 library(INLA)
-library(inlabru) 
+library(inlabru)
+library(fmesher)
 library(sf)
 library(terra)
 
@@ -68,21 +69,25 @@ library(tidyterra)
 
 ## The data
 
-We will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package and contains the presence/absence records of the Pacific Cod during each surveys along with the biomass density of Pacific cod in the area swept (kg/Km$^2$). The `qcs_grid` data contain the depth values stored as $2\times 2$ km grid for Queen Charlotte Sound.
+We will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package or can be downloaded by clicking the button below:
 
-The dataset contains presence/absence data from 2003 to 2017. In this practical we only consider year 2003.
+
+{{< downloadthis datasets/pcod.RData dname="pcod" label="Download pcod Data" >}}
+
+
+The dataset contains the presence/absence records of the Pacific Cod during each surveys along with the biomass density of Pacific cod in the area swept (kg/Km$^2$). The `qcs_grid` data contain the depth values stored as $2\times 2$ km grid for Queen Charlotte Sound. The data contains presence/absence data from 2003 to 2017. In this practical we only consider year 2003.
 
 We first load the dataset and select the year of interest
 
 ```{r}
 #| message: false
 #| warning: false
-library(sdmTMB)
 
-pcod_df = sdmTMB::pcod %>% filter(year==2003)
-qcs_grid = sdmTMB::qcs_grid
+load(here::here("datasets/pcod.RData"))
+
 
 ```
+
 
 Then, we create an `sf` object and assign the rough coordinate reference to it:
 
