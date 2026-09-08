@@ -187,8 +187,8 @@ window.Quarto = {
  <span class="dropdown-text">Lecture 6 - Geostatistics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Slides_Janine_pdf/slides_session_7_inlabru.pdf" target="_blank">
- <span class="dropdown-text">Lecture 7 - Point Processes (PDF)</span></a>
+    <a class="dropdown-item" href="./slides/slides_points.html">
+ <span class="dropdown-text">Lecture 7 - Point Processes</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./slides/slides_spatioTemporal.html">
@@ -279,14 +279,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#inla-and-latent-gaussian-models" id="toc-inla-and-latent-gaussian-models" class="nav-link active" data-scroll-target="#inla-and-latent-gaussian-models">INLA and latent Gaussian models</a>
-  <ul class="collapse">
+  <li><a href="#inla-and-latent-gaussian-models" id="toc-inla-and-latent-gaussian-models" class="nav-link active" data-scroll-target="#inla-and-latent-gaussian-models">INLA and latent Gaussian models</a></li>
   <li><a href="#definition-gaussian-markov-random-field-gmrf" id="toc-definition-gaussian-markov-random-field-gmrf" class="nav-link" data-scroll-target="#definition-gaussian-markov-random-field-gmrf">Definition: Gaussian Markov Random Field (GMRF)</a></li>
-  </ul></li>
   <li><a href="#inla-in-a-nutshell" id="toc-inla-in-a-nutshell" class="nav-link" data-scroll-target="#inla-in-a-nutshell">INLA in a nutshell</a>
   <ul class="collapse">
-  <li><a href="#approximating-the-posterior-of-hyperparameters" id="toc-approximating-the-posterior-of-hyperparameters" class="nav-link" data-scroll-target="#approximating-the-posterior-of-hyperparameters"><strong>Approximating the posterior of hyperparameters</strong></a></li>
-  <li><a href="#approximating-the-posterior-for-the-latent-field" id="toc-approximating-the-posterior-for-the-latent-field" class="nav-link" data-scroll-target="#approximating-the-posterior-for-the-latent-field"><strong>Approximating the posterior for the latent field</strong></a></li>
+  <li><a href="#approximating-the-posterior-of-hyperparameters" id="toc-approximating-the-posterior-of-hyperparameters" class="nav-link" data-scroll-target="#approximating-the-posterior-of-hyperparameters">Approximating the posterior of hyperparameters</a></li>
+  <li><a href="#approximating-the-posterior-for-the-latent-field" id="toc-approximating-the-posterior-for-the-latent-field" class="nav-link" data-scroll-target="#approximating-the-posterior-for-the-latent-field">Approximating the posterior for the latent field</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -313,8 +311,8 @@ window.Quarto = {
 </header>
 
 
-<section id="inla-and-latent-gaussian-models" class="level1">
-<h1>INLA and latent Gaussian models</h1>
+<section id="inla-and-latent-gaussian-models" class="level2">
+<h2 class="anchored" data-anchor-id="inla-and-latent-gaussian-models">INLA and latent Gaussian models</h2>
 <p>The Integrated Nested Laplace Approximation (INLA) is a fast and accurate Bayesian approximation method for the albeit wide class of Latent Gaussian Models (LGMs). This includes GLMs, GLMMs,GAM-like models and a wide range of spatial and spatiotemporal models.</p>
 <p>Models of this type can be written a</p>
 <p><span class="math display">\[
@@ -335,6 +333,7 @@ window.Quarto = {
 \]</span></p>
 <p>Here, <span class="math inline">\(\alpha\)</span> is the intercept, <span class="math inline">\(\beta_j\)</span>, <span class="math inline">\(j = 1, \dots, P\)</span>, are coefficients of <span class="math inline">\(P\)</span> covariates, and the functions <span class="math inline">\(f\_{k}(\cot)\)</span> can take different forms such as smooth and nonlinear effects of covariates, time trends and seasonal effects, random intercept and slopes as well as temporal or spatial random effects. We denote the vector of all latent effects as <span class="math inline">\(\mathbf{u}\)</span> and its is assumed to be Gaussian Markov random field (GMRF). This GMRF will have a zero mean and precision matrix <span class="math inline">\(\mathbf{Q}(\theta)\)</span> which consists of sums of the precision matrices of the fixed effects and the other model components. Furthermore, <span class="math inline">\(\theta\)</span> represents a vector of hypeparameters that control the behavior of the latent components and the likelihood of observations (<span class="math inline">\(p~(\mathbf{y} \mid \mathbf{u},~ \theta)\)</span>), which we assume are conditionally independent given the latent field <span class="math inline">\(\mathbf{u}\)</span>.</p>
 <p>The core idea behind the INLA approach is that, rather than estimating the joint posterior distribution of the model parameters <span class="math inline">\(p(\mathbf{u},\theta|\mathbf{y})\)</span>, we focus on individual posterior marginals of the model parameters (<span class="math inline">\(p(u_i|\mathbf{y}\)</span> and <span class="math inline">\(p(\theta_j \mid \mathbf{y}\)</span>)). This is achieved thanks to the computational properties of GMRF and the Laplace approximation for multidimensional integration.</p>
+</section>
 <section id="definition-gaussian-markov-random-field-gmrf" class="level2 callout-definition">
 <h2 class="anchored" data-anchor-id="definition-gaussian-markov-random-field-gmrf">Definition: Gaussian Markov Random Field (GMRF)</h2>
 <p>A random variable <span class="math inline">\(\mathbf{u}\)</span> is said to be a <strong>Gaussian Markov random field (GMRF)</strong> with respect to a graph <span class="math inline">\(G\)</span>, with vertices <span class="math inline">\(\{1,2,\dots,n\}\)</span> and edges <span class="math inline">\(E\)</span>, mean vector <span class="math inline">\(\boldsymbol{\mu}\)</span>, and precision matrix <span class="math inline">\(\mathbf{Q}\)</span>, if its probability distribution is</p>
@@ -357,9 +356,8 @@ Q_{ij} \neq 0
 \]</span></p>
 <p>That is, conditional independence between <span class="math inline">\(u_i\)</span> and <span class="math inline">\(u_j\)</span> corresponds to zeros in the precision matrix.</p>
 </section>
-</section>
-<section id="inla-in-a-nutshell" class="level1">
-<h1>INLA in a nutshell</h1>
+<section id="inla-in-a-nutshell" class="level2">
+<h2 class="anchored" data-anchor-id="inla-in-a-nutshell">INLA in a nutshell</h2>
 <p>We are interested in estimating the posterior marginals <span class="math inline">\(p(u_i|\mathbf{y})\)</span>. We could compute this by integrating out all the other components in the model i.e., <span class="math inline">\(p(u_i \mid \mathbf{y}) = \int p(\mathbf{u}\mid \theta) d \mathbf{u}_{-i}\)</span>. However, this might not be computationally efficient as the latent filed <span class="math inline">\(\mathbf{u}\)</span> can be very high dimensional. Instead we can compute the posterior marginals by considering that</p>
 <p><span class="math display">\[
 p(u_i \mid \mathbf{y}) = \int \color{orange}{ p(u_i\mid \theta,\mathbf{y})} ~\color{purple}{p(\theta\mid \mathbf{y})} d \theta
@@ -368,8 +366,8 @@ p(u_i \mid \mathbf{y}) = \int \color{orange}{ p(u_i\mid \theta,\mathbf{y})} ~\co
 <li>The posterior of hyperparameters <span class="math inline">\(\color{orange}{p(\theta \mid \mathbf{y})}\)</span></li>
 <li>The posterior of the latent field <span class="math inline">\(\color{purple}{p(u_i\mid \theta,\mathbf{y})}\)</span></li>
 </ol>
-<section id="approximating-the-posterior-of-hyperparameters" class="level2">
-<h2 class="anchored" data-anchor-id="approximating-the-posterior-of-hyperparameters"><strong>Approximating the posterior of hyperparameters</strong></h2>
+<section id="approximating-the-posterior-of-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-the-posterior-of-hyperparameters">Approximating the posterior of hyperparameters</h3>
 <p>To build an approximation to <span class="math inline">\(p(\theta \mid \mathbf{y})\)</span> we can use definition of conditional probability where, conditional on the observations <span class="math inline">\(\mathbf{y}\)</span></p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -493,8 +491,8 @@ Figure&nbsp;1: Illustration of numerical approximation of the hyperparameters po
 </div>
 <p>Now we just need to approximate <span class="math inline">\(p(u_i\mid \theta\mathbf{y})\)</span>, but unfortunately we cannot use the marginals from the preivous Gaussian approximation <span class="math inline">\(p_G(\mathbf{u} \mid \mathbf{y},\theta)\)</span> directly as there can be errors in the location and/or errors due to the lack of skewness.</p>
 </section>
-<section id="approximating-the-posterior-for-the-latent-field" class="level2">
-<h2 class="anchored" data-anchor-id="approximating-the-posterior-for-the-latent-field"><strong>Approximating the posterior for the latent field</strong></h2>
+<section id="approximating-the-posterior-for-the-latent-field" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-the-posterior-for-the-latent-field">Approximating the posterior for the latent field</h3>
 <p>There are two ways of approximating the marginals for the latent fields. The first one is by simply using the Gaussian approximation and computing the posterior conditional distributions <span class="math inline">\(p(u_i\mid \theta,\mathbf{y})\)</span> directly as marginals of <span class="math inline">\(p_G(\mathbf{u} \mid \mathbf{y},\theta)\)</span> i.e.,</p>
 <p><span class="math display">\[
 \tilde{p}(u_i\mid \theta,\mathbf{y})=N(u_i;\mu_i(\theta),\sigma_i^2(\theta))

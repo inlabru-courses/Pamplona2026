@@ -1,5 +1,5 @@
 ---
-title: "Space-time modeling"
+title: 
 execute: 
   warning: false
   message: false
@@ -27,7 +27,10 @@ library(webexercises)
 
 ```
 
-------------------------------------------------------------------------
+<br>
+
+## Space-time modeling
+
 
 Libraries to load:
 

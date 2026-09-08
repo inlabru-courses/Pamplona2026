@@ -7,7 +7,6 @@ format:
     css: styles.css
     body-classes: no-banner
   PrettyPDF-pdf:
-    keep-tex:  true
     number-sections: true
 editor_options: 
   chunk_output_type: console

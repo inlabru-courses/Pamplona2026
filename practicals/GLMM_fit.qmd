@@ -44,6 +44,8 @@ We are going to:
 ::: supplementary
 You can download the R-script of this practical by clicking the button below:
 
+<br>
+
 {{< downloadthis "GLMM_fit.R" dname="day1_practical_2" label="Download Practical 2 R script" >}}
 :::
  

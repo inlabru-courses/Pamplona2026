@@ -27,7 +27,10 @@ library(webexercises)
 
 ```
 
-# Geostatistics
+<br> 
+
+
+## Geostatistics
 
 In this practical we are going to fit a geostatistical model. We will:
 
@@ -67,7 +70,7 @@ library(tidyterra)
 
 ```
 
-## The data
+### The data
 
 We will explore data on the Pacific Cod (*Gadus macrocephalus*) from a trawl survey in Queen Charlotte Sound. The `pcod` dataset is available from the `sdmTMB` package or can be downloaded by clicking the button below:
 
@@ -125,7 +128,7 @@ ggplot()+
 
 ```
 
-## The model
+### The model
 
 We first fit a simple model where we consider the observation as Bernoulli and where the linear predictor contains only one intercept and the GR field defined through the SPDE approach. The model is defined as:
 
@@ -165,7 +168,7 @@ When fitting a geostatistical model we need to go through the following steps:
 
 5.  Run the model using the `bru()` function
 
-### 1. Building the mesh
+#### 1. Building the mesh
 
 The first task, when dealing with geostatistical models in `inlabru` is to build the mesh that covers the area of interest. For this purpose we use the function `fm_messh_2d`.
 
@@ -227,7 +230,7 @@ The *rule of thumb* is that your mesh should be:
 -   The mesh should contain a buffer around your area of interest (this is what is defined in the `offset` option) in order to avoid boundary artefact in the estimated variance.
 :::
 
-### 2. Define the SPDE representation of the spatial GF
+#### 2. Define the SPDE representation of the spatial GF
 
 To define the SPDE representation of the spatial GF we use the function `inla.spde2.pcmatern`. This takes as input the mesh we have defined and the PC-priors definition for $\rho$ and $\sigma$ (the range and the marginal standard deviation of the field).
 
@@ -311,7 +314,7 @@ Consider the `pcod_sf`, the spatial extension and type of the data... are some o
 **NOTE** Remember that a prior should be reasonable, but the model should not totally depend on it.
 :::
 
-### 3. Define the components of the linear predictor
+#### 3. Define the components of the linear predictor
 
 We have now defined a mesh and a SPDE representation of the spatial GF. We now need to define the model components:
 
@@ -322,7 +325,7 @@ cmp = ~ Intercept(1) + space(geometry, model = spde_model3)
 
 **NOTE** since the dataframe we use (`pcod_sf`) is an `sf` object the input in the `space()` component is the geometry of the dataset.
 
-### 4. Define the observation model
+#### 4. Define the observation model
 
 Our data are Bernoulli distributed so we can define the observation model as:
 
@@ -336,7 +339,7 @@ lik = bru_obs(formula = formula,
 
 ```
 
-### 5. Run the model
+#### 5. Run the model
 
 Finally we are ready to run the model
 
@@ -344,9 +347,9 @@ Finally we are ready to run the model
 fit1 = bru(cmp,lik)
 ```
 
-## Extract results
+### Extract results
 
-### Hyperparameters
+#### Hyperparameters
 
 ::: {.callout-warning icon="false"}
 ### {{< bi pencil-square color=#c8793c >}} Task
@@ -399,7 +402,7 @@ ggplot() +
 ```
 :::
 
-## Spatial prediction
+### Spatial prediction
 
 We now want to extract the estimated posterior mean and sd of spatial GF. To do this we first need to define a grid of points where we want to predict. We do this using the function `fm_pixel()`, which creates a regular grid of points covering the mesh
 
@@ -481,7 +484,7 @@ pp %>% select(-depth) %>%
         ggtitle("Sample from the fitted model")
 ```
 
-## An alternative model
+### An alternative model
 
 We now want to check if the `depth` covatiate has an influence on the probability of presence. We do this in two different models
 

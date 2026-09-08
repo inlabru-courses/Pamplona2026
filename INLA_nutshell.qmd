@@ -15,7 +15,7 @@ bibliography: references.bib
 
 
 
-# INLA and latent Gaussian models
+## INLA and latent Gaussian models
 
 The Integrated Nested Laplace Approximation (INLA) is a fast and accurate Bayesian approximation method for the albeit wide class of Latent Gaussian Models (LGMs). This includes GLMs, GLMMs,GAM-like models and a wide range of spatial and spatiotemporal models.
 
@@ -72,7 +72,7 @@ $$
 That is, conditional independence between $u_i$ and $u_j$ corresponds to zeros in the precision matrix.
 :::
 
-# INLA in a nutshell
+## INLA in a nutshell
 
 We are interested in estimating the posterior marginals $p(u_i|\mathbf{y})$. We could compute this by integrating out all the other components in the model i.e., $p(u_i \mid \mathbf{y}) = \int p(\mathbf{u}\mid \theta) d \mathbf{u}_{-i}$. However, this might not be computationally efficient as the latent filed $\mathbf{u}$ can be very high dimensional. Instead we can compute the posterior marginals by considering that
 
@@ -84,7 +84,7 @@ This possible because the size of $\theta$ is typically small and thus, easier t
 1.  The posterior of hyperparameters $\color{orange}{p(\theta \mid \mathbf{y})}$
 2.  The posterior of the latent field $\color{purple}{p(u_i\mid \theta,\mathbf{y})}$
 
-## **Approximating the posterior of hyperparameters**
+### Approximating the posterior of hyperparameters
 
 To build an approximation to $p(\theta \mid \mathbf{y})$ we can use definition of conditional probability where, conditional on the observations $\mathbf{y}$
 
@@ -216,7 +216,7 @@ Different optimization techniques like Newton-type methods can be used to find t
 
 Now we just need to approximate $p(u_i\mid \theta\mathbf{y})$, but unfortunately we cannot use the marginals from the preivous Gaussian approximation $p_G(\mathbf{u} \mid \mathbf{y},\theta)$ directly as there can be errors in the location and/or errors due to the lack of skewness.
 
-## **Approximating the posterior for the latent field**
+### Approximating the posterior for the latent field
 
 There are two ways of approximating the marginals for the latent fields. The first one is by simply using the Gaussian approximation and computing the posterior conditional distributions $p(u_i\mid \theta,\mathbf{y})$ directly as marginals of $p_G(\mathbf{u} \mid \mathbf{y},\theta)$ i.e.,
 

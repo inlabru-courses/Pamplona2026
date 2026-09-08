@@ -11,6 +11,7 @@ project:
   - slides/slides_intro_spatial.qmd
   - slides/slides_areal.qmd
   - slides/slides_geostats.qmd
+  - slides/slides_points.qmd
   - slides/slides_spatioTemporal.qmd
   - slides/slides_Model_Comparison.qmd
   - slides/slides_Model_Comparison.qmd
@@ -54,9 +55,8 @@ website:
         href: slides/slides_areal.qmd
       - text: Lecture 6 - Geostatistics
         href: slides/slides_geostats.qmd
-      - href: Slides_Janine_pdf/slides_session_7_inlabru.pdf
-        text: Lecture 7 - Point Processes (PDF)
-        target: _blank
+      - text: Lecture 7 - Point Processes 
+        href: slides/slides_points.qmd
       - text: Slides 8 - Spatio-Temporal Models
         href: slides/slides_spatioTemporal.qmd
       - text: Slides 9 - Model Comparison

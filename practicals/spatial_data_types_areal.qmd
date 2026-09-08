@@ -23,9 +23,7 @@ library(webexercises)
 
 ```
 
-In this practical we will:
-
--   Explore tools for areal spatial data wrangling and visualization.
+<br>
 
 ## Areal (lattice) data {#sec-areal_data}
 

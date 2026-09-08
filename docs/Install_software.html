@@ -175,8 +175,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Lecture 6 - Geostatistics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./Slides_Janine_pdf/slides_session_7_inlabru.pdf" target="_blank">
- <span class="dropdown-text">Lecture 7 - Point Processes (PDF)</span></a>
+    <a class="dropdown-item" href="./slides/slides_points.html">
+ <span class="dropdown-text">Lecture 7 - Point Processes</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./slides/slides_spatioTemporal.html">
@@ -322,18 +322,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>install.packages(c(
-  "car",
-  "CARBayesdata",
-  "DAAG",
   "dplyr",
+  "fmesher",
   "ggplot2",
-  "lme4",
   "lubridate",
   "magrittr",
   "mapview",
   "patchwork",
   "scico",
-  "sdmTMB",
   "sf",
   "spatstat",
   "spdep",
@@ -359,18 +355,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Time used:
-    Pre = 0.413, Running = 0.244, Post = 0.0532, Total = 0.711 
+    Pre = 0.478, Running = 0.95, Post = 0.0614, Total = 1.49 
 Fixed effects:
-              mean    sd 0.025quant 0.5quant 0.975quant   mode kld
-(Intercept) 10.047 0.114      9.824   10.047     10.271 10.047   0
+             mean    sd 0.025quant 0.5quant 0.975quant  mode kld
+(Intercept) 9.901 0.106      9.692    9.901     10.109 9.901   0
 
 Model hyperparameters:
-                                         mean   sd 0.025quant 0.5quant
-Precision for the Gaussian observations 0.783 0.11      0.582    0.778
+                                         mean    sd 0.025quant 0.5quant
+Precision for the Gaussian observations 0.902 0.127      0.671    0.896
                                         0.975quant  mode
-Precision for the Gaussian observations       1.01 0.768
+Precision for the Gaussian observations       1.17 0.884
 
-Marginal log-Likelihood:  -167.07 
+Marginal log-Likelihood:  -159.94 
  is computed 
 Posterior summaries for the linear predictor and the fitted values are computed
 (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</code></pre>
@@ -385,8 +381,8 @@ Posterior summaries for the linear predictor and the fitted values are computed
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>inlabru version: 2.14.1.9007 
-INLA version: 25.08.21-1 
+<pre><code>inlabru version: 2.15.0 
+INLA version: 26.08.22 
 Latent components:
 Intercept: main = linear(1)
 Observation models:
@@ -398,18 +394,18 @@ Observation models:
     Additive/Linear/Rowwise: TRUE/TRUE/TRUE
     Used components: effect[Intercept], latent[] 
 Time used:
-    Pre = 0.27, Running = 0.243, Post = 0.0628, Total = 0.575 
+    Pre = 0.294, Running = 0.981, Post = 0.0874, Total = 1.36 
 Fixed effects:
-            mean    sd 0.025quant 0.5quant 0.975quant   mode kld
-Intercept 10.047 0.114      9.823   10.047     10.271 10.047   0
+           mean    sd 0.025quant 0.5quant 0.975quant  mode kld
+Intercept 9.901 0.106      9.692    9.901     10.109 9.901   0
 
 Model hyperparameters:
-                                         mean   sd 0.025quant 0.5quant
-Precision for the Gaussian observations 0.783 0.11      0.582    0.778
+                                         mean    sd 0.025quant 0.5quant
+Precision for the Gaussian observations 0.902 0.127      0.671    0.896
                                         0.975quant  mode
-Precision for the Gaussian observations       1.01 0.768
+Precision for the Gaussian observations       1.17 0.884
 
-Marginal log-Likelihood:  -171.53 
+Marginal log-Likelihood:  -164.41 
  is computed 
 Posterior summaries for the linear predictor and the fitted values are computed
 (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</code></pre>

@@ -6,7 +6,6 @@
 library(INLA)
 library(patchwork)
 library(inlabru)
-library(car)
 library(tidyverse)
 # load some libraries to generate nice plots
 library(scico)

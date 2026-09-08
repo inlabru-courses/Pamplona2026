@@ -38,7 +38,6 @@ library(INLA)
 library(ggplot2)
 library(patchwork) 
 library(inlabru)
-library(DAAG)
 ```
 
 In this exercise we will look at [greatLakes](https://rdrr.io/cran/DAAG/man/greatLakes.html) dataset. The data set contains the water level heights for the lakes Erie, Michigan/Huron, Ontario and St Clair from 1918 to 2009. You can download the files using the link below:

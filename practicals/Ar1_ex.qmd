@@ -13,6 +13,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+<br>
+
 ## AR(1) models in `inlabru`
 
 In this exercise we will:

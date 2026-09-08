@@ -26,7 +26,9 @@ library(webexercises)
 
 ```
 
-# Point process models {#sec-linmodel}
+<br>
+
+## Point process models {#sec-linmodel}
 
 In this practical we will:
 
@@ -54,9 +56,9 @@ library(terra)
 library(tidyterra)
 ```
 
-------------------------------------------------------------------------
 
-## The data
+
+### The data
 
 In this practical we consider the data `clmfires` in the `spatstat`
 library.
@@ -103,7 +105,7 @@ region = poly %>%
 ggplot() + geom_sf(data = region, alpha = 0) + geom_sf(data = pp)  
 ```
 
-## Fit a homogeneous Poisson Process {#HPP}
+### Fit a homogeneous Poisson Process {#HPP}
 
 As a first exercise we are going to fit a homogeneous Poisson process
 (HPP) to the data. This is a model that assume constant intensity over
@@ -198,7 +200,7 @@ post_int %>% ggplot() + geom_line(aes(x,y)) +
 ```
 :::
 
-## Fit an Inhomogeneous Poisson Process {#NHPP}
+### Fit an Inhomogeneous Poisson Process {#NHPP}
 
 The model above has the clear disadvantages that assumes a constant
 intensity and from @fig-points we clearly see that this is not the case.
@@ -409,7 +411,7 @@ ggplot(data = data.frame(N = as.vector(N_fires))) +
 
 ```
 
-## Fit a Log-Gaussian Cox Process {#LGCP}
+### Fit a Log-Gaussian Cox Process {#LGCP}
 
 Finally we want to fit a LGCP with log intensity:
 
@@ -421,7 +423,7 @@ where $\beta_0$ is the intercept, $\beta_1$ the effect of (standarized)
 altitude $x(s)$ as before and $u(s)$ is a Gaussian Random field defined
 through the SPDE approach.
 
-### Define the mesh
+#### Define the mesh
 
 The first step, as any time we use the SPDE approach is to defie the
 mesh and the priors for the marginal variance and range:
@@ -453,7 +455,7 @@ ggplot() + geom_sf(data = ips, aes(color = weight)) +
    scale_color_scico()
 ```
 
-### Run the model
+#### Run the model
 
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
@@ -568,7 +570,7 @@ infilling on domain boundaries. For properly missing data, one should
 consider doing a proper model of the spatial field instead.
 :::
 
-## Results
+### Results
 
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
