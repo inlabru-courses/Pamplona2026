@@ -50,11 +50,10 @@ No knowledge of `R-INLA` or `inlabru` is required.
 
 # Schedule {#schedule-tabs}
 
-**NOTE** THIS HAS TO BE UPDATED!!!!
 
 
 ::: panel-tabset
-### Monday 19$^th$ 
+### Monday 19$^{th}$ 
 
 : {.striped .hover}
 
@@ -72,15 +71,14 @@ No knowledge of `R-INLA` or `inlabru` is required.
 | 15:45  - 17:00 | [**Session 3**: Time Series Models](slides/slides_3.html)|
 
 
-### Tuesday 20$^th$ 
+### Tuesday 20$^{th}$ 
 
 : {.striped .hover}
 
 
-
 | Time | Topic |
 |:----------------------------------:|:----------------------------------:|
-| 9:00 - 10:00 | [**Session 3 cont.**: Time Series Models](slides/slides_3.html) |
+| 9:00 - 10:00  | [**Session 3 cont.**: Time Series Models](slides/slides_3.html) |
 | 10:00 - 11:30 | [Practical Session 3](day2_practical_3.html) |
 | 11:30 - 12:00 | Coffee break ☕ |
 | 12:00 - 13:00 | [**Session 4**: Introduction to Spatial Statistics](slides/slides_intro_spatial.html) |
@@ -90,7 +88,7 @@ No knowledge of `R-INLA` or `inlabru` is required.
 | 15:45 - 17:00 | [**Session 5**: Areal processes](slides/slides_areal.html) |
 
 
-###	Wednesday 21$^st$
+###	Wednesday 21$^{st}$
 
 : {.striped .hover}
 
@@ -109,7 +107,7 @@ No knowledge of `R-INLA` or `inlabru` is required.
 
 
 
-### Thursday 22$^nd$
+### Thursday 22$^{nd}$
 
 : {.striped .hover}
 
@@ -119,12 +117,10 @@ No knowledge of `R-INLA` or `inlabru` is required.
 | 09:00 - 10:00 |  [**Session 9**: Model comparison and evaluation](slides/slides_Model_Comparison.qmd) |
 | 10:00 - 11:30 |  [Practical Session 6](day4_practical_6.qmd) |
 | 11:30 - 12:00 | Coffee break ☕ |
-| 12:00 - 13:00 | [**Session 10**: Multi-likelihood/joint likelihood models](Slides_Janine_pdf/slides_10_inlabru.pdf)  |
+| 12:00 - 13:00 | [**Session 10**: Multi-likelihood/joint likelihood models](slides/multi_like.html)  |
 | 13:00 - 14:30 | Lunch 🍽️ |
-| 14:30 - 15:30 | [Practical Session 7](day4_practical_7.qmd) |
-| 9:00 - 10:00  |[Practical Session 7](day4_practical_7.qmd) |
-| 15:30- 15:45  | Coffee break ☕ |
-| 15:45 - 17:00 | [Closing session](slides/slides_Closing_Remarks.qmd) and discussion|
+| 14:30 - 15:30 | [Closing session](slides/slides_Closing_Remarks.html) and discussion|
+| 15:30- 17:00  | [Practical Session 7 &  General practice](day4_practical_7.qmd) |
 
 
 :::

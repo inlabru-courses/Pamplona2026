@@ -1,21 +1,18 @@
 TODO
 
-- download and install R INLA
-- 31 slide augment change to glance
-- slide 3 discrete time mention sparse marrixe which will be covered later
-- slide 28 parethesis
-- understanding smoothing slide 27
+- slide 3 discrete time: mention that sparse matttttrices which will be covered later
+- slides joint models slides as PDF
 - slide1: change the map of germany
 - look at the slides for lecture 3 (some comments there)
-- make a list of interesting papers with link (for example dolphin paper if we talk about multiple likelihoods)
-
-- write the PP lecture, obs to the integration and mesh
-(barrier models)
+- Add References sections: make a list of interesting papers with link (for example dolphin paper if we talk about multiple likelihoods)
 
 
+
+- Special Topics to mention:
+
+- Non-linearity with application on distance sampling
+- Spatial confounding
+- Aggregating SPDE on discrete spaces
+- Barrier Models
 - LGCP cross validation (PP and practical)
-
-Preferential sampling
-
-- Intro slide  add link to prior experience with INLA/Bayesian stats
 - add feedback form for end-talk

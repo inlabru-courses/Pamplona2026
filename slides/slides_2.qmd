@@ -827,7 +827,7 @@ What can you put on `pred_formula`?
 
 - the latent variable as `x_latent` or `.latent$x` 
 
-- `glance()` $\rightarrow$ `predict()` $\rightarrow$ `generate()`
+- `augment()` $\rightarrow$ `predict()` $\rightarrow$ `generate()`
 
 :::
 

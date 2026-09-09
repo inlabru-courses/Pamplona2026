@@ -46,6 +46,7 @@ library(sf)
 library(terra)
 library(tidyverse)
 library(fmesher)
+library(tidyterra)
 
 # load some libraries to generate nice map plots
 library(scico)
@@ -420,7 +421,7 @@ Based on the model you chose form the previous task, predict Posterior mean for 
 -   $\mathbb{E}[Z(s)|Y(s)] = \exp\left(\mu(s) + \dfrac{1}{2\tau_{e}}\right)$
 
 -   $\mathbb{E}(Z(s)) =\pi(s)\times \mathbb{E}[Z(s)|Y(s)]$
-:::
+
 
 
 `r hide("Take hint")`
@@ -429,7 +430,7 @@ You can create a prediction grid using the `depth_r` raster and pass this on to 
 
 ```{r}
 #| purl: false
-#| eval: false
+
 pxl1 = data.frame(crds(depth_r), 
                   as.data.frame(depth_r)) %>% 
        filter(!is.na(depth)) %>%
@@ -443,7 +444,7 @@ st_as_sf(coords = c("x","y"),crs=st_crs(pcod_sf))
 #| webex.hide: "Click here to see the solution"
 #| warning: false
 #| message: false
-#| eval: true
+
 
 pred <- predict( fit_hurdle , pxl1,
   ~ {

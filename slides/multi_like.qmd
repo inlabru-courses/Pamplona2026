@@ -1,0 +1,43 @@
+---
+title: "Lecture 10"
+from: markdown+emoji
+subtitle: "Multiple likelihood models – joint modelling " 
+format:
+  revealjs:
+    logo:  NTNU_UofG.png
+    theme: uofg_theme.scss
+    footer: "<a href='../index.html'>Back to Home</a>"
+    header-includes: |
+      <script src="custom.js" type="application/javascript"></script>
+    toc: true
+    toc-depth: 1
+    toc-title: ""
+slide-number: "c/t"
+title-slide-attributes:
+#    data-background-image: images/trondheim3.png
+    data-background-size: cover
+    data-background-opacity: "0.55"
+author:
+  - name: Sara Martino
+    #orcid: 0000-0002-6879-4412
+    email: sara.martino@ntnu.no
+    affiliations: Dept. of Mathematical Science, NTNU
+  - name: Janine Illian
+    #orcid: 0000-0002-6879-4412
+    email: Janine.Illian@glasgow.ac.uk
+    affiliations: University of Glasgow 
+  - name: Jafet Belmont
+    #orcid: 0000-0002-6879-4412
+    email: Jafet.Belmont@glasgow.ac.uk
+    affiliations: University of Glasgow   
+        
+# date: May 22, 2025
+# bibliography: references.bib
+embed-resources: true
+execute:
+  allow-html: true
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+---
+
