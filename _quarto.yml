@@ -14,8 +14,7 @@ project:
   - slides/slides_points.qmd
   - slides/slides_spatioTemporal.qmd
   - slides/slides_Model_Comparison.qmd
-  - slides/slides_Model_Comparison.qmd
-  - slides/slides_Zero_Inflated.qmd
+  - slides/slides_multilik.qmd
   - practicals/LMM_ex.qmd
   - practicals/GLMM_fit.qmd
   - day2_practical_3.qmd
@@ -61,7 +60,7 @@ website:
       - text: Slides 9 - Model Comparison
         href: slides/slides_Model_Comparison.qmd
       - text: Slides 10 - Multiple Likelihoods Models
-        href: slides/multi_like.qmd
+        href: slides/slides_multilik.qmd
         
     - text: Practicals
       menu:

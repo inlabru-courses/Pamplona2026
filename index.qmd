@@ -117,7 +117,7 @@ No knowledge of `R-INLA` or `inlabru` is required.
 | 09:00 - 10:00 |  [**Session 9**: Model comparison and evaluation](slides/slides_Model_Comparison.qmd) |
 | 10:00 - 11:30 |  [Practical Session 6](day4_practical_6.qmd) |
 | 11:30 - 12:00 | Coffee break ☕ |
-| 12:00 - 13:00 | [**Session 10**: Multi-likelihood/joint likelihood models](slides/multi_like.html)  |
+| 12:00 - 13:00 | [**Session 10**: Multi-likelihood/joint likelihood models](slides/slides_multilik.html)  |
 | 13:00 - 14:30 | Lunch 🍽️ |
 | 14:30 - 15:30 | [Closing session](slides/slides_Closing_Remarks.html) and discussion|
 | 15:30- 17:00  | [Practical Session 7 &  General practice](day4_practical_7.qmd) |

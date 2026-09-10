@@ -1,14 +1,16 @@
 TODO
 
-- slide 3 discrete time: mention that sparse matttttrices which will be covered later
+
+- slide 3 discrete time: mention that sparse matrices which will be covered later
 - slides joint models slides as PDF
 - slide1: change the map of germany
 - look at the slides for lecture 3 (some comments there)
 - Add References sections: make a list of interesting papers with link (for example dolphin paper if we talk about multiple likelihoods)
 
 
+- closing slides :
 
-- Special Topics to mention:
+Special Topics to mention:
 
 - Non-linearity with application on distance sampling
 - Spatial confounding

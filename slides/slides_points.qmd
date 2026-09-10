@@ -4,6 +4,7 @@ from: markdown+emoji
 subtitle: "Spatial point processes" 
 format:
   revealjs:
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"

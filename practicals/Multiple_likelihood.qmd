@@ -355,7 +355,7 @@ Notice that we have replaced the component `space_caught` with `space_copy`, whi
 
 We set `fixed = FALSE` because we want to estimate a scaling parameter $\lambda$ that links the two fields, i.e., the copied field enters the second predictor as $\lambda \times$ `space`, rather than as an exact duplicate. With `fixed = FALSE`, `inlabru` treats $\lambda$ as an unknown to be inferred from the data, allowing the shared spatial pattern to contribute with a different magnitude in the two likelihoods. Had we set `fixed = TRUE`, $\lambda$ would be held at 1 and the field would be copied identically into both predictors, forcing the spatial effect to have exactly the same strength in each data source.
 
-Nowe we define each likelihood as follows:
+Now we define each likelihood as follows:
 
 ```{r}
 
