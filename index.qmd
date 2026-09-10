@@ -26,7 +26,7 @@ editor_options:
 ##  Important! ⚠️
 
  Please use the instructions provided [here](Install_software.qmd) to install and check your installation
-  *before* the course start.
+  *before* the course starts.
 :::
 
 # Learning Objectives for the workshop
@@ -40,7 +40,7 @@ At the end of the workshop, participants will have an understanding of:
 
 # Intended audience
 
-The workshop aims to cater for participants with a range of different backgrounds, who is interested in analysing data with modern spatial and spatio-temporal statistical modelling approaches.
+The workshop aims to cater for participants with a range of different backgrounds, who are interested in analysing data with modern spatial and spatio-temporal statistical modelling approaches.
 
 # Prerequisites
 
