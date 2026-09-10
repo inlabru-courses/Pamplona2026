@@ -159,7 +159,7 @@ Spatial models include special components to explicitly model dependence.
 
 ## Spatial dependence
 
-Dependence relationships need to represented in the model – which observation is related to which other observations?
+Dependence relationships need to represented in the model –- which observation is related to which other observations?
 
 ::: incremental
 -   usually represented by a matrix
@@ -173,7 +173,7 @@ Dependence relationships need to represented in the model – which observation 
 The overall goal of any piece of spatial analysis is to understand the spatial patterns in our data. This could involve:
 
 ::: incremental
--   Estimating differences in mean, variance, or some other summary statistic over space.
+-   Estimating differences in mean, variance, or some other summary statistic across space.
 
 -   Predicting the value at some unobserved location.
 
@@ -521,7 +521,7 @@ mapview(GGHB.IZ)
 ## the data we will use
 
 ::: {style="font-size: 0.7em;"}
-In this example we model the numbers of hospitalisations due to respiratory disease in Greater Glasgow and Clyde health board
+In this example we model the numbers of hospitalisations due to respiratory disease in the Greater Glasgow and Clyde health board
 :::
 
 ::::::: columns
@@ -536,7 +536,7 @@ $$ SMR_i = \dfrac{Y_i}{E_i} $$
 
 ::: incremental
 -   SMRs may be misleading in counties with small populations.
--   model-based approaches enable to incorporate covariates and borrow information from neighboring counties to improve local estimates
+-   model-based approaches enable to incorporate covariates and borrow information from neighbouring counties to improve local estimates
 :::
 ::::
 :::::
@@ -580,10 +580,10 @@ ggplot()+
 
 ## Continuous space: geostatistical data 
 
--   We are interested phenomenon continuous in space
+-   We are interested in a phenomenon that is continuous in space
 -   The process of interest is measured at a finite set of locations
 -   For example, air pollution influencing hospitalisation cases varies continuously in space and does not recognise areal unit boundaries.
--   our goal is to estimate the value of our variable across the entire space and/or to model the relationship with covariates.
+-   Our goal is to estimate the value of our variable across the entire space and/or to model the relationship with covariates.
 
 ::: fragmet
 **Observed response(s)**: measurements at given locations in continuous space
@@ -658,12 +658,12 @@ citizen science records of the ringlet butterfly in Scotland’s Cairngorms Nati
 
 -   different spatial terms are needed for different spatial data structures
 
--   the SPDE approach provide unifies approximation as all data structures are spatially referenced in continuous space
+-   the SPDE approach unifies approximation as all data structures are spatially referenced in continuous space
 
--   `inlabru` efficiently fits these models
+-   `inlabru` fits these models efficiently 
 
 ::: fragment
-In the next practical you will explore tools for visualization and wrangling spatial data objects
+In the next practical you will explore tools for visualization and wrangling spatial data objects.
 :::
 
 
