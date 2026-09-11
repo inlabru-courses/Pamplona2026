@@ -45,7 +45,7 @@ bibliography: ../references.bib
 
 
 ```{r setup}
-# #| include: false
+#| include: false
 
 knitr::opts_chunk$set(echo = TRUE,
                       message=FALSE,
@@ -268,7 +268,33 @@ ggplot() + gg(mesh) + geom_sf(data= pcod_sf, aes(color = factor(present)), size 
 
 
 
+```{r}
+#| echo: false
 
+
+# define model component
+cmp <- ~
+  Intercept_biomass(1) +
+    depth_biomass(depth_scaled, model = "linear") +
+    depth2_biomass(depth_scaled2, model = "linear") +
+    space_biomass(geometry, model = spde_model) +
+    Intercept_caught(1) +
+    depth_caught(depth_scaled, model = "linear") +
+    depth2_caught(depth_scaled2, model = "linear") +
+    space_caught(geometry, model = spde_model) 
+
+# define linear predictors
+biomass_lik <- bru_obs(formula = density ~  Intercept_biomass + depth_biomass + depth2_biomass + space_biomass,
+      family = "lognormal",
+      data = pcod_sf  %>% filter(density>0))
+  
+presence_lik <- bru_obs(formula = present ~ Intercept_caught + depth_caught + depth2_caught + space_caught,
+      family = "binomial",
+      data = pcod_sf)
+
+# fit the model
+fit_hurdle <- bru( cmp,  biomass_lik,  presence_lik)
+```
 
 ## Step 2: Define the model components {.smaller auto-animate=true}
 
@@ -307,10 +333,9 @@ $$
 **The code**
 
 ```{r}
-#| echo: true
-#| eval: true
 #| warning: false
 #| message: false
+#| eval: false
 #| code-line-numbers: "1-10"
 
 # define model component
@@ -343,7 +368,7 @@ fit_hurdle <- bru( cmp,  biomass_lik,  presence_lik)
 
 
 
-## Step 2: Define the linear predictors {.smaller auto-animate=true}
+## Step 2: Define the linear predictors {.smaller }
 
 **The Model**
 
@@ -1095,20 +1120,26 @@ pred.df <- data.frame(year_id = 1:92)
 
 predErie.bru <- predict(fit_greatLakes,
                       pred.df,
-                       height  ~  exp(beta0_erie + GP_erie + GP_shared ) ,
+                       height  ~  exp(beta0_erie + 
+                                        GP_erie + 
+                                        GP_shared ) ,
                       n.samples = 1000
 )
 
 
 predMich.bru <- predict(fit_greatLakes,
                       pred.df,
-                       height  ~   exp(beta0_mich + GP_mich + GP_shared_copy1) ,
+                       height  ~   exp(beta0_mich + 
+                                         GP_mich + 
+                                         GP_shared_copy1) ,
                       n.samples = 1000
 )
 
 predClair.bru <- predict(fit_greatLakes,
                       pred.df,
-                       height  ~   exp(beta0_clair + GP_clair + GP_shared_copy2),
+                       height  ~   exp(beta0_clair + 
+                                         GP_clair +
+                                         GP_shared_copy2),
                       n.samples = 1000
 )
 
@@ -1167,12 +1198,12 @@ In the next practical we will cover how we can expand this model in 2D and fit a
 :::
 
 
-## Other Applications {.smaller}
+## Other Applications 
 
 Joint Models are widely used in environmental and ecological studies. While we don't have time to cover all of these in this course here are few interest examples that have been implemented in `inlabru`
 
 
-- **Marked point Processes**: [@laxton2023balancing] Model habitat availability (wetland locations) using a point process model and occupancy probability as marks.
+- **Marked point Processes**: [@laxton2023balancing] Model habitat availability (wetland locations) using a point process model and presence/absence as marks.
 
 - **Integrated Species distribution**: [@martino2021integration] Combine dolphin sightings from multiple data streams to infer their distribution in the coast of Italy.
 
