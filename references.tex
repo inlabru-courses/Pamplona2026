@@ -67,7 +67,6 @@
 
 
 \usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -269,7 +268,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, boxrule=0pt, colback={codebgcolor}, sharp corners, frame hidden, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -295,12 +294,14 @@
 
 This page lists all references cited across the workshop materials.
 
-\protect\phantomsection\label{refs}
-\begin{CSLReferences}{1}{1}
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-bakka2018}
-Bakka, Haakon, Håvard Rue, Geir-Arne Fuglstad, et al. 2018. {``Spatial
-Modeling with {R-INLA}: A Review.''} \emph{WIREs Computational
-Statistics} 10 (6): e1443. \url{https://doi.org/10.1002/wics.1443}.
+Bakka, Haakon, Håvard Rue, Geir-Arne Fuglstad, Andrea Riebler, David
+Bolin, Janine Illian, Elias Krainski, Daniel Simpson, and Finn Lindgren.
+2018. {``Spatial Modeling with {R-INLA}: A Review.''} \emph{WIREs
+Computational Statistics} 10 (6): e1443.
+\url{https://doi.org/10.1002/wics.1443}.
 
 \bibitem[\citeproctext]{ref-bakka2019non}
 Bakka, Haakon, Jarno Vanhatalo, Janine B Illian, Daniel Simpson, and
@@ -309,8 +310,8 @@ Barriers.''} \emph{Spatial Statistics} 29: 268--88.
 
 \bibitem[\citeproctext]{ref-blangiardo2015}
 Blangiardo, Marta, and Michela Cameletti. 2015. \emph{Spatial and
-Spatio-Temporal {Bayesian} Models with {R-INLA}}. John Wiley \& Sons.
-\url{https://doi.org/10.1002/9781118950203}.
+Spatio-Temporal {Bayesian} Models with {R-INLA}}. Chichester: John Wiley
+\& Sons. \url{https://doi.org/10.1002/9781118950203}.
 
 \bibitem[\citeproctext]{ref-bryce2022unified}
 Bryce, Erin, Luigi Lombardo, Cees Van Westen, Hakan Tanyas, and Daniela
@@ -337,14 +338,16 @@ Constraints Affect PQL and INLA Results.''} \emph{Stochastic
 Environmental Research and Risk Assessment} 32 (3): 749--70.
 
 \bibitem[\citeproctext]{ref-gomezrubio2020}
-Gómez-Rubio, Virgilio. 2020. \emph{Bayesian Inference with {INLA}}.
-Chapman \& Hall/CRC. \url{https://doi.org/10.1201/9781315175584}.
+Gómez-Rubio, Virgilio. 2020. \emph{Bayesian Inference with {INLA}}. Boca
+Raton, FL: Chapman \& Hall/CRC.
+\url{https://doi.org/10.1201/9781315175584}.
 
 \bibitem[\citeproctext]{ref-krainski2019}
-Krainski, Elias T., Virgilio Gómez-Rubio, Haakon Bakka, et al. 2019.
-\emph{Advanced Spatial Modeling with Stochastic Partial Differential
-Equations Using {R} and {INLA}}. Chapman \& Hall/CRC.
-\url{https://doi.org/10.1201/9780429031892}.
+Krainski, Elias T., Virgilio Gómez-Rubio, Haakon Bakka, Amanda Lenzi,
+Daniela Castro-Camilo, Daniel Simpson, Finn Lindgren, and Håvard Rue.
+2019. \emph{Advanced Spatial Modeling with Stochastic Partial
+Differential Equations Using {R} and {INLA}}. Boca Raton, FL: Chapman \&
+Hall/CRC. \url{https://doi.org/10.1201/9780429031892}.
 
 \bibitem[\citeproctext]{ref-lamouroux2025addressing}
 Lamouroux, Jérémy, Alizée Geffroy, Sébastien Leblond, Caroline Meyer,
@@ -370,9 +373,9 @@ for Gaussian and Non-Gaussian Fields: 10 Years and Still Running.''}
 \emph{Spatial Statistics} 50: 100599.
 
 \bibitem[\citeproctext]{ref-lindgren2010explicit}
-Lindgren, Finn, Johan Lindström, and Håvard Rue. 2010. \emph{An Explicit
+Lindgren, Finn, Johan Lindström, and Håvard Rue. 2010. {``An Explicit
 Link Between Gaussian Fields and Gaussian Markov Random Fields; the Spde
-Approach}.
+Approach.''}
 
 \bibitem[\citeproctext]{ref-miller2020understanding}
 Miller, David L, Richard Glennie, and Andrew E Seaton. 2020.
@@ -382,8 +385,8 @@ Biological and Environmental Statistics} 25 (1): 1--16.
 
 \bibitem[\citeproctext]{ref-moraga2019}
 Moraga, Paula. 2019. \emph{Geospatial Health Data: Modeling and
-Visualization with {R-INLA} and {Shiny}}. Chapman \& Hall/CRC.
-\url{https://doi.org/10.1201/9780429341823}.
+Visualization with {R-INLA} and {Shiny}}. Boca Raton, FL: Chapman \&
+Hall/CRC. \url{https://doi.org/10.1201/9780429341823}.
 
 \bibitem[\citeproctext]{ref-moraga2021bayesian}
 Moraga, Paula, Christopher Dean, Joshua Inoue, Piotr Morawiecki, Shahzeb

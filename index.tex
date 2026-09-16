@@ -67,7 +67,6 @@
 
 
 \usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -252,7 +251,7 @@
 \@ifundefined{codebgcolor}{\definecolor{codebgcolor}{named}{light}}{}
 \makeatother
 \makeatletter
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, colback={codebgcolor}, enhanced, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, boxrule=0pt, sharp corners, colback={codebgcolor}, breakable]}{\end{tcolorbox}}\fi
 \makeatother
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -299,7 +298,7 @@ Martino · Janine Illian}
   Workshop materials are available in the github repository
 \end{itemize}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Important! ⚠️}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+\begin{tcolorbox}[enhanced jigsaw, left=2mm, bottomrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colframe=quarto-callout-warning-color-frame, coltitle=black, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, breakable, bottomtitle=1mm, opacityback=0, titlerule=0mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Important! ⚠️}, toprule=.15mm, colback=white, colbacktitle=quarto-callout-warning-color!10!white]
 
 Please use the instructions provided \href{Install_software.qmd}{here}
 to install and check your installation \emph{before} the course start.
@@ -344,7 +343,6 @@ No knowledge of \texttt{R-INLA} or \texttt{inlabru} is required.
 
 \subsubsection{\texorpdfstring{Monday 19\(^th\)}{Monday 19\^{}th}}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -372,11 +370,9 @@ Introduction to \texttt{inlabru}} \\
 15:45 - 17:00 & \href{slides/slides_3.html}{\textbf{Session 3}: Time
 Series Models} \\
 \end{longtable}
-}
 
 \subsubsection{\texorpdfstring{Tuesday 20\(^th\)}{Tuesday 20\^{}th}}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -402,11 +398,9 @@ Time Series Models} \\
 15:45 - 17:00 & \href{slides/slides_areal.html}{\textbf{Session 5}:
 Areal processes} \\
 \end{longtable}
-}
 
 \subsubsection{\texorpdfstring{Wednesday 21\(^st\)}{Wednesday 21\^{}st}}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -433,11 +427,9 @@ Point Processes} \\
 15:45 - 17:00 & \href{slides/slides_spatioTemporal.qmd}{\textbf{Session
 8}: Spatiotemporal models} \\
 \end{longtable}
-}
 
 \subsubsection{\texorpdfstring{Thursday 22\(^nd\)}{Thursday 22\^{}nd}}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
   >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
@@ -466,7 +458,6 @@ Multi-likelihood/joint likelihood models} \\
 15:45 - 17:00 & \href{slides/slides_Closing_Remarks.qmd}{Closing
 session} and discussion \\
 \end{longtable}
-}
 
 \section{Licence}\label{licence}
 
