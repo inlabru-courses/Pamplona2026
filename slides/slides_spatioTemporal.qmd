@@ -4,7 +4,7 @@ from: markdown+emoji
 subtitle: "Spatio-temporal models" 
 format:
   revealjs:
-    margin: 0
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -59,6 +59,7 @@ library(patchwork)
 library(DAAG)
 library(inlabru)
 library(sf)
+library(fmesher)
 library(cowplot) # needs install.packages("magick") to draw images
 library(gghighlight)
 library(scico)

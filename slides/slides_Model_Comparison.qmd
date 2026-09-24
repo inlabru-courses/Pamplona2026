@@ -4,7 +4,7 @@ from: markdown+emoji
 subtitle: "Model Comparison and Model evaluation" 
 format:
   revealjs:
-    margin: 0
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -56,6 +56,7 @@ library(tidyverse)
 library(INLA)
 library(BAS)
 library(patchwork)
+library(fmesher)
 library(DAAG)
 library(inlabru)
 library(cowplot) # needs install.packages("magick") to draw images

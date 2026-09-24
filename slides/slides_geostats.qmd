@@ -4,6 +4,7 @@ from: markdown+emoji
 subtitle: "Modelling geostatistical data" 
 format:
   revealjs:
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -859,6 +860,8 @@ Penalized Complexity (PC) priors proposed by Simpson et al. ([2017](https://proj
 ::: {style="height: 50px;"}
 :::
 
+-   D. Miller, R.  Glennie, R. and A. Seaton. (2020). Understanding the Stochastic Partial Differential Equation Approach to Smoothing. *Journal of Agricultural, Biological and Environmental Statistics*, 25(1), 1-16.
+
 -   F. Lindgren, H. Rue, and J. Lindström. An explicit link between Gaussian fields and Gaussian Markov random fields: The SPDE approach (with discussion). In: *Journal of the Royal Statistical Society, Series B* 73.4 (2011), pp. 423–498.
 
 -   H. Bakka, H. Rue, G. A. Fuglstad, A. Riebler, D. Bolin, J. Illian, E. Krainski, D. Simpson, and F. Lindgren. Spatial modelling with R-INLA: A review. In: *WIREs Computational Statistics* 10:e1443.6 (2018). (Invited extended review). DOI: 10.1002/wics.1443.
@@ -1118,7 +1121,7 @@ fit = bru(cmp, lik)
 $$
 \begin{aligned}
 y(s)|\eta(s) & \sim\text{Binom}(1, p(s))\\
-\eta(s) &  = \beta_0 + \beta_1 \,\log \color{#FF6B6B}{\boxed{\text{depth}(s) }} +  Z(s)\\
+\eta(s) &  = \beta_0 + \beta_1 \,\log \color{#FF6B6B}{\boxed{\text{depth}(s) } } +  Z(s)\\
 \end{aligned}
 $$
 :::

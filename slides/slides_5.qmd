@@ -4,7 +4,7 @@ from: markdown+emoji
 subtitle: "Introduction to spatial modelling -- spatial data types" 
 format:
   revealjs:
-    margin: 0
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     header-includes: |

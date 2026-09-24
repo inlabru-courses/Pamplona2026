@@ -4,6 +4,7 @@ from: markdown+emoji
 subtitle: "Introduction" 
 format:
   revealjs:
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -1794,6 +1795,7 @@ df = st_transform(df, crs = "+proj=utm +zone=9 +datum=WGS84 +no_defs +type=crs +
 
 depth_sf = st_as_sf(qcs_grid %>% select(X,Y,depth), coords = c("X","Y"), crs = "+proj=utm +zone=9 +datum=WGS84 +no_defs +type=crs +units=km" )
 
+mapviewOptions(basemaps = c("OpenStreetMap.DE","Esri.WorldImagery","OpenTopoMap"))
 
 mapview(df, zcol = "present")
 ```

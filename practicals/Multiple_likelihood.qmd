@@ -46,6 +46,7 @@ library(sf)
 library(terra)
 library(tidyverse)
 library(fmesher)
+library(tidyterra)
 
 # load some libraries to generate nice map plots
 library(scico)
@@ -354,7 +355,7 @@ Notice that we have replaced the component `space_caught` with `space_copy`, whi
 
 We set `fixed = FALSE` because we want to estimate a scaling parameter $\lambda$ that links the two fields, i.e., the copied field enters the second predictor as $\lambda \times$ `space`, rather than as an exact duplicate. With `fixed = FALSE`, `inlabru` treats $\lambda$ as an unknown to be inferred from the data, allowing the shared spatial pattern to contribute with a different magnitude in the two likelihoods. Had we set `fixed = TRUE`, $\lambda$ would be held at 1 and the field would be copied identically into both predictors, forcing the spatial effect to have exactly the same strength in each data source.
 
-Nowe we define each likelihood as follows:
+Now we define each likelihood as follows:
 
 ```{r}
 
@@ -420,7 +421,7 @@ Based on the model you chose form the previous task, predict Posterior mean for 
 -   $\mathbb{E}[Z(s)|Y(s)] = \exp\left(\mu(s) + \dfrac{1}{2\tau_{e}}\right)$
 
 -   $\mathbb{E}(Z(s)) =\pi(s)\times \mathbb{E}[Z(s)|Y(s)]$
-:::
+
 
 
 `r hide("Take hint")`
@@ -429,7 +430,7 @@ You can create a prediction grid using the `depth_r` raster and pass this on to 
 
 ```{r}
 #| purl: false
-#| eval: false
+
 pxl1 = data.frame(crds(depth_r), 
                   as.data.frame(depth_r)) %>% 
        filter(!is.na(depth)) %>%
@@ -443,7 +444,7 @@ st_as_sf(coords = c("x","y"),crs=st_crs(pcod_sf))
 #| webex.hide: "Click here to see the solution"
 #| warning: false
 #| message: false
-#| eval: true
+
 
 pred <- predict( fit_hurdle , pxl1,
   ~ {

@@ -16,6 +16,22 @@
   margin-top: 1em;               /* push the list clear of the header band */
 }
 
+
+
+/* ── footer back home area ────────────────────────────── */
+
+.reveal .footer a {
+  display: inline-block;
+  padding: 0.4em 0.9em;
+  background: rgba(27, 79, 94, 0.1);
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.reveal .footer a:hover {
+  background: rgba(27, 79, 94, 0.2);
+}
+
 /* ===============================
    Theme defaults
    =============================== */

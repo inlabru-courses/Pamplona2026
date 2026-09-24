@@ -4,6 +4,7 @@ from: markdown+emoji
 subtitle: "Modelling areal data" 
 format:
   revealjs:
+    code-line-numbers: true
     logo:  NTNU_UofG.png
     theme: uofg_theme.scss
     footer: "<a href='../index.html'>Back to Home</a>"
@@ -546,7 +547,7 @@ Connecting all the neighbouring areas give the following graph
 -   We apply an ICAR model where each region conditionally has a Gaussian distribution with mean equal to the average of the neighbours and a precision proportional to the number of neighbour
 
     $$
-    x_9\mid\mathbf{x}_{-9}\sim N\left(\frac{1}{6}(x_7+x_{11}+x_{12}+x_{13}+x_{14}+x_{15},\frac{1}{6\tau}\right)
+    x_9\mid\mathbf{x}_{-9}\sim N\left(\frac{1}{6}(x_7+x_{11}+x_{12}+x_{13}+x_{14}+x_{15}),\frac{1}{6\tau}\right)
     $$
 
 ![](figures/mp4.png){fig-align="center"}

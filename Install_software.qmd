@@ -26,7 +26,7 @@ repository.
 
 1.  Check your `R` version.
 
-2.  Install R-INLA, instructions can be found  [here](https://www.r-inla.org/download-install)
+2.  Install R-INLA, instructions can be found  [here](https://www.r-inla.org/download/index.html)
 
 3.  Install `inlabru` (available from CRAN)
 
