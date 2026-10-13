@@ -311,7 +311,7 @@ $$
   \right) = \exp\!\left(-\tfrac{1}{2} \, \mathbf{u}^{\top} \mathbf{Q}\ \mathbf{u}\right)
 $$
 
-Important things to understand (not just for RW1 mdoels!):
+Important things to understand (not just for RW1 models!):
 
 1.  **The (sparse) precision matrix**
 2.  Role of the precision parameter $\tau$ and prior distribution
@@ -334,8 +334,9 @@ Let's start at the beginning :smiley:
 
 A **Gaussian distribution** $\mathbf{u}\sim\mathcal{N}(0,\Sigma)$ is controlled by:
 
-—  The mean vector $\mu$, which we have set equal to 0. This is the centre of the distribution
-—  The matrix $\Sigma$ describes all pairwise covariances $\Sigma_{ij} = \text{Cov}(u_i, u_j)$
+—  The **mean vector** $\mu$, which we have set equal to 0. This is the centre of the distribution
+
+—  The **covariance matrix** $\Sigma$ describes all pairwise covariances $\Sigma_{ij} = \text{Cov}(u_i, u_j)$
 
 Formally
 

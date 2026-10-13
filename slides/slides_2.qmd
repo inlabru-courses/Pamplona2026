@@ -169,7 +169,7 @@ In the slides we have fitted the model as:
 ```{r}
 #| echo: true
 #| eval: false
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1) + beta1(covariate, model = "linear")
 formula = y ~ beta0 + beta1
 lik = bru_obs(formula = formula,
               famuly  = "gaussian",
@@ -182,7 +182,7 @@ but in the practical you have
 ```{r}
 #| echo: true
 #| eval: false
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1) + beta1(covariate, model = "linear")
 
 lik = bru_obs(formula = y~.,
               famuly  = "gaussian",
