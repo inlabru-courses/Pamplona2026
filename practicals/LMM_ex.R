@@ -45,8 +45,6 @@ penguins = penguins %>%  drop_na()
 
 
 
-
-
 ## -----------------------------------------------------------------------------
 #| eval: true
 
@@ -60,12 +58,16 @@ fit1 = bru(cmp, lik)
 summary(fit1)
 
 
+## -----------------------------------------------------------------------------
+tidy(fit1)
+
+
 
 
 ## -----------------------------------------------------------------------------
 new_data = data.frame(flipper_len  = 170:240)
 
-pred = predict(fit1, new_data, ~ effects,
+pred = predict(fit1, new_data, ~ beta_0 + beta_1,
                n.samples = 1000)
 
 
@@ -90,7 +92,7 @@ pred %>% ggplot() +
 new_data = data.frame(flipper_len  = 170:240)
 
 pred1 = predict(fit1, new_data,
-               formula = ~ { eta = effects
+               formula = ~ { eta = beta_0 + beta_1
                              sigma = sqrt(1/Precision_for_the_Gaussian_observations)
                              list(mean = eta,
                                   q1 = qnorm(0.025, mean = eta, sd = sigma),
@@ -135,8 +137,10 @@ penguins %>%
 ## -----------------------------------------------------------------------------
 #| eval: true
 
-cmp = ~ -1 + effects( ~ sex*flipper_len, model = "fixed")
-formula = body_mass ~ .
+cmp = ~ -1 + effects( ~ sex , model = "fixed")
+
+formula = body_mass ~ effects
+
 lik = bru_obs(formula = formula,
               data = penguins
               )
@@ -144,8 +148,22 @@ fit2 = bru(cmp, lik)
 
 
 
+
+
 ## -----------------------------------------------------------------------------
-fit2$summary.random
+#| eval: true
+
+cmp = ~ -1 + effects( ~ sex*flipper_len, model = "fixed")
+formula = body_mass ~ .
+lik = bru_obs(formula = formula,
+              data = penguins
+              )
+fit3 = bru(cmp, lik)
+
+
+
+## -----------------------------------------------------------------------------
+fit3$summary.random
 
 
 
@@ -157,7 +175,7 @@ fit2$summary.random
 # here we do not need any new data to predict for, we can use an
 # empty data frame
 
-params = predict(fit2, data.frame() ,
+params = predict(fit3, data.frame() ,
    ~ data.frame( intercept_female = effects_latent[1],
                  intercept_male = effects_latent[1] + effects_latent[2],
                  slope_female = effects_latent[3] ,
@@ -172,12 +190,12 @@ cmp = ~ -1 + sex_intercept(sex, model = "iid", initial = log(0.001), fixed = T) 
 lik = bru_obs(formula = body_mass ~ .,
               data = penguins)
 
-fit2b = bru(cmp, lik)
+fit3b = bru(cmp, lik)
 
 
 ## -----------------------------------------------------------------------------
-fit2b$summary.random$sex_intercept
-fit2b$summary.random$sex_slope
+fit3b$summary.random$sex_intercept
+fit3b$summary.random$sex_slope
 
 
 ## -----------------------------------------------------------------------------
@@ -205,8 +223,8 @@ penguins %>%
 
 
 ## -----------------------------------------------------------------------------
+fit4$summary.random$effects[,c(1,3,5)]
 fit3$summary.random$effects[,c(1,3,5)]
-fit2$summary.random$effects[,c(1,3,5)]
 
 
 
@@ -215,7 +233,7 @@ fit2$summary.random$effects[,c(1,3,5)]
 #| code-fold: true
 
 # Predict
-pred = predict(fit3, penguins, formula = ~ effects + species) 
+pred = predict(fit4, penguins, formula = ~ effects + species) 
 
 pred %>%
   ggplot(aes(x=flipper_len,y=mean,color=factor(sex)))+
@@ -241,12 +259,28 @@ pred %>%
 #               data = penguins
 #               )
 # 
-# fit4 = bru(cmp, lik)
+# fit5 = bru(cmp, lik)
 
 
 
 
 ## -----------------------------------------------------------------------------
-deltaIC(fit1, fit2, fit3, fit4, criterion = c("DIC","WAIC"))
+deltaIC(fit1, fit2, fit3, fit4, fit5, criterion = c("DIC","WAIC"))
+
+
+
+## -----------------------------------------------------------------------------
+
+
+bind_rows(
+  glance(fit1) %>% mutate(model = "length effect"),
+  glance(fit2) %>% mutate(model = "sex effect"),
+  glance(fit3) %>% mutate(model = "Interaction  sex * length"),
+  glance(fit4) %>% mutate(model = "Random Intercept"),
+  glance(fit5) %>% mutate(model = "Random Intercept + Randome Slope"),
+
+) %>%
+  select(model, dic, waic, marginal_loglik, nobs)
+
 
 

@@ -175,22 +175,10 @@ Now we can check the results using the `summary` function directly by calling `m
 
 ```{r}
 tidy(fit)
-```
-
-
-::: {.callout-warning icon="false"}
-## {{< bi pencil-square color=#c8793c >}} Task
-
-Use the `tidy()` function to produce posterior summaries of the hyperparameters
-
-```{r}
-#| webex.hide: "Click here to see the solution"
-#| purl: false
-
 tidy(fit, "hyperpar")
-  
 ```
-:::
+
+
 
 We can also use the `glance()` function from `broom` to obtain our model's goodness-of-fit metrics in a tibble (provided we set `bru_options_set(control.compute = list(dic = TRUE, waic = TRUE))`).
 
