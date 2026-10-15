@@ -1080,23 +1080,23 @@ data.frame(time = Tokyo$time, sapply(samples, function(x) x$probs)) %>%
 
 ```
 
-## The `_latent` suffix
+<!-- ## The `_latent` suffix -->
 
-- Sometimes, one wants to sample directly from latent parameters
-without specifying any new input data (or, in other words, to sample with an identity projection
-matrix)
+<!-- - Sometimes, one wants to sample directly from latent parameters -->
+<!-- without specifying any new input data (or, in other words, to sample with an identity projection -->
+<!-- matrix) -->
 
-- The keyword `_latent` can be appended to a latent component name to retrieve that
+<!-- - The keyword `_latent` can be appended to a latent component name to retrieve that -->
 
-For example, the following code recovers the intercept and the time effect at day 13
-```{r}
-#| echo: true
+<!-- For example, the following code recovers the intercept and the time effect at day 13 -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
 
-p = predict(fit, newdata = c(), ~ data.frame(int = Intercept_latent,
-                                                      f_1 = time_latent[13]))
-```
+<!-- p = predict(fit, newdata = c(), ~ data.frame(int = Intercept_latent, -->
+<!--                                                       f_1 = time_latent[13])) -->
+<!-- ``` -->
 
-**NOTE** Here the `newdata` is just an empty object
+<!-- **NOTE** Here the `newdata` is just an empty object -->
 
 
 
@@ -1186,42 +1186,42 @@ ggplot() + geom_line(data = post_sd, aes(x,y))  +
 | `inla.zmarginal(marginal)` | Summary statistics for the marginal |
 :::
 
-# `NA`s in `inlabru`
+<!-- # `NA`s in `inlabru` -->
 
-## Missing values in `inlabru`
+<!-- ## Missing values in `inlabru` -->
 
-The `bru()` function treats missing values in the dataset differently according to their role in the model.
+<!-- The `bru()` function treats missing values in the dataset differently according to their role in the model. -->
 
-Take the model definition:
-```{r}
-#| echo: true
-#| eval: false
+<!-- Take the model definition: -->
+<!-- ```{r} -->
+<!-- #| echo: true -->
+<!-- #| eval: false -->
 
-cmp = ~ Intercept(1) + covariate(x, model = "linear") + random(z, model = "iid")
-formula = y ~ Intercept + covariate + random
-```
+<!-- cmp = ~ Intercept(1) + covariate(x, model = "linear") + random(z, model = "iid") -->
+<!-- formula = y ~ Intercept + covariate + random -->
+<!-- ``` -->
 
-- **`NA`'s in the response `y`**
+<!-- - **`NA`'s in the response `y`** -->
 
-  If `y[i] = NA`, this means that y[i] is not observed, hence gives no contribution to the likelihood.
+<!--   If `y[i] = NA`, this means that y[i] is not observed, hence gives no contribution to the likelihood. -->
 
-- **`NA`'s in fixed effect `x`**
+<!-- - **`NA`'s in fixed effect `x`** -->
 
-  If `x[i] = NA` this means that `x[i]` is not part of the linear predictor for `y[i]`.
-  For fixed effects, this is equivalent to `x[i]=0`, hence internally we make this change: `x[is.na(x)] = 0`
+<!--   If `x[i] = NA` this means that `x[i]` is not part of the linear predictor for `y[i]`. -->
+<!--   For fixed effects, this is equivalent to `x[i]=0`, hence internally we make this change: `x[is.na(x)] = 0` -->
 
-- **`NA`'s in random effect `z`**
+<!-- - **`NA`'s in random effect `z`** -->
 
-  If `z[i] = NA`, this means that the random effect does not contribute to the linear predictor for `y[i]`.
+<!--   If `z[i] = NA`, this means that the random effect does not contribute to the linear predictor for `y[i]`. -->
 
 
-## Can `inlabru` deal with missing covariates?
+<!-- ## Can `inlabru` deal with missing covariates? -->
 
-No, `inlabru` has no way to `impute' or integrate-out missing covariates.
+<!-- No, `inlabru` has no way to `impute' or integrate-out missing covariates. -->
 
-You have to adjust your model to account for missing covariates.
+<!-- You have to adjust your model to account for missing covariates. -->
 
-Sometimes, you can formulate a joint model for the data and the covariates, but this is case-specific.
+<!-- Sometimes, you can formulate a joint model for the data and the covariates, but this is case-specific. -->
 
 <!-- ## Missing values when using `model = "fixed"` {.smaller} -->
 
@@ -1270,7 +1270,7 @@ Sometimes, you can formulate a joint model for the data and the covariates, but 
 <!-- **WARNING** this is a **global** options, it might interfere with other part of your code! -->
 
 
-## Getting help while using `inlabru`
+# Getting help while using `inlabru`
 
 ## Which priors have I used?
 
