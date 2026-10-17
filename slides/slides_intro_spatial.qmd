@@ -165,7 +165,7 @@ Dependence relationships need to represented in the model –- which observation
 ::: incremental
 -   usually represented by a matrix
 -   some matrix operations (e.g. inversion) are computationally expensive
--   in the past: often MCMC ⇝ very slow
+-   MCMC ⇝ very slow
 -   INLA (and hence `inlabru`) much faster..
 :::
 

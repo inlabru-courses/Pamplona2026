@@ -1155,44 +1155,91 @@ What is this?
 -   $(\kappa^2-\Delta)^{\alpha/2}$ is an operator that "smoothes" the white noise.
 -   $\kappa$ and $\alpha$ are parameters
 
-## One analogy.. {.smaller}
 
--   Think of white noise as someone randomly tapping along a rope.
 
-    -   The taps are independent.
-    -   Some are big, some are small.
-    -   They have no relation to each other.
-    -   This is just like White noise!
+## One analogy {.smaller auto-animate="true" background-color="#FFFFFF"}
 
-. . .
+:::::: columns
+:::: {.column width="40%"}
+Imagine a guitar string stretched from left to right.
 
--   But the rope has tension and stiffness
+-   Now imagine someone randomly taps along it at many locations:
 
-    -   the tension spreads each tap to nearby points.
-    -   Sharp jumps are softened.
+    ::: incremental
+    -   Each tap is independent
+    -   Some taps are strong, some weak
+    -   There is no coordination between taps
+    -   A tap at one location tells you nothing about a tap nearby
+    :::
 
-. . .
+::: fragment
+*This is pure randomness.* But a real string does not behave like this
+:::
+::::
 
--   The rope settles into a smooth wiggly shape (just like a Matérn field!)
-
-. . .
-
-The parameters:
-
--   Tension = controls how far randomness propagates ($\kappa$)
-
--   Stiffness = controls how smooth the field becomes ($\alpha$)
-
-## SPDE as a smoothing operator
-
+::: {.column width="60%"}
 ```{r}
-# # spde_rope_demo.R
-# # Illustrate SPDE-as-a-rope (1D) -> solving (kappa^2 - d2/dx2)^(alpha/2) u = W
-# # Author: ChatGPT
-# # Date: 2025-11-16
+#| echo: false
+#| fig-width: 10
+#| fig-height: 10
 
-
+set.seed(2026)
 # ----- Parameters -----
+N      <- 650        # number of grid points
+x_min  <- 0
+x_max  <- 10
+x      <- seq(x_min, x_max, length.out = N)
+h      <- x[2] - x[1]   # grid spacing
+
+W <- rnorm(N, mean = 0, sd = 1)  # white noise on the grid
+
+p1 = data.frame(x =x,
+           W = W)
+
+ggplot(p1,aes(x=x,y=W))+geom_line(col="grey60")+geom_hline(yintercept = 0) + coord_cartesian(ylim = c(-1, 1)) + labs(x="t")
+
+```
+:::
+::::::
+
+::: notes
+No smoothness
+
+Sharp up/down jumps
+
+No gentle waves
+
+No continuity in behavior
+
+That's because nothing connects one tap to the next.
+:::
+
+##  SPDE as a smoothing operator {.smaller auto-animate="true" background-color="#FFFFFF"}
+
+:::::: columns
+:::: {.column width="40%"}
+Imagine a guitar string stretched from left to right.
+
+-   The rope has tension and stiffness
+    -   the tension spreads each tap to nearby points
+    -   Sharp jumps are softened. $(\kappa^2-\Delta)^{\color{red}{\alpha}/2}\omega(t) = W(t)$
+
+::: fragment
+-   $\Delta$ measures the local curvature
+-   $\kappa$ controls how far randomness propagates
+-   stronger tension (large $\kappa$) = stronger pull
+
+$$(\color{red}{\kappa^2}-\Delta)\omega(t) = W(t), ~~~\text{for } \alpha=2$$
+:::
+::::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 10
+
+set.seed(2026)
 N      <- 650        # number of grid points
 x_min  <- 0
 x_max  <- 10
@@ -1238,16 +1285,11 @@ solve_alpha <- function(A, W, m = 1) {
 # ----- Generate one white-noise realization -----
 W <- rnorm(N, mean = 0, sd = 1)  # white noise on the grid
 
+# alpha=2m
 
-u_fix1 <- solve_alpha(build_A(0.5), W, m = 2/2)  # alpha=2 -> m=1
-u_fix2 <- solve_alpha(build_A(1), W, m = 2/2)  # alpha=2 -> m=1
-u_fix3 <- solve_alpha(build_A(2), W, m = 2/2)  # alpha=2 -> m=1
-
-
-u_fix12 <- solve_alpha(build_A(0.5), W, m = 4/2)  # alpha=2 -> m=1
-u_fix22 <- solve_alpha(build_A(1), W, m = 4/2)  # alpha=2 -> m=1
-u_fix32 <- solve_alpha(build_A(2), W, m = 4/2)  # alpha=2 -> m=1
-
+u_fix1 <- solve_alpha(build_A(0.5), W, m = 2)  # alpha=2 -> m=1
+u_fix2 <- solve_alpha(build_A(1), W, m = 2)  # alpha=2 -> m=1
+u_fix3 <- solve_alpha(build_A(2), W, m = 2)  # alpha=2 -> m=1
 
 p1 = data.frame(x =x,
            W = W,
@@ -1257,26 +1299,162 @@ p1 = data.frame(x =x,
            ) %>%
   ggplot() + geom_line(aes(x,W), alpha = 0.2) + geom_line(aes(x,u1, color = "k = 0.5")) +
   geom_line(aes(x,u2, color = "k = 1")) +
-  geom_line(aes(x,u3, color = "k = 2")) + xlab("") + ylab("") + ggtitle("alpha = 1") + coord_cartesian(ylim = c(-1, 1))
+  geom_line(aes(x,u3, color = "k = 2")) + xlab("") + ylab("") + ggtitle("alpha = 2") + coord_cartesian(ylim = c(-1, 1))+scale_color_discrete(name="") +
+  theme(
+    legend.text  = element_text(size = 18),   # label text size
+    legend.key.size = unit(2, "cm"),         # size of the colour swatches
+    legend.title = element_text(size = 18)     # title (empty here, but sets size if you add one)
+  )
 
-p2 = data.frame(x =x,
-           W = W,
-           u1  = u_fix12,
-           u2  = u_fix22,
-           u3  = u_fix32
-) %>%
-  ggplot() + geom_line(aes(x,W), alpha = 0.2) +
-  geom_line(aes(x,u1, color = "k = 0.5")) +
-  geom_line(aes(x,u2, color = "k = 1")) +
-  geom_line(aes(x,u3, color = "k = 2"))+ xlab("") + ylab("") + ggtitle("alpha = 2") + coord_cartesian(ylim = c(-1, 1))
-
-library(patchwork)
-
-p1 + p2 + plot_layout(ncol = 1, guides = "collect")
+p1 + labs(x="t")
 
 ```
+:::
+::::::
 
-## Solving the SPDE {.smaller}
+::: notes
+Measure the bending at $\omega_i$ by taking the with respect the average of the neighbours (i.e. $\omega_i - (\omega_{i-1}+\omega_i/2) = \omega_{i-1} + 2\omega_i +z_{i+1}$).
+
+-   if $= 0 \rightarrow$ straight
+
+-   if the diff is large $\rightarrow$ sharply bent
+
+-   the sign tells you which way it bends
+
+The curvature need to divide by the spacing $h$ between points (assuming equal spacing), i.e., $(z_{i-1} + 2z_i +z_{i+1}) \times h^{-2}$.
+
+In a continuous space we measured this by taking the second derivative, i.e. the Laplacian operator
+
+As $h\to 0$ we measure the rate of change of slope, i.e. curvature as:
+
+$$(\omega_{i-1} + 2\omega_i +\omega_{i+1}) \times h^{-2}  \to \frac{\partial \omega}{\partial t^2} = \Delta \omega$$ Where $\omega(x)$ is the displacement of the string at position $t$.
+
+Tension ($\kappa$): resists large displacement If a tap pushes part of the string far up or down:
+
+-   tension pulls it back
+-   stronger tension = stronger pull
+
+$$
+\begin{aligned}
+(\color{red}{\kappa^2}-\Delta)\omega(t) &= W(t) \\
+\color{red}{\kappa^2}\omega(t) - \Delta \omega(t) &= W(t)\\
+\text{if } \omega(t) \text{ is large then }& \color{tomato}{\kappa^2 \omega(t)} \text{ becomes large too} \\
+\text{large pull}-\text{back bending}&=\text{random tap}
+\end{aligned}
+$$ In this case, To balance the equation, $\omega(t)$ must be smaller.
+:::
+
+##  SPDE as a smoothing operator {.smaller auto-animate="true" background-color="#FFFFFF"}
+
+:::::: columns
+:::: {.column width="40%"}
+Imagine a guitar string stretched from left to right.
+
+-   The rope has tension and stiffness
+    -   the tension spreads each tap to nearby points
+    -   Sharp jumps are softened.
+
+::: fragment
+-   Stiffness = controls how smooth the field becomes ($\alpha$)
+-   Larger $\alpha$ smoother the process will be
+
+$$
+(\kappa^2-\Delta)^{\color{red}{\alpha}/2}\omega(t) = W(t)
+$$
+:::
+::::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 10
+
+set.seed(2026)
+
+# Grid
+N      <- 650
+x_min  <- 0
+x_max  <- 10
+x      <- seq(x_min, x_max, length.out = N)
+h      <- x[2] - x[1]
+
+# Build D2
+D2 <- matrix(0, nrow = N, ncol = N)
+diag(D2) <- -2
+for(i in 1:(N-1)){
+  D2[i, i+1] <- 1
+  D2[i+1, i] <- 1
+}
+I_N <- diag(1, N)
+
+# White noise
+W <- rnorm(N, mean = 0, sd = 1)
+
+# Fix kappa
+kappa_fixed <- 0.5
+
+# alpha = 2  -> m = 1
+u_alpha2 <- solve_alpha(build_A(kappa_fixed), W, m = 1)
+
+# alpha = 4  -> m = 2
+u_alpha4 <- solve_alpha(build_A(kappa_fixed), W, m = 2)
+
+# Plot
+library(ggplot2)
+library(dplyr)
+
+df <- data.frame(
+  x = x,
+  W = W,
+  alpha2 = u_alpha2,
+  alpha4 = u_alpha4
+)
+
+p <- df %>%
+  ggplot() +
+  geom_line(aes(x, W), alpha = 0.2) +
+  geom_line(aes(x, alpha2, color = "alpha = 2")) +
+  geom_line(aes(x, alpha4, color = "alpha = 4")) +
+  labs(
+    x = "t",
+    y = "W"
+  ) +
+  coord_cartesian(ylim = c(-1, 1)) +
+  scale_color_discrete(name = "")+
+  theme(
+    legend.text  = element_text(size = 18),   # label text size
+    legend.key.size = unit(2, "cm"),         # size of the colour swatches
+    legend.title = element_text(size = 18)     # title (empty here, but sets size if you add one)
+  )
+
+p
+
+
+```
+:::
+::::::
+
+::: notes
+Lastly $\alpha$ controls how *smooth* the final shape. E.g.,
+
+$$
+W(t) = \begin{cases}
+(\kappa^2-\Delta)\omega(t) & \text{if } \alpha= 2 \text{ i.e., string resists curvature once}\\
+(\kappa^2-\Delta)^2\omega(t) & \text{if } \alpha= 4 \text{ i.e., string resists curvature twice}
+\end{cases}
+$$
+
+Take the white noise $W(t)$ and smooth it once by the operator $(\kappa^2 - \Delta)^{-1}$ so the operator filters the white noise once
+
+-   it reduces sharp spikes
+
+-   but still leaves some visible bumps
+
+At $\alpha=2$ we smooth the result again.. Each pass removes high-frequency components (sharp bumps)
+:::
+
+## Solving the SPDE {.smaller background-color="#FFFFFF" auto-animate="true"}
 
 Ok...but we still need to solve the SPDE to find $\omega(t)$!
 
@@ -1291,13 +1469,154 @@ Now we need to discretize the domain into T points (we cannot compute on the con
 We represent our solution as
 
 $$
-\omega(t) = \sum_{i = 1}^T\phi_i(t)w_i
+\omega(t) = \sum_{i = 1}^T\psi_i(t)w_i
 $$
 
 Where
 
--   $\phi_i(s)$ are (known) basis functions
+-   $\psi_i(t)$ are (known) basis functions for nodes $i=1,\ldots,T$
+
+    -   $\psi_i(t_i)= 1$
+
+    <!-- -->
+
+    -   $\psi_i(t_j) = 0 ~~\forall~~i \neq j$
+
+    <!-- -->
+
+    -   Linear between neighboring nodes
+:::
+
+::: {.column width="50%"}
+```{r}
+#| out-width: 70%
+
+locs = c(-5,10,15,25,40,50,60)
+mesh1d = fm_mesh_1d(locs, degree = 1, boundary = "neumann")
+p1 = ggplot() +
+  geom_fm(data = mesh1d, xlim = c(-10, 70)) +
+  geom_point(data = data.frame(x = locs, y = 0), aes(x,y)) +
+  geom_text(data = data.frame(x = locs + 0.5, y = -0.1), aes(x,y,label = 1:7))
+
+p1
+
+eval = fm_evaluator(mesh1d)
+w = round(runif(7), 3)
+
+ p1 + geom_line(data = data.frame(x = eval$x,
+                           y = fm_evaluate(eval, w)),
+                aes(x,y), size = 2) + ggtitle(paste("w=",paste(round(w,2), collapse = ', ')))
+
+```
+:::
+:::::
+
+::: notes
+-   "solving the SPDE" means Find a random function $\omega(t)$ such that the equality $(\kappa^2-\Delta)^{\alpha/2}Z\omega(t) = W(t)$ holds in distribution.
+-   in other words find $\omega(s)$ such that when the operator $(\kappa^2-\Delta)^{\alpha/2}$ is applied to it, it produces white noise
+-   OR, The Matérn field is the Gaussian field $\omega(s)$ produced by smoothing white noise $W(t)$ through the inverse operator $(\kappa^2-\Delta)^{\alpha/2}$.
+-   The Matérn field is infinite-dimensional so we approximate it using a finite basis expansion
+    -   we want a simple local basis
+    -   each basis only affects neighbors
+    -   so computations become sparse
+-   Each weight $w_i$ is basically the value of the field at node $i$
+-   The basis functions are:
+    -   Height = 1 at node
+    -   Zero at neighboring nodes
+    -   Linear in between
+-   A hat function is not the field. It is a *building block* for the field.
+-   the field between nodes is interpolated linearly so the vector of weights fully defines the approximate field.
+-   Since the SPDE is linear and the white noise is Gaussian, the solution is Gaussian
+:::
+
+## Solving the SPDE {.smaller background-color="#FFFFFF" auto-animate="true"}
+
+Ok...but we still need to solve the SPDE to find $\omega(t)$!
+
+Now we need to discretize the domain into T points (we cannot compute on the continuous!)
+
+::::: columns
+::: {.column width="50%"}
+We represent our solution as
+
+$$
+\omega(t) = \sum_{i = 1}^T\psi_i(t)w_i
+$$
+
+Where
+
+-   $\psi_i(t)$ are (known) basis functions for nodes $i=1,\ldots,T$
+
 -   $w_i$ are (unknown) weights
+
+    -   the field value $\omega(s)$ is a **linear interpolation** between the two neighboring weights
+:::
+
+::: {.column width="50%"}
+```{r}
+#| out-width: 70%
+
+locs = c(-5,10,15,25,40,50,60)
+mesh1d = fm_mesh_1d(locs, degree = 1, boundary = "neumann")
+p1 = ggplot() +
+  geom_fm(data = mesh1d, xlim = c(-10, 70)) +
+  geom_point(data = data.frame(x = locs, y = 0), aes(x,y)) +
+  geom_text(data = data.frame(x = locs + 0.5, y = -0.1), aes(x,y,label = 1:7))
+
+p1
+
+eval = fm_evaluator(mesh1d)
+w = round(runif(7), 3)
+
+ p1 + geom_line(data = data.frame(x = eval$x,
+                           y = fm_evaluate(eval, w)),
+                aes(x,y), size = 2) + ggtitle(paste("w=",paste(round(w,2), collapse = ', ')))
+
+```
+:::
+:::::
+
+::: notes
+-   "solving the SPDE" means Find a random function $Z(t)$ such that the equality $(\kappa^2-\Delta)^{\alpha/2}Z(t) = W(t)$ holds in distribution.
+-   in other words find $Z(s)$ such that when the operator $(\kappa^2-\Delta)^{\alpha/2}$ is applied to it, it produces white noise
+-   OR, The Matérn field is the Gaussian field $Z(s)$ produced by smoothing white noise $W(t)$ through the inverse operator $(\kappa^2-\Delta)^{\alpha/2}$.
+-   The Matérn field is infinite-dimensional so we approximate it using a finite basis expansion
+    -   we want a simple local basis
+    -   each basis only affects neighbors
+    -   so computations become sparse
+-   Each weight $w_i$ is basically the value of the field at node $i$
+-   The basis functions are:
+    -   Height = 1 at node
+    -   Zero at neighboring nodes
+    -   Linear in between
+-   A hat function is not the field. It is a *building block* for the field.
+-   the field between nodes is interpolated linearly so the vector of weights fully defines the approximate field.
+-   Since the SPDE is linear and the white noise is Gaussian, the solution is Gaussian
+:::
+
+## Solving the SPDE {.smaller background-color="#FFFFFF" auto-animate="true"}
+
+Ok...but we still need to solve the SPDE to find $\omega(t)$!
+
+Now we need to discretize the domain into T points (we cannot compute on the continuous!)
+
+::::: columns
+::: {.column width="50%"}
+We represent our solution as
+
+$$
+\omega(t) = \sum_{i = 1}^T\psi_i(t)w_i
+$$
+
+Where
+
+-   $\psi_i(t)$ are (known) basis functions for nodes $i=1,\ldots,T$
+
+-   $w_i$ are (unknown) weights
+
+-   This solution is then approximated using a finite combination of piece-wise linear basis functions.
+
+-   The solution is completely defined by a Gaussian vector of weights with zero mean and a sparse precision matrix.
 :::
 
 ::: {.column width="50%"}
@@ -1329,7 +1648,7 @@ w = round(runif(7), 3)
 -   The continuous Matérn GRF is the solution of an SPDE and is represented as
 
 $$
-\omega(t) = \sum_{i = 1}^T\phi_i(t)w_i
+\omega(t) = \sum_{i = 1}^T\psi_i(t)w_i
 $$
 
 -   The weights vector $\mathbf{w} = (w_1,\dots,w_N)$ is Gaussian with a **sparse** precision matrix $\longrightarrow$ Computational convenience
