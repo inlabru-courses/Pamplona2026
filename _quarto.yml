@@ -8,6 +8,7 @@ project:
   - slides/slides_1.qmd
   - slides/slides_2.qmd
   - slides/slides_3.qmd
+  - slides/slides_recap1.qmd
   - slides/slides_intro_spatial.qmd
   - slides/slides_areal.qmd
   - slides/slides_geostats.qmd

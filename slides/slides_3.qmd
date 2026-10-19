@@ -525,7 +525,7 @@ A common option is the so called *PC-priors*
 
 -   They are built with two principles in mind:
 
-    1.  The prior **discourages overdispersion** by penalizing deviation from a *base model*
+    1.  The prior **discourages overfitting** by penalizing deviation from a *base model*
 
 ::::: columns
 ::: {.column width="60%"}
@@ -562,7 +562,7 @@ ggplot() + geom_point(data = lakes, aes(year, Erie)) +
 
 -   They are built with two principle in mind:
 
-    1.  The prior **discourages overdispersion** by penalizing deviation from a *base model*
+    1.  The prior **discourages overfitting** by penalizing deviation from a *base model*
     2.  **User-defined** scaling
 
 ::::: columns
@@ -932,7 +932,7 @@ The AR1 model has two parameters
         \text{Prob}(\sigma > u) = \alpha
         $$
 
--   The autocorrelation (or persistence) parameter \$\phi\in(-1,1)
+-   The autocorrelation (or persistence) parameter $\phi\in(-1,1)$
 
     -   Two choices of PC priors
 
@@ -1721,15 +1721,15 @@ p1 = ggplot() + geom_line(data=dens_prior_range(5, 0.5),
 
 
 p2 = ggplot() + geom_line(data=dens_prior_sd(1, 0.5),
-                     aes(x,y,color = "P(rho<5) = 0.5")) +
+                     aes(x,y,color = "P(sd>1) = 0.5")) +
   geom_line(data=dens_prior_sd(1, 0.1),
-                     aes(x,y,color = "P(rho<5) = 0.1")) +
+                     aes(x,y,color = "P(sd>0.2) = 0.1")) +
   geom_line(data=dens_prior_sd(0.2, 0.5),
-                     aes(x,y,color = "P(rho<10) = 0.5")) +
+                     aes(x,y,color = "P(sd>0.2) = 0.5")) +
   geom_line(data=dens_prior_sd(0.2, 0.1),
-                     aes(x,y,color = "P(rho<10) = 0.1")) +
+                     aes(x,y,color = "P(sd>0.2) = 0.1")) +
   xlab("") + ylab("") + theme(legend.title = element_blank())+
-  ggtitle("PC prior for range") + xlim(c(0,5))
+  ggtitle("PC prior for sd") + xlim(c(0,5))
 
 p1 + p2
 ```

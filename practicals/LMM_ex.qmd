@@ -89,7 +89,7 @@ We consider a simple linear regression model with Gaussian observations
 
 $$y_i\sim\mathcal{N}(\mu_i, \sigma_y^2), \qquad i = 1,\dots,N$$
 
-where $\sigma^2y$ is the observation error, and the mean parameter $\mu_i$ is linked to the **linear predictor** ($\eta_i$) through an identity function:
+where $\sigma^2_y$ is the observation error, and the mean parameter $\mu_i$ is linked to the **linear predictor** ($\eta_i$) through an identity function:
 
 $$\eta_i = \mu_i = \beta_0 + \beta_1 x_i.$$
 

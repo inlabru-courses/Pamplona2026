@@ -181,10 +181,10 @@ In the slides we have fitted the model as:
 ```{r}
 #| echo: true
 #| eval: false
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1) + beta1(covariate, model = "linear")
 formula = y ~ beta0 + beta1
 lik = bru_obs(formula = formula,
-              famuly  = "gaussian",
+              family  = "gaussian",
               data = df)
 fit = bry(cmp, lik)
 ```
@@ -194,10 +194,10 @@ but in the practical you have
 ```{r}
 #| echo: true
 #| eval: false
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1) + beta1(covariate, model = "linear")
 
 lik = bru_obs(formula = y~.,
-              famuly  = "gaussian",
+              family  = "gaussian",
               data = df)
 fit = bry(cmp, lik)
 ```
@@ -212,10 +212,10 @@ In the slides we have fitted the model as:
 #| eval: false
 #| code-line-numbers: "2-3"
 
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1)+ beta1(covariate, model = "linear")
 formula = y ~ beta0 + beta1
 lik = bru_obs(formula = formula,
-              famuly  = "gaussian",
+              family  = "gaussian",
               data = df)
 fit = bru(cmp, lik)
 ```
@@ -227,10 +227,10 @@ but in the practical you have
 #| eval: false
 #| code-line-numbers: "2-3"
 
-cmp = ~ -1 + beta0(1) beta1(covariate, model = "linear")
+cmp = ~ -1 + beta0(1) + beta1(covariate, model = "linear")
 
 lik = bru_obs(formula = y~.,
-              famuly  = "gaussian",
+              family  = "gaussian",
               data = df)
 fit = bru(cmp, lik)
 ```
@@ -244,7 +244,7 @@ fit = bru(cmp, lik)
 #| eval: false
 
 lik = bru_obs(formula = y~  beta0 + beta1,
-              famuly  = "gaussian",
+              family  = "gaussian",
               data = df)
 ```
 
