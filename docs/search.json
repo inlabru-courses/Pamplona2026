@@ -522,7 +522,7 @@
     "href": "slides/non_linear_predictor_slides.html#section",
     "title": "Lecture",
     "section": "",
-    "text": "bru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11200% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 941% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 2% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
+    "text": "bru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11000% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 892% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 1.87% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#checking-results---estimated-parameters",
@@ -2258,7 +2258,7 @@
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-5",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,825.22\n1,420.96\n85,676.17\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,825.25\n1,420.85\n85,677.51\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
   },
   {
     "objectID": "slides/slides_areal.html#bym2-model",
