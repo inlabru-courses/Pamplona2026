@@ -88,13 +88,14 @@ No knowledge of `R-INLA` or `inlabru` is required.
 | 13:00 - 14:30 | Lunch 🍽️ |
 | 14:30 - 15:30 |  [**Session 5**: Areal processes](slides/slides_areal.html) |
 | 15:30 - 15:45 | Coffee break ☕ |
-| 15:45 - 17:00 | [**Session 5 cont.**: Non-linear predictors](slides/slides_areal.html) |
+| 15:45 - 17:00 | [**Session 5 cont.**: Non-linear predictors](slides/non_linear_predictor_slides.html) |
 
 
 
 ###	Wednesday 21$^{st}$
 
 : {.striped .hover}
+
 
 | Time | Topic |
 |:----------------------------------:|:----------------------------------:|
