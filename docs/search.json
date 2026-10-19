@@ -473,7 +473,7 @@
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model-2",
     "title": "Lecture",
     "section": "A simple growth model",
-    "text": "A simple growth model\nWhy do we need more than INLA?\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\]\nNote This model cannot be solved in INLA…why?\n. . .\nThe model components \\(L\\), \\(k\\), \\(t_0\\) enter the predictor \\(\\eta\\) in a non-linear way.\n. . .\nThis means that \\(\\eta\\) is NOT gaussian!!"
+    "text": "A simple growth model\nWhy do we need more than INLA?\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\]\nNote This model cannot be solved in INLA…why?\n\nThe model components \\(L\\), \\(k\\), \\(t_0\\) enter the predictor \\(\\eta\\) in a non-linear way.\n\n\nThis means that \\(\\eta\\) is NOT Gaussian!!"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#extending-inla-to-non-linear-predictors",
@@ -501,7 +501,7 @@
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-1",
     "title": "Lecture",
     "section": "A simple growth model - Fitting the model",
-    "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nDefine the components\n\nNote here we use the PIT transform to go from \\(\\mathcal{N}(0,1)\\) to \\(\\exp(\\kappa)\\)\nThis also gives a non-linear model, this “trick” can be usedful in other cases!!"
+    "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nDefine the components\n\nNote here we use the PIT transform to go from \\(\\mathcal{N}(0,1)\\) to \\(\\exp(\\kappa)\\)\nThis also gives a non-linear model, this “trick” can be useful in other cases!!"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-2",
@@ -522,7 +522,7 @@
     "href": "slides/non_linear_predictor_slides.html#section",
     "title": "Lecture",
     "section": "",
-    "text": "bru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11000% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 892% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 1.87% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
+    "text": "bru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11100% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 900% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 2.45% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#checking-results---estimated-parameters",
@@ -536,7 +536,7 @@
     "href": "slides/non_linear_predictor_slides.html#a-bayesian-spatial-extention-of-the-lee-carter-model",
     "title": "Lecture",
     "section": "A (Bayesian) spatial extention of the Lee-Carter model",
-    "text": "A (Bayesian) spatial extention of the Lee-Carter model\n\\[\\begin{align*}\nY_{xt} \\mid \\lambda_{xt} &\\sim \\text{Poisson}(E_{xt} \\lambda_{xt})\\\\\n\\log(\\lambda_{xts}) &= \\alpha_x + \\beta_x \\kappa_t + \\omega_{sg_x} +  z_{xts}\n\\end{align*}\n\\] with\n\n\\(\\alpha_x \\mid \\tau_\\alpha \\sim \\mathcal{N}(0, \\tau_\\alpha)\\), for \\(x=1, \\ldots, N\\).\n\\(\\beta_x \\mid \\tau_\\beta \\sim \\mathcal{N}(0, \\tau_\\beta)\\), for \\(x=1, \\ldots, N\\), with \\(\\sum_x \\beta_x = 1\\)\n$t = t + ^{t}$, \\(\\ t=1, \\ldots, T\\), where \\({\\kappa}^\\star\\) follows a RW1(\\(\\tau_\\kappa\\)) and \\(\\sum \\kappa_t = 0\\)\n\\(\\omega_{sg_x} \\mid \\tau_\\omega\\) Age specific spatial effect\n\\(z_{xts} \\mid \\tau_z\\) iid effect to allow for extra variability"
+    "text": "A (Bayesian) spatial extention of the Lee-Carter model\n\\[\\begin{align*}\nY_{xt} \\mid \\lambda_{xt} &\\sim \\text{Poisson}(E_{xt} \\lambda_{xt})\\\\\n\\log(\\lambda_{xts}) &= \\alpha_x + \\beta_x \\kappa_t + \\omega_{sg_x} +  z_{xts}\n\\end{align*}\n\\] with\n\n\\(\\alpha_x \\mid \\tau_\\alpha \\sim \\mathcal{N}(0, \\tau_\\alpha)\\), for \\(x=1, \\ldots, N\\).\n\\(\\beta_x \\mid \\tau_\\beta \\sim \\mathcal{N}(0, \\tau_\\beta)\\), for \\(x=1, \\ldots, N\\), with \\(\\sum_x \\beta_x = 1\\)\n\\(\\kappa_t = \\phi \\cdot t  + \\kappa^\\star_{t}\\), $ t=1, , T$, where \\({\\kappa}^\\star\\) follows a RW1(\\(\\tau_\\kappa\\)) and \\(\\sum \\kappa_t = 0\\)\n\\(\\omega_{sg_x} \\mid \\tau_\\omega\\) Age specific spatial effect\n\\(z_{xts} \\mid \\tau_z\\) iid effect to allow for extra variability"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#identifiability-constraints",
