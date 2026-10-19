@@ -1,0 +1,349 @@
+---
+title: "Lecture 1"
+from: markdown+emoji
+subtitle: "Introduction" 
+format:
+  revealjs:
+    code-line-numbers: true
+    logo:  NTNU_UofG.png
+    theme: uofg_theme.scss
+    footer: "<a href='../index.html'>Back to Home</a>"
+    header-includes: |
+      <script src="custom.js" type="application/javascript"></script>
+slide-number: "c/t"
+title-slide-attributes:
+#    data-background-image: images/trondheim3.png
+    data-background-size: cover
+    data-background-opacity: "0.55"
+author:
+  - name: Sara Martino
+    #orcid: 0000-0002-6879-4412
+    email: sara.martino@ntnu.no
+    affiliations: Dept. of Mathematical Science, NTNU
+  - name: Janine Illian
+    #orcid: 0000-0002-6879-4412
+    email: Janine.Illian@glasgow.ac.uk
+    affiliations: University of Glasgow 
+  - name: Jafet Belmont
+    #orcid: 0000-0002-6879-4412
+    email: Jafet.Belmont@glasgow.ac.uk
+    affiliations: University of Glasgow   
+        
+# date: May 22, 2025
+# bibliography: references.bib
+embed-resources: true
+execute:
+  allow-html: true
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+#| include: false
+
+knitr::opts_chunk$set(echo = FALSE,  
+                      message=FALSE, 
+                      warning=FALSE, 
+                      strip.white=TRUE, 
+                      prompt=FALSE,
+                      fig.align="center",
+                       out.width = "60%")
+
+library(knitr)    # For knitting document and include_graphics function
+library(ggplot2)  # For plotting
+library(png) 
+library(tidyverse)
+library(INLA)
+library(BAS)
+library(patchwork)
+library(inlabru)
+library(fmesher)
+
+```
+
+## Non linear predictor
+
+-   Sometimes one is interested in models whose parameters interact in a non-linear way
+
+. . .
+
+
+##  A simple  growth model{.smaller}
+
+We want to include some "biology" in the statistical model.
+
+The age and size of a fish have the following relationship
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+$$
+\begin{aligned}
+y_t&\sim\mathcal{N}(\mu_t, \sigma^2)\\
+\eta_t &= \mu_t = L(1-\exp(-k\ (t-t_0)))
+\end{aligned}
+$$ where $t$ is the age and $y_t$ the lenght of the fish
+
+Parameters  are $\theta = c(L,\kappa, t_0)$ where $L,t_0\in\mathcal{R}$ and $\kappa>0$
+
+The parameters have a biological meaning.
+
+
+:::
+
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: false
+library(inlabru)
+library(INLA)
+library(tidyverse)
+
+L <- 250
+kappa <- 0.39
+t0 <- -2
+sd_y <- 1
+max_age <- 10
+
+
+
+
+df0 <- data.frame(age = seq(0,max_age, 0.1)) %>%
+  mutate(mu = L * (1 - exp(-kappa * (age - t0)))) 
+
+df0 %>% ggplot() + geom_line(aes(age, mu)) +
+  ylab("Mean size")
+```
+
+
+:::
+
+::::
+
+
+##  A simple  growth model{.smaller}
+
+We want to include some "biology" in the statistical model.
+
+The age and size of a fish have the following relationship
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+$$
+\begin{aligned}
+y_t&\sim\mathcal{N}(\mu_t, \sigma^2)\\
+\eta_t &= \mu_t = L(1-\exp(-k\ (t-t_0)))
+\end{aligned}
+$$ 
+where $t$ is the age and $y_t$ the lenght of the fish
+
+Parameters  are $\theta = c(L,\kappa, t_0)$ where $L,t_0\in\mathcal{R}$ and $\kappa>0$
+
+The parameters have a biological meaning.
+
+
+:::
+
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: false
+library(inlabru)
+library(INLA)
+library(tidyverse)
+
+L <- 250
+kappa <- 0.39
+t0 <- -2
+sd_y <- 2
+max_age <- 10
+
+
+
+
+df0 <- data.frame(age = seq(0,max_age, 0.1)) %>%
+  mutate(mu = L * (1 - exp(-kappa * (age - t0)))) 
+
+
+
+
+Ndata <- 100
+
+
+df <- data.frame(age = runif(n = Ndata, min = 0, max = max_age)) %>%
+  mutate(mu = L * (1 - exp(-kappa * (age - t0)))) %>%
+  mutate(y = rnorm(Ndata, mu, sd_y))
+
+df0 %>% ggplot() + geom_line(aes(age, mu)) +
+  ylab("Mean size") +
+  geom_point(data =df, aes(age, y), color = "red")
+```
+
+
+:::
+
+::::
+
+
+
+## A simple growth model
+
+$$
+\begin{aligned}
+y_t&\sim\mathcal{N}(\mu_t, \sigma^2)\\
+\eta_t &= \mu_t = L(1-\exp(-k\ (t-t_0)))
+\end{aligned}
+$$ 
+
+
+**Note** This model cannot be solved in INLA...why?
+
+. . .
+
+The model components $L$, $k$, $t_0$ enter the predictor $\eta$ in a non-linear way.
+
+. . .
+
+This means that $\eta$ is **NOT** gaussian!!
+
+
+## Extending INLA to non-linear predictors{.smaller}
+
+::: {.smaller}
+
+In addition to being a wrapper around R-INLA, inlabru extends the scope of INLA to models with non-linear predictors $\tilde{\eta}(\mathbf{u})$.
+
+:::
+
+. . .
+
+:::: columns
+
+::: {.column width="70%"}
+
+::: {.smaller}
+
+💡 **The idea** 💡 
+
+- Linearize $\tilde{\eta}(\mathbf{u})$ using a first-order Taylor expansion around $\mathbf{u}_0$:
+
+$$
+\tilde{\eta}(\mathbf{u}) \approx \tilde{\eta}(\mathbf{u}_0) + f_{\text{linear}}(\mathbf{u}) = \bar{\eta}(\mathbf{u})
+$$
+
+- Run INLA for the linearized problem  
+- Iterate until convergence  
+    - $\tilde{\eta}(\mathbf{u}_0))$ close enough to $\bar{\eta}(\mathbf{u_0})$
+
+:::
+
+:::
+
+::: {.column width="30%"}
+
+::: {.callout-note .smaller}
+**Note**
+
+For details:  
+[https://arxiv.org/abs/2407.00791v1](https://arxiv.org/abs/2407.00791v1)
+
+:::
+
+:::
+
+::::
+
+## Extending INLA to non-linear predictors
+
+- The linearization is an approximation on top of the "usual" INLA approximation
+- Accuracy will depend on the nature of the non-linearity around $\mathbf{u}_0$ and the choice of convergence criteria.
+- Greater care than usual is needed for the choice of priors.
+
+
+
+
+
+
+
+```{r}
+#| eval: false
+library(inlabru)
+library(INLA)
+library(tidyverse)
+
+L <- 250
+kappa <- 0.39
+t0 <- -2
+sd_y <- 1
+
+#' I sumulate 10 000 data points.
+
+#+ echo = FALSE
+# simulate data -----------------------------------------------------------
+
+Ndata <- 100
+max_age <- 10
+
+
+df <- data.frame(age = runif(n = Ndata, min = 0, max = max_age)) %>%
+  mutate(mu = L * (1 - exp(-kappa * (age - t0)))) %>%
+  mutate(y = rnorm(Ndata, mu, sd_y))
+
+
+
+# df = data.frame(age = sample(1:max_age, size = Ndata, replace = T)) %>%
+#   mutate( mu = L * (1 - exp(-kappa * (age-t0)))) %>%
+#   mutate(y_orig = (rnorm(Ndata, mu, sd_y))) %>%
+#   mutate(y = round(y_orig/10)*10)
+
+df %>% ggplot() +
+  geom_point(aes(age, (y))) +
+  geom_line(aes(age, mu), color = "red") +
+  ggtitle("Simulated data and true growth curve")
+
+# Maybe scale data for numerical stability
+# Finn: INLA sometimes runs into issues along the way, but the model
+# construction below seems to end up with an accurate final result even with
+# scale_par = 1. The code below takes scale_par into acount wherever it is
+# needed.
+scale_par <- 1 # sd(df$y)
+df <- df %>%
+  mutate(y_scale = y / scale_par)
+# define components ---------------
+
+cmp <- ~ -1 +
+  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +
+  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +
+  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))
+
+growth_function <- function(L, kappa, t0, age) {
+  L * (1 - exp(-kappa * (age - t0)))
+}
+
+formula <- y ~  growth_function(L, kappa, t0, age)
+
+lik <- bru_obs(
+  formula = formula,
+  family = "gaussian",
+  data = df
+)
+bru_options_set(bru_verbose = 2, bru_max_iter = 20)
+fit <- bru(cmp, lik)
+
+
+```
+
