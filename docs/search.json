@@ -2258,7 +2258,7 @@
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-5",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,822.95\n1,423.05\n85,625.90\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit1, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,825.09\n1,421.07\n85,673.37\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit1, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
   },
   {
     "objectID": "slides/slides_areal.html#bym2-model",
@@ -3224,14 +3224,14 @@
     "href": "slides/slides_areal.html#bym-model---a-note-on-the-smoothing-parameter",
     "title": "Lecture 5",
     "section": "BYM model - A note on the smoothing parameter",
-    "text": "BYM model - A note on the smoothing parameter\n\nImportant The smootheness of the GMRF \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q}), \\qquad Q =  \\tau(\\mathbf{D} - \\mathbf{W})\n\\] depends on:\n\n\nThe smoothing parameter \\(\\tau\\) AND\nThe neighbouring structure of the precision matrix \\(\\mathbf{Q}\\)\n\nTo compare smoothness we need to scale the model (this is NOT done by defult in the definition of the besag model in inlabru)\n\n\nFor disconnected graphs (or graph with islands) some care is needed when defining the sum to zero constraints\n\n\nSee this paper where the problem is discussed!"
+    "text": "BYM model - A note on the smoothing parameter\n\nImportant The smootheness of the GMRF \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q}), \\qquad Q =  \\tau(\\mathbf{D} - \\mathbf{W})\n\\] depends on:\n\n\nThe smoothing parameter \\(\\tau\\) AND\nThe neighbouring structure of the precision matrix \\(\\mathbf{Q}\\)\n\nTo compare smoothness we need to scale the model (this is NOT done by defult in the definition of the besag model in inlabru)\n\n\nFor disconnected graphs (or graphs with islands) some care is needed when defining the sum-to-zero constraints\n\n\n\nSee this paper where the problem is discussed!"
   },
   {
     "objectID": "slides/slides_areal.html#parameters-from-bym2-model",
     "href": "slides/slides_areal.html#parameters-from-bym2-model",
     "title": "Lecture 5",
     "section": "Parameters from BYM2 model",
-    "text": "Parameters from BYM2 model\n\n# define model component\ncmp2 = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"bym2\", graph = Q, # priors\n               hyper = list(theta1 = list(\"PCprior\", c(1.61, 0.01)), # Pr(sd&gt;1) = 0.01 \n                            theta2 = list(\"PCprior\", c(0.5, 0.66)))) # Pr(phi&lt;0.5)=0.66\n\n# define model predictor\neta2 =  observed ~ Intercept + ui  + pm10\n\n# build the observation model\nlik2 = bru_obs(formula = eta2, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit2 = bru(cmp2, lik2)\n\nround(fit1$summary.hyperpar,3)\n\n                      mean        sd 0.025quant  0.5quant 0.975quant     mode\nPrecision for ui     2.821     0.299      2.275     2.806      3.452    2.777\nPrecision for vi 21822.945 24032.295   1423.051 14269.195  85625.902 3864.216\n\nround(fit2$summary.hyperpar,3)\n\n                  mean    sd 0.025quant 0.5quant 0.975quant  mode\nPrecision for ui 7.307 0.947      5.572    7.263      9.293 7.207\nPhi for ui       0.824 0.092      0.605    0.841      0.958 0.880"
+    "text": "Parameters from BYM2 model\n\n# define model component\ncmp2 = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"bym2\", graph = Q, # priors\n               hyper = list(theta1 = list(\"PCprior\", c(1.61, 0.01)), # Pr(sd&gt;1) = 0.01 \n                            theta2 = list(\"PCprior\", c(0.5, 0.66)))) # Pr(phi&lt;0.5)=0.66\n\n# define model predictor\neta2 =  observed ~ Intercept + ui  + pm10\n\n# build the observation model\nlik2 = bru_obs(formula = eta2, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit2 = bru(cmp2, lik2)\n\nround(fit1$summary.hyperpar,3)\n\n                      mean        sd 0.025quant  0.5quant 0.975quant     mode\nPrecision for ui     2.821     0.299      2.275     2.806      3.452    2.777\nPrecision for vi 21825.085 24049.721   1421.067 14264.670  85673.369 3857.661\n\nround(fit2$summary.hyperpar,3)\n\n                  mean    sd 0.025quant 0.5quant 0.975quant  mode\nPrecision for ui 7.307 0.947      5.572    7.263      9.293 7.207\nPhi for ui       0.824 0.092      0.605    0.841      0.958 0.880"
   },
   {
     "objectID": "slides/slides_areal.html#bym2-model---specification",
@@ -3245,7 +3245,7 @@
     "href": "slides/slides_areal.html#scaling-and-adjusting-for-disconnected-components",
     "title": "Lecture 5",
     "section": "Scaling and Adjusting for disconnected components",
-    "text": "Scaling and Adjusting for disconnected components\nSome details\n\nThe case (scale.model==FALSE & adjust.for.con.comp == FALSE)\n\nThe option constr=TRUE is interpreted as a sum-to-zero constraint over the whole graph. Singletons are given a uniform distribution on (−∞, ∞) before the constraint.\n\nThe case (scale.model==TRUE & adjust.for.con.comp == FALSE)\n\nThe option constr=TRUE is interpreted as a sum-to-zero constraint over the whole graph. Let Q= τ R be the standard precision matrix from the besag-model with precision parameter τ . Then R, except the singletons, are scaled so that the geometric mean of the marginal variances is 1, and R is modified so that singletons have a standard Normal distribution.\n\nThe case (scale.model==FALSE & adjust.for.con.comp == TRUE)\n\nThe option constr=TRUE is interpreted as one sum-to-zero constraint over each of the nc2 connected components of size ≥ 2. Singletons are given a uniform distribution on (−∞, ∞).\n\nThe case (scale.model==TRUE & adjust.for.con.comp == TRUE)\n\nThe option constr=TRUE is interpreted as nc2 sum-to-zero constraints for each of the connected components of size ≥ 2. Let Q= τ R be the standard precision matrix from the besag-model with precision parameter τ . Then R, are scaled so that the geometric mean of the marginal variances in each connected component of size ≥ 2 is 1, and modified so that singletons have a standard Normal distribution."
+    "text": "Scaling and Adjusting for disconnected components\nSome details\n\nThe case (scale.model==FALSE & adjust.for.con.comp == FALSE)\n\nThe option constr=TRUE is interpreted as a sum-to-zero constraint over the whole graph. Singletons are given a uniform distribution on (−∞, ∞) before the constraint.\n\n\nThe case (scale.model==TRUE & adjust.for.con.comp == FALSE)\n\nThe option constr=TRUE is interpreted as a sum-to-zero constraint over the whole graph. Let Q= τ R be the standard precision matrix from the besag-model with precision parameter τ . Then R, except the singletons, are scaled so that the geometric mean of the marginal variances is 1, and R is modified so that singletons have a standard Normal distribution."
   },
   {
     "objectID": "slides/slides_areal.html#alternative-to-bym2-model",
@@ -3253,5 +3253,19 @@
     "title": "Lecture 5",
     "section": "Alternative to BYM2 model",
     "text": "Alternative to BYM2 model\nThe besag and bym2 are not the only implemented models in inlabru\n\nbesag2: weighted spatial eﬀects\nbesagproper, besagproper2 : A small quantity is added on the diagonal to make the model proper. Can be usefull to avoid too many constraints for space-tme"
+  },
+  {
+    "objectID": "slides/slides_areal.html#bym2-model---specification-smaller",
+    "href": "slides/slides_areal.html#bym2-model---specification-smaller",
+    "title": "Lecture 5",
+    "section": "BYM2 model - Specification {,smaller}",
+    "text": "BYM2 model - Specification {,smaller}\nBYM2-model is a union of the besag model \\(u^∗\\) and a iid model \\(v^∗\\) so that: \\[\nx = \\begin{pmatrix}u^∗  + v^* \\\\ v^*\n\\end{pmatrix}= \\begin{pmatrix}\\dfrac{1}{\\sqrt{\\tau_b}} \\left(\\sqrt{1-\\phi}v^*+\\sqrt{\\phi}u^*\\right) \\\\ v^*\n\\end{pmatrix}\n\\]\n\n# define model component\ncmp = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  space(region_id, model = \"bym2\", graph = Q)\n\nWhen doing prediction\n\n# define model component\npredictions = predict(fit, newdata, ~ space)\n\nwe will get the sum of \\(u^∗  + v^*\\) (so the first part of the vector)\n\n# define model component\npredictions = predict(fit, newdata, ~ space_latent)\n\nwe will get \\(c(u^∗  + v^*,  v^*)\\) (so the whole vector)"
+  },
+  {
+    "objectID": "slides/slides_areal.html#scaling-and-adjusting-for-disconnected-components-1",
+    "href": "slides/slides_areal.html#scaling-and-adjusting-for-disconnected-components-1",
+    "title": "Lecture 5",
+    "section": "Scaling and Adjusting for disconnected components",
+    "text": "Scaling and Adjusting for disconnected components\n\nThe case (scale.model==FALSE & adjust.for.con.comp == TRUE)\n\nThe option constr=TRUE is interpreted as one sum-to-zero constraint over each of the nc2 connected components of size ≥ 2. Singletons are given a uniform distribution on (−∞, ∞).\n\n\nThe case (scale.model==TRUE & adjust.for.con.comp == TRUE)\n\nThe option constr=TRUE is interpreted as nc2 sum-to-zero constraints for each of the connected components of size \\(\\geq\\) 2. Let Q= τ R be the standard precision matrix from the besag-model with precision parameter τ . Then R, are scaled so that the geometric mean of the marginal variances in each connected component of size \\(\\geq\\) 2 is 1, and modified so that singletons have a standard Normal distribution."
   }
 ]
