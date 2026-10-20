@@ -505,7 +505,7 @@ cmp = ~ Intercept(1) +
 ```{r}
 #| eval: false
 
-pc_prior <- list(theta = list(prior = "pc.prec",
+pc_prior <- list(theta1 = list(prior = "pc.prec",
                               param = c(1, 0.01)),
                  rho = list(prior = "pc.cor0", 
                             param = c(0.5, 0.3))) 

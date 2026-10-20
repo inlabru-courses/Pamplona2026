@@ -182,13 +182,17 @@ $$
 
 **Note** This model cannot be solved in INLA...why?
 
-. . .
+:::{.fragment}
 
 The model components $L$, $k$, $t_0$ enter the predictor $\eta$ in a non-linear way.
 
-. . .
+:::
 
-This means that $\eta$ is **NOT** gaussian!!
+:::{.fragment}
+
+This means that $\eta$ is **NOT** Gaussian!!
+
+:::
 
 ## Extending INLA to non-linear predictors {.smaller}
 
@@ -325,7 +329,7 @@ fit <- bru(cmp, lik)
 
 **Note** here we use the PIT transform to go from $\mathcal{N}(0,1)$ to $\exp(\kappa)$
 
-This also gives a non-linear model, this "trick" can be usedful in other cases!!
+This also gives a non-linear model, this "trick" can be useful in other cases!!
 
 ## A simple growth model - Fitting the model {.smaller}
 
@@ -509,7 +513,7 @@ $$ with
 
 - $\alpha_x \mid \tau_\alpha \sim \mathcal{N}(0, \tau_\alpha)$, for $x=1, \ldots, N$.
 - $\beta_x \mid \tau_\beta \sim \mathcal{N}(0, \tau_\beta)$, for $x=1, \ldots, N$, with $\sum_x \beta_x = 1$
-- $\kappa_t = \phi \cdot t  + \kappa^\star_{t}\$, $\ t=1, \ldots, T$, where ${\kappa}^\star$ follows a RW1($\tau_\kappa$) and $\sum \kappa_t = 0$
+- $\kappa_t = \phi \cdot t  + \kappa^\star_{t}$, $ t=1, \ldots, T$, where ${\kappa}^\star$ follows a RW1($\tau_\kappa$) and $\sum \kappa_t = 0$
 - $\omega_{sg_x} \mid \tau_\omega$ Age specific spatial effect
 - $z_{xts} \mid \tau_z$ iid effect to allow for extra variability
 
@@ -565,7 +569,7 @@ $$
 
 # Accounting for underreporting
 
-## Model for underreported counts
+## Model for underreported counts {.smaller}
 
 The true (unobserved ) counts
 $$
