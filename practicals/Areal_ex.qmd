@@ -139,7 +139,7 @@ plot.nb(W.nb, st_geometry(GGHB.IZ), add = TRUE)
 
 ```
 
-###The model
+### The model
 
 We fit a first model to the data where we consider a Poisson model for the observed cases.
 
