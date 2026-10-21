@@ -1,5 +1,5 @@
 ---
-title: "Lecture"
+title: "Lecture 5b."
 from: markdown+emoji
 subtitle: "Non-linear models in `inlabru`" 
 format:
@@ -90,7 +90,7 @@ $$
 y_t&\sim\mathcal{N}(\mu_t, \sigma^2)\\
 \eta_t &= \mu_t = L(1-\exp(-k\ (t-t_0)))
 \end{aligned}
-$$ where $t$ is the age and $y_t$ the lenght of the fish
+$$ where $t$ is the age and $y_t$ the length of the fish
 
 Parameters are $\theta = c(L,\kappa, t_0)$
 
@@ -138,11 +138,13 @@ The parameters have a biological meaning and we need to assign them a prior dist
 
 - $L$ is the the **maximum average length** that fish approach as they become very old.
 
-$$L\sim\text{exp}(1/300)$$ In the prior $E(L) = 300$, $\text{sd}(L) = 300$
+$$L\sim\text{exp}(1/300)$$ In the prior $\mathbb{E}(L) = 300$, $\text{sd}(L) = 300$
 
 - $k$ is the the **growth rate** (how fast the fish grows)
 
-$$k\sim\text{exp}(2)$$ - $t_0$ is the the **hypothetical age at zero length**
+$$k\sim\text{exp}(2)$$ 
+
+- $t_0$ is the the **hypothetical age at zero length**
 
 $$t_0\sim\text{exp}(1)$$
 
@@ -157,7 +159,7 @@ y_t&\sim\mathcal{N}(\mu_t, \sigma^2)\\
 \end{aligned}
 $$
 
-where $t$ is the age and $y_t$ the lenght of the fish
+where $t$ is the age and $y_t$ the length of the fish
 
 ```{r}
 #| eval: true
@@ -197,7 +199,7 @@ This means that $\eta$ is **NOT** Gaussian!!
 ## Extending INLA to non-linear predictors {.smaller}
 
 ::: smaller
-In addition to being a wrapper around R-INLA, inlabru extends the scope of INLA to models with non-linear predictors $\tilde{\eta}(\mathbf{u})$.
+In addition to being a wrapper around R-INLA, `inlabru` extends the scope of INLA to models with non-linear predictors $\tilde{\eta}(\mathbf{u})$.
 :::
 
 . . .
@@ -215,7 +217,7 @@ $$
 
 - Run INLA for the linearized problem\
 - Iterate until convergence
-  - $\tilde{\eta}(\mathbf{u}_0))$ close enough to $\bar{\eta}(\mathbf{u_0})$
+  - $\tilde{\eta}(\mathbf{u}_0)$ close enough to $\bar{\eta}(\mathbf{u_0})$
 :::
 ::::
 
@@ -413,9 +415,9 @@ fit <- bru(cmp, lik)
 
 - Define the likelihood and the run the model as usual
 
-**NOTE** the `bru_options_set(bru_verbose = 1, bru_max_iter = 20)` is a way to get some infor out of the `bru()` function
+**NOTE** the `bru_options_set(bru_verbose = 1, bru_max_iter = 20)` is a way to get some info out of the `bru()` function
 
-## 
+## Check iterations
 
 ```{r}
 #| eval: true
@@ -457,7 +459,8 @@ fit <- bru(cmp, lik)
 ## Checking results - Estimated parameters
 
 ```{r}
-
+#| code-fold: true
+#| echo: true
 
 samples <- generate(fit,
   formula = ~ data.frame(
@@ -503,7 +506,7 @@ p1 + p2 + p3 + p4 + plot_layout(ncol = 2) + plot_annotation(title = "Estimated p
 
 # Lee-Carter Model
 
-## A (Bayesian) spatial extention of the Lee-Carter model {.smaller}
+## A (Bayesian) spatial extension of the Lee-Carter model {.smaller}
 
 $$\begin{align*}
 Y_{xt} \mid \lambda_{xt} &\sim \text{Poisson}(E_{xt} \lambda_{xt})\\
@@ -513,9 +516,19 @@ $$ with
 
 - $\alpha_x \mid \tau_\alpha \sim \mathcal{N}(0, \tau_\alpha)$, for $x=1, \ldots, N$.
 - $\beta_x \mid \tau_\beta \sim \mathcal{N}(0, \tau_\beta)$, for $x=1, \ldots, N$, with $\sum_x \beta_x = 1$
-- $\kappa_t = \phi \cdot t  + \kappa^\star_{t}$, $ t=1, \ldots, T$, where ${\kappa}^\star$ follows a RW1($\tau_\kappa$) and $\sum \kappa_t = 0$
+- $\kappa_t = \phi \cdot t  + \kappa^\star_{t}$, $t=1, \ldots, T$, where ${\kappa}^\star$ follows a RW1($\tau_\kappa$) and $\sum \kappa_t = 0$
 - $\omega_{sg_x} \mid \tau_\omega$ Age specific spatial effect
 - $z_{xts} \mid \tau_z$ iid effect to allow for extra variability
+
+:::{.fragment}
+
+See [this paper](https://link.springer.com/article/10.1007/s40980-026-00161-x) for further details.
+
+Code and simulated data available [here](https://github.com/smar-git/Mortality_Italy)
+
+:::
+
+
 
 ## Identifiability Constraints
 
@@ -547,7 +560,7 @@ cmp_model1 = ~ -1 +
   random(rand2, model = "iid")
 
 
-formula_model = Y ~    Intercept + subgraphs +  alpha +
+formula_model = Y ~    Intercept  +  alpha +
   beta * kappa +  spatial + random
 
 likelihood = bru_obs(formula = formula_model,

@@ -54,7 +54,7 @@ website:
       - text: Slides 5 - Area Data
         href: slides/slides_areal.qmd
       - text: Slides 6 - Non Linear Models
-        href: slides/slides_Model_Comparison.qmd
+        href: slides/non_linear_predictor_slides.qmd
       - text: Lecture 6 - Geostatistics
         href: slides/slides_geostats.qmd
       - text: Lecture 7 - Point Processes 

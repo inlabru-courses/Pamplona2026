@@ -210,7 +210,7 @@ The expected  value for  each node is average of it's neighbours
 
 The more neighbours, the less variance
 
-**NOTE** The BYM model is intrinsic (same as the RW1) and has rank deficiency 1
+**NOTE** The Besag model is intrinsic (same as the RW1) and has rank deficiency 1
 
 
 
@@ -637,15 +637,16 @@ depends on:
   - The smoothing parameter $\tau$ **AND**
   - The neighbouring structure of the precision matrix $\mathbf{Q}$
   
-To compare smoothness we need to *scale* the model (this is **NOT** done by defult in the definition of the `besag` model in `inlabru`)
+To compare smoothness we need to *scale* the model (this is **NOT** done by default in the definition of the `besag` model in `inlabru`)
 
 
-. . .
+::: {.fragment fragment-index=2}
+2. For disconnected graphs (or graphs with islands) some care is needed when defining the sum-to-zero constraints
+:::
 
-2. For disconnected graphs (or graph with islands) some care is needed when defining the sum to zero constraints
-  
-  - See [this paper](https://www.sciencedirect.com/science/article/pii/S1877584517301600) where the problem is discussed! 
-
+::: {.absolute bottom=10 left=0 .fragment fragment-index=2 style="font-size: 60%;"}
+See [this paper](https://www.sciencedirect.com/science/article/pii/S1877584517301600) where the problem is discussed!
+:::
 
 <!-- ## Reminder: Latent Gaussian Models (LGMs) -->
 
@@ -802,6 +803,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -867,6 +872,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -932,6 +941,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -997,6 +1010,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -1203,7 +1220,7 @@ round(fit2$summary.hyperpar,3)
 
 
 
-## BYM2 model - Specification
+## BYM2 model - Specification {.smaller}
 
 BYM2-model is a union of the besag model $u^∗$ and a iid model $v^∗$ so that:
 $$
@@ -1241,7 +1258,7 @@ predictions = predict(fit, newdata, ~ space_latent)
 ```
  we will get $c(u^∗  + v^*,  v^*)$ (so the whole vector)
 
-## Scaling and Adjusting for disconnected components {.smaller}
+## Scaling and Adjusting for disconnected components {.smaller auto-animate=TRUE}
 
 
 
@@ -1253,24 +1270,33 @@ predictions = predict(fit, newdata, ~ space_latent)
 The option `constr=TRUE` is interpreted as a sum-to-zero constraint over the whole graph. Singletons
 are given a uniform distribution on (−∞, ∞) before the constraint.
 
+:::{.fragment}
 - The case (`scale.model==TRUE` \& `adjust.for.con.comp == FALSE`)
 
 The option `constr=TRUE` is interpreted as a sum-to-zero constraint over the whole graph. Let Q= τ R
 be the standard precision matrix from the besag-model with precision parameter τ . Then R, except
 the singletons, are scaled so that the geometric mean of the marginal variances is 1, and R is modified so that singletons have a standard Normal distribution.
 
+:::
+
+
+## Scaling and Adjusting for disconnected components {.smaller auto-animate=TRUE}
+
+
 - The case (`scale.model==FALSE` \& `adjust.for.con.comp == TRUE`)
 
 The option `constr=TRUE` is interpreted as one sum-to-zero constraint over each of the nc2 connected
 components of size ≥ 2. Singletons are given a uniform distribution on (−∞, ∞).
 
+:::{.fragment}
 - The case (`scale.model==TRUE` \& `adjust.for.con.comp == TRUE`)
 
 The option `constr=TRUE` is interpreted as nc2 sum-to-zero constraints for each of the connected
-components of size ≥ 2. Let Q= τ R be the standard precision matrix from the besag-model with
+components of size $\geq$ 2. Let Q= τ R be the standard precision matrix from the besag-model with
 precision parameter τ . Then R, are scaled so that the geometric mean of the marginal variances in
-each connected component of size ≥ 2 is 1, and modified so that singletons have a standard Normal
+each connected component of size $\geq$ 2 is 1, and modified so that singletons have a standard Normal
 distribution.
+:::
 
 ## Alternative to BYM2 model
 
