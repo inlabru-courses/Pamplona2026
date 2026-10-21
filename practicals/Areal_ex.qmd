@@ -55,6 +55,14 @@ library(mapview)
 library(scico)
 ```
 
+```{r}
+#| echo: false
+#| purl: false
+mapviewOptions(basemaps = c("OpenStreetMap.DE","Esri.WorldImagery","OpenTopoMap"))
+
+mapview(resp_cases,zcol = "SMR")
+```
+
 ### The data
 
 We consider data on respiratory hospitalizations for Greater Glasgow and Clyde in 2007. The data are available from the `CARBayesdata` R Package or by clicking on the link below:
@@ -117,12 +125,19 @@ Then we compute the adjacency matrix using the functions `poly2nb()` and `nb2mat
 ```{r}
 library(spdep)
 
-W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+W.nb <- poly2nb(GGHB.IZ,queen = TRUE,snap=35)
+W.nb
+
 R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
 
 diag = apply(R,1,sum)
 Q = -R
 diag(Q) = diag
+
+
+plot(st_geometry(GGHB.IZ), border = "lightgray")
+plot.nb(W.nb, st_geometry(GGHB.IZ), add = TRUE)
+
 ```
 
 ###The model
@@ -197,7 +212,7 @@ After fitting the model we want to extract results.
 
 1.  What is the estimated value for $\beta_0$? `r fitb(fit$summary.fixed[1], num = TRUE, tol = .001)`
 
-2.  Look at the estimated values of the hyperparameters using `fit$summary.hyperpar` , which of the two spatial components (structured or unstructured) explains more of the variability in the counts? `r mcq(c("structured", answer = "unstructured"))`
+2.  Look at the estimated values of the hyperparameters using `fit$summary.hyperpar` , which of the two spatial components (structured or unstructured) explains more of the variability in the counts? `r mcq(c("unstructured", answer = "structured"))`
 :::
 
 We now look at the predictions over space.
@@ -261,7 +276,7 @@ pred$cases %>% ggplot() + geom_point(aes(observed, mean)) +
 
 ### Getting prediction densities
 
-Posterior predictive distributions, i.e.\ $\pi(y_i^{\text{new}}|\mathbf{y})$, are of interest in many applied problems. The `bru()` function does not return predictive densities. In the previous step we have computed predictions for the `expected counts` $\pi(E_i\lambda_i|\mathbf{y})$. The predictive distribution is then: $$
+Posterior predictive distributions, i.e. $\pi(y_i^{\text{new}}|\mathbf{y})$, are of interest in many applied problems. The `bru()` function does not return predictive densities. In the previous step we have computed predictions for the `expected counts` $\pi(E_i\lambda_i|\mathbf{y})$. The predictive distribution is then: $$
 \pi(y_i^{\text{new}}|\mathbf{y}) = \int \pi(y_i|E_i\lambda_i)\pi(E_i\lambda_i|\mathbf{y})\ dE_i\lambda_i
 $$ where, in our case, $\pi(y_i|E_i\lambda_i)$ is Poisson with mean $E_i\lambda_i$. We can achieve this using the following algorithm:
 
@@ -273,22 +288,21 @@ Here is the code:
 
 ```{r}
 
-# simulate 1000 realizations of E_i\lambda_i
-expected_counts = generate(fit, resp_cases, 
-                           ~ expected * exp(Intercept + space),
-                           n.samples = 1000)
+# simulate 1000 realizations of a Poisson with mean E_i\lambda_i
+
+sim_counts =  generate(fit, resp_cases, 
+         formula = ~{ mean = expected * exp(Intercept + space)
+                      rpois(nrow(resp_cases), mean)},
+         n.samples = 1000)
 
 
-# simulate poisson data
-aa = rpois(271*1000, lambda = as.vector(expected_counts))
-sim_counts = matrix(aa, 271, 1000)
 
 # summarise the samples with posterior means and quantiles
 pred_counts = data.frame(observed = resp_cases$observed,
-                         m = apply(sim_counts,1,mean),
-                         q1 = apply(sim_counts,1,quantile, 0.025),
-                         q2 = apply(sim_counts,1,quantile, 0.975),
-                         vv = apply(sim_counts,1,var)
+                         m = apply(expected_counts2,1,mean),
+                         q1 = apply(expected_counts2,1,quantile, 0.025),
+                         q2 = apply(expected_counts2,1,quantile, 0.975),
+                         vv = apply(expected_counts2,1,var)
                          )
 ```
 
@@ -315,6 +329,9 @@ ggplot() +
 
 ```
 :::
+
+
+
 
 ### Adding a spatial covariate
 
