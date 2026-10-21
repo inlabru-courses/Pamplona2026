@@ -322,7 +322,7 @@ sim_counts =  generate(fit, resp_cases,
 
 ```
 
-::
+:::
 
 ::: {.callout-warning icon="false"}
 ## {{< bi pencil-square color=#c8793c >}} Task
