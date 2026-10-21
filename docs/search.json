@@ -2398,7 +2398,7 @@
     "href": "slides/slides_geostats.html#the-precision-matrix-mathbfq",
     "title": "Lecture 6",
     "section": "The precision matrix \\(\\mathbf{Q}\\)",
-    "text": "The precision matrix \\(\\mathbf{Q}\\)\n\n\n\nThe solution of the SPDE is approximated by Lindgren et al. (2010) as:\n\\[\n\\begin{aligned}\nZ(s) &= \\sum_{i = 1}^K\\psi_i(s)w_i \\\\\n\\mathbf{w} &\\sim N(\\mathbf{0},Q^{-1}) \\leftarrow \\text{GMRF}\\\\\n\\end{aligned}\n\\]\n\nFEM builds \\(\\mathbf{Q}\\) from two mesh matrices:\n\n\\[\nQ = \\kappa^4 \\mathbf{C} + 2\\kappa^2 \\mathbf{G}+\\mathbf{G}\\mathbf{C}^{-1}\\mathbf{G})\n\\]\n\n\\(C_{ij} = \\langle\\psi_i,\\psi_j\\rangle\\): measures how much of the domain each basis function covers.\n\\(G_{ij}=\\int\\nabla\\psi_i\\cdot\\nabla\\psi_j\\,d\\mathbf{s}\\): non-zero only if \\(i\\) and \\(j\\) share an edge and reflects the connectivity of the mesh nodes.\nbecause each basis function overlaps only with nearby ones, the resulting precision matrix is sparse."
+    "text": "The precision matrix \\(\\mathbf{Q}\\)\n\n\n\nThe solution of the SPDE is approximated by Lindgren, Lindström, and Rue (2010) as:\n\\[\n\\begin{aligned}\nZ(s) &= \\sum_{i = 1}^K\\psi_i(s)w_i \\\\\n\\mathbf{w} &\\sim N(\\mathbf{0},Q^{-1}) \\leftarrow \\text{GMRF}\\\\\n\\end{aligned}\n\\]\n\nFEM builds \\(\\mathbf{Q}\\) from two mesh matrices:\n\n\\[\nQ = \\kappa^4 \\mathbf{C} + 2\\kappa^2 \\mathbf{G}+\\mathbf{G}\\mathbf{C}^{-1}\\mathbf{G})\n\\]\n\n\\(C_{ij} = \\langle\\psi_i,\\psi_j\\rangle\\): measures how much of the domain each basis function covers.\n\\(G_{ij}=\\int\\nabla\\psi_i\\cdot\\nabla\\psi_j\\,d\\mathbf{s}\\): non-zero only if \\(i\\) and \\(j\\) share an edge and reflects the connectivity of the mesh nodes.\nbecause each basis function overlaps only with nearby ones, the resulting precision matrix is sparse."
   },
   {
     "objectID": "slides/slides_geostats.html#in-summary",
@@ -2559,7 +2559,7 @@
     "href": "slides/slides_geostats.html#take-home-message",
     "title": "Lecture 6",
     "section": "Take-Home Message",
-    "text": "Take-Home Message\n\nGaussian random fields provide components that reflect spatial structure in continuous space\nthe SPDE approach allows us to approximate these efficiently and flexibly\nthe models are still GMRFs ⇝ computationally efficient representation\npc-priors are also relevant for spatial models, e.g. to avoid overfitting"
+    "text": "Take-Home Message\n\nGaussian random fields provide components that reflect spatial structure in continuous space\nthe SPDE approach allows us to approximate these efficiently and flexibly\nthe models are still GMRFs ⇝ computationally efficient representation\npc-priors are also relevant for spatial models, e.g. to avoid overfitting\n\n\n\n\n\n\n\n\nLindgren, Finn, Johan Lindström, and Håvard Rue. 2010. “An Explicit Link Between Gaussian Fields and Gaussian Markov Random Fields; the Spde Approach.”"
   },
   {
     "objectID": "slides/slides_spatioTemporal.html#motivation",

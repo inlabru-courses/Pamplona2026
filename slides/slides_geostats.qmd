@@ -1203,27 +1203,7 @@ spde_pred +  eta_pred + p_pred + plot_layout(ncol=1)
 
 -   pc-priors are also relevant for spatial models, e.g. to avoid overfitting
 
-# References {.smaller data-title-offset="true"}
 
-[@bakka2019non @cameletti2013spatio @bryce2022unified  @fichera2023spatial  @lamouroux2025addressing @lindgren2010explicit @lindgren2022spde @miller2020understanding @moraga2021bayesian @simpson2017 ]{style="display:none"}
-
-::: {#refs}
-:::
-
-```{=html}
-<script>
-document.querySelectorAll('#refs [id^="ref-"]').forEach(function(entry) {
-  var key = entry.id;                       // e.g. "ref-besag1991"
-  var a = document.createElement('a');
-  a.href = '../references.html#' + key;
-  a.target = '_blank';
-  a.style.textDecoration = 'none';
-  a.style.color = 'inherit';
-  while (entry.firstChild) a.appendChild(entry.firstChild);
-  entry.appendChild(a);
-});
-</script>
-```
 
 
 
