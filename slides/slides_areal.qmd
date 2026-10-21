@@ -210,7 +210,7 @@ The expected  value for  each node is average of it's neighbours
 
 The more neighbours, the less variance
 
-**NOTE** The BYM model is intrinsic (same as the RW1) and has rank deficiency 1
+**NOTE** The Besag model is intrinsic (same as the RW1) and has rank deficiency 1
 
 
 
@@ -637,7 +637,7 @@ depends on:
   - The smoothing parameter $\tau$ **AND**
   - The neighbouring structure of the precision matrix $\mathbf{Q}$
   
-To compare smoothness we need to *scale* the model (this is **NOT** done by defult in the definition of the `besag` model in `inlabru`)
+To compare smoothness we need to *scale* the model (this is **NOT** done by default in the definition of the `besag` model in `inlabru`)
 
 
 ::: {.fragment fragment-index=2}
@@ -803,6 +803,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -868,6 +872,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -933,6 +941,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}
@@ -998,6 +1010,10 @@ fit1 = bru(cmp, lik)
 #| eval: false
 library(spdep)
 W.nb <- poly2nb(GGHB.IZ,queen = TRUE)
+R <- nb2mat(W.nb, style = "B", zero.policy = TRUE)
+diag = apply(R,1,sum)
+Q = -R
+diag(Q) = diag
 ```
 
 ```{r}

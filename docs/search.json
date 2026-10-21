@@ -443,77 +443,77 @@
   {
     "objectID": "slides/non_linear_predictor_slides.html#non-linear-predictor",
     "href": "slides/non_linear_predictor_slides.html#non-linear-predictor",
-    "title": "Lecture",
-    "section": "Non linear predictor",
-    "text": "Non linear predictor\nIn all the models we have seen \\[\n\\eta = \\text{linear function}(\\text{components})\n\\]\n\nSometimes one is interested in models whose parameters interact in a non-linear way\n\n\n\nA simple growth model\nLee-Carter Model\nUnder-reported counts"
+    "title": "Lecture 5b.",
+    "section": "",
+    "text": "In all the models we have seen \\[\n\\eta = \\text{linear function}(\\text{components})\n\\]\n\nSometimes one is interested in models whose parameters interact in a non-linear way\n\n. . .\n\nA simple growth model\nLee-Carter Model\nUnder-reported counts"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model-1",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model-1",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model",
     "text": "A simple growth model\nWe want to include some “biology” in the statistical model.\nThe age and size of a fish have the following relationship\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\] where \\(t\\) is the age and \\(y_t\\) the length of the fish\nParameters are \\(\\theta = c(L,\\kappa, t_0)\\)"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#model-parameters-and-priors",
     "href": "slides/non_linear_predictor_slides.html#model-parameters-and-priors",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Model Parameters and Priors",
     "text": "Model Parameters and Priors\nThe parameters have a biological meaning and we need to assign them a prior distribution:\n\n\n\n\n\n\\(L\\) is the the maximum average length that fish approach as they become very old.\n\n\\[L\\sim\\text{exp}(1/300)\\] In the prior \\(\\mathbb{E}(L) = 300\\), \\(\\text{sd}(L) = 300\\)\n\n\\(k\\) is the the growth rate (how fast the fish grows)\n\n\\[k\\sim\\text{exp}(2)\\]\n\n\\(t_0\\) is the the hypothetical age at zero length\n\n\\[t_0\\sim\\text{exp}(1)\\]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---noisy-observations",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---noisy-observations",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model - Noisy Observations",
     "text": "A simple growth model - Noisy Observations\nThe age and size of a fish have the following relationship\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\]\nwhere \\(t\\) is the age and \\(y_t\\) the length of the fish"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model-2",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model-2",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model",
-    "text": "A simple growth model\nWhy do we need more than INLA?\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\]\nNote This model cannot be solved in INLA…why?\n\nThe model components \\(L\\), \\(k\\), \\(t_0\\) enter the predictor \\(\\eta\\) in a non-linear way.\n\n\nThis means that \\(\\eta\\) is NOT Gaussian!!"
+    "text": "A simple growth model\n\nWhy do we need more than INLA?\n\\[\n\\begin{aligned}\ny_t&\\sim\\mathcal{N}(\\mu_t, \\sigma^2)\\\\\n\\eta_t &= \\mu_t = L(1-\\exp(-k\\ (t-t_0)))\n\\end{aligned}\n\\]\nNote This model cannot be solved in INLA…why?\n\nThe model components \\(L\\), \\(k\\), \\(t_0\\) enter the predictor \\(\\eta\\) in a non-linear way.\n\n\nThis means that \\(\\eta\\) is NOT Gaussian!!"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#extending-inla-to-non-linear-predictors",
     "href": "slides/non_linear_predictor_slides.html#extending-inla-to-non-linear-predictors",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Extending INLA to non-linear predictors",
-    "text": "Extending INLA to non-linear predictors\n\nIn addition to being a wrapper around R-INLA, inlabru extends the scope of INLA to models with non-linear predictors \\(\\tilde{\\eta}(\\mathbf{u})\\).\n\n\n\n\n\n💡 The idea 💡\n\nLinearize \\(\\tilde{\\eta}(\\mathbf{u})\\) using a first-order Taylor expansion around \\(\\mathbf{u}_0\\):\n\n\\[\n\\tilde{\\eta}(\\mathbf{u}) \\approx \\tilde{\\eta}(\\mathbf{u}_0) + f_{\\text{linear}}(\\mathbf{u}) = \\bar{\\eta}(\\mathbf{u})\n\\]\n\nRun INLA for the linearized problem\n\nIterate until convergence\n\n\\(\\tilde{\\eta}(\\mathbf{u}_0)\\) close enough to \\(\\bar{\\eta}(\\mathbf{u_0})\\)\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nNote\nFor details:\nhttps://arxiv.org/abs/2407.00791v1"
+    "text": "Extending INLA to non-linear predictors\n\nIn addition to being a wrapper around R-INLA, inlabru extends the scope of INLA to models with non-linear predictors \\(\\tilde{\\eta}(\\mathbf{u})\\).\n\n. . .\n\n\n\n💡 The idea 💡\n\nLinearize \\(\\tilde{\\eta}(\\mathbf{u})\\) using a first-order Taylor expansion around \\(\\mathbf{u}_0\\):\n\n\\[\n\\tilde{\\eta}(\\mathbf{u}) \\approx \\tilde{\\eta}(\\mathbf{u}_0) + f_{\\text{linear}}(\\mathbf{u}) = \\bar{\\eta}(\\mathbf{u})\n\\]\n\nRun INLA for the linearized problem\n\nIterate until convergence\n\n\\(\\tilde{\\eta}(\\mathbf{u}_0)\\) close enough to \\(\\bar{\\eta}(\\mathbf{u_0})\\)\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote\nFor details:\nhttps://arxiv.org/abs/2407.00791v1"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#extending-inla-to-non-linear-predictors-1",
     "href": "slides/non_linear_predictor_slides.html#extending-inla-to-non-linear-predictors-1",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Extending INLA to non-linear predictors",
-    "text": "Extending INLA to non-linear predictors\n\nThe linearization is an approximation on top of the “usual” INLA approximation\nAccuracy will depend on the nature of the non-linearity around \\(\\mathbf{u}_0\\) and the choice of convergence criteria.\nGreater care than usual is needed for the choice of priors.\n\n\nSome checks are possible (see the arxive paper)…\nBUT this method is still in an “experimental” mode, so great care is needed!"
+    "text": "Extending INLA to non-linear predictors\n\nThe linearization is an approximation on top of the “usual” INLA approximation\nAccuracy will depend on the nature of the non-linearity around \\(\\mathbf{u}_0\\) and the choice of convergence criteria.\nGreater care than usual is needed for the choice of priors.\n\n. . .\nSome checks are possible (see the arxive paper)…\nBUT this method is still in an “experimental” mode, so great care is needed!"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model - Fitting the model",
     "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nScale the data (always a good practice to avoid numerical problems)"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-1",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-1",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model - Fitting the model",
     "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nDefine the components\n\nNote here we use the PIT transform to go from \\(\\mathcal{N}(0,1)\\) to \\(\\exp(\\kappa)\\)\nThis also gives a non-linear model, this “trick” can be useful in other cases!!"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-2",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-2",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model - Fitting the model",
     "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nDefine the non-linear function of the paramters and the formula"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-3",
     "href": "slides/non_linear_predictor_slides.html#a-simple-growth-model---fitting-the-model-3",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A simple growth model - Fitting the model",
     "text": "A simple growth model - Fitting the model\n\\[\n\\begin{align}\ny_t &\\sim\\mathcal{N}(\\eta_t,\\sigma^2)\\\\\n\\eta_t &= L(1-\\exp(-k(t-t_0)))\\\\\nL &\\sim\\exp(1/300); \\qquad k \\sim\\exp(2);\\qquad t_0\\sim\\exp(1)\n\\end{align}\n\\]\n\nscale_par &lt;- sd(df$y)\ndf &lt;- df %&gt;% mutate(y_scale = y / scale_par)\n\ncmp &lt;- ~ -1 +\n  L(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = scale_par / 300)) +\n  kappa(1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 2)) +\n  t0(1, -1, prec.linear = 1, marginal = bm_marginal(qexp, rate = 1))\n\ngrowth_function &lt;- function(L, kappa, t0, age) {\n  L * (1 - exp(-kappa * (age - t0)))\n}\n\nformula &lt;- y ~  growth_function(L, kappa, t0, age)\n\nlik &lt;- bru_obs(\n  formula = formula,\n  family = \"gaussian\",\n  data = df\n)\nbru_options_set(bru_verbose = 1, bru_max_iter = 20)\nfit &lt;- bru(cmp, lik)\n\n\nDefine the likelihood and the run the model as usual\n\nNOTE the bru_options_set(bru_verbose = 1, bru_max_iter = 20) is a way to get some info out of the bru() function"
   },
@@ -527,7 +527,7 @@
   {
     "objectID": "slides/non_linear_predictor_slides.html#checking-results---estimated-parameters",
     "href": "slides/non_linear_predictor_slides.html#checking-results---estimated-parameters",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Checking results - Estimated parameters",
     "text": "Checking results - Estimated parameters\n\n\nCode\nsamples &lt;- generate(fit,\n  formula = ~ data.frame(\n    L = L * scale_par,\n    t0 = t0,\n    kappa = kappa,\n    sd_y = scale_par / sqrt(Precision_for_the_Gaussian_observations)\n  ),\n  n.samples = 1000\n)\nsamples &lt;- do.call(rbind, lapply(samples, as.data.frame))\n\n\np1 &lt;- ggplot(samples) +\n  geom_density(aes(L)) +\n  geom_vline(xintercept = L) +\n  xlab(\"\") +\n  ylab(\"\") +\n  ggtitle(\"L\")\np2 &lt;- ggplot(samples) +\n  geom_density(aes(t0)) +\n  geom_vline(xintercept = t0) +\n  xlab(\"\") +\n  ylab(\"\") +\n  ggtitle(\"t0\")\np3 &lt;- ggplot(samples) +\n  geom_density(aes(kappa)) +\n  geom_vline(xintercept = kappa) +\n  xlab(\"\") +\n  ylab(\"\") +\n  ggtitle(\"kappa\")\np4 &lt;- ggplot(samples) +\n  geom_density(aes(sd_y), adjust = 3) +\n  geom_vline(xintercept = sd_y) +\n  xlab(\"\") +\n  ylab(\"\") +\n  ggtitle(\"sd_y\")\n\np1 + p2 + p3 + p4 + plot_layout(ncol = 2) + plot_annotation(title = \"Estimated parameters\")"
   },
@@ -541,42 +541,42 @@
   {
     "objectID": "slides/non_linear_predictor_slides.html#identifiability-constraints",
     "href": "slides/non_linear_predictor_slides.html#identifiability-constraints",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Identifiability Constraints",
     "text": "Identifiability Constraints\nModel is not unique:\n\\[\\alpha_x + \\beta_x \\kappa_t = \\alpha_x + (c \\beta_x)(\\kappa_t / c)\\]\nSo we impose constraints:\n\n\\(\\sum_t \\kappa_t = 0\\)\n\\(\\sum_x \\beta_x = 1\\)\n\n👉 Ensures unique interpretation of parameters"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#inlabru-implementation",
     "href": "slides/non_linear_predictor_slides.html#inlabru-implementation",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "inlabru implementation",
-    "text": "inlabru implementation\n\ncmp_model1 = ~ -1 +\n  alpha(age,model= \"iid\", constr =  F,)+\n  beta(age, model= \"iid\", extraconstr = list(A=A, e=e))+\n  kappa(time, model= \"rw2\", constr = T) +\n  spatial(space,  model = \"bym2\",\n          graph = Q_space,\n          replicate = as.numeric(as.factor(age2)),\n          nrep = length(unique(df$age2))) +\n  random(rand2, model = \"iid\")\n\n\nformula_model = Y ~    Intercept + subgraphs +  alpha +\n  beta * kappa +  spatial + random\n\nlikelihood = bru_obs(formula = formula_model,\n                      family = \"poisson\",\n                      data = df ,\n                      E = E)\nresult_model = bru(components = cmp_model, likelihood)\n\n\\[\n\\log(\\lambda_{xts}) = \\alpha_x + \\beta_x \\kappa_t + \\omega_{sg_x} +  z_{xts}\n\\]"
+    "text": "inlabru implementation\n\ncmp_model1 = ~ -1 +\n  alpha(age,model= \"iid\", constr =  F,)+\n  beta(age, model= \"iid\", extraconstr = list(A=A, e=e))+\n  kappa(time, model= \"rw2\", constr = T) +\n  spatial(space,  model = \"bym2\",\n          graph = Q_space,\n          replicate = as.numeric(as.factor(age2)),\n          nrep = length(unique(df$age2))) +\n  random(rand2, model = \"iid\")\n\n\nformula_model = Y ~    Intercept  +  alpha +\n  beta * kappa +  spatial + random\n\nlikelihood = bru_obs(formula = formula_model,\n                      family = \"poisson\",\n                      data = df ,\n                      E = E)\nresult_model = bru(components = cmp_model, likelihood)\n\n\\[\n\\log(\\lambda_{xts}) = \\alpha_x + \\beta_x \\kappa_t + \\omega_{sg_x} +  z_{xts}\n\\]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#results",
     "href": "slides/non_linear_predictor_slides.html#results",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Results",
     "text": "Results"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#model-for-underreported-counts",
     "href": "slides/non_linear_predictor_slides.html#model-for-underreported-counts",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Model for underreported counts",
-    "text": "Model for underreported counts\nThe true (unobserved ) counts \\[\n\\begin{align}\nY^*_i & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\log(\\lambda_i) & = \\beta_0 + \\beta_1x_i + u_i\n\\end{align}\n\\]\n\nThe thinned (observed ) counts\n\\[\n\\begin{aligned}\nY_i & \\sim \\text{Poisson}(E_i\\lambda_i\\pi_i)\\\\\n\\log(\\lambda_i) & = \\beta_0 + \\beta_1x_i + u_i\\\\\n\\text{logit}(\\pi_i)& = \\alpha_0 + \\alpha_1z_i\\\\\n\\end{aligned}\n\\]\n\n\nThe non-linear predictor\n\\[\n\\begin{align}\nY_i & \\sim \\text{Poisson}(E_i\\lambda_i\\pi_i)\\\\\n\\eta_i & = \\log(\\lambda_i\\pi_i)  \\\\\n&  = \\beta_0 + \\beta_1x_i + u_i + \\log(\\text{inv.logit}(\\alpha_0 + \\alpha_1z_i))\n\\end{align}\n\\]"
+    "text": "Model for underreported counts\nThe true (unobserved ) counts \\[\n\\begin{align}\nY^*_i & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\log(\\lambda_i) & = \\beta_0 + \\beta_1x_i + u_i\n\\end{align}\n\\]\n. . .\nThe thinned (observed ) counts\n\\[\n\\begin{aligned}\nY_i & \\sim \\text{Poisson}(E_i\\lambda_i\\pi_i)\\\\\n\\log(\\lambda_i) & = \\beta_0 + \\beta_1x_i + u_i\\\\\n\\text{logit}(\\pi_i)& = \\alpha_0 + \\alpha_1z_i\\\\\n\\end{aligned}\n\\]\n. . .\nThe non-linear predictor\n\\[\n\\begin{align}\nY_i & \\sim \\text{Poisson}(E_i\\lambda_i\\pi_i)\\\\\n\\eta_i & = \\log(\\lambda_i\\pi_i)  \\\\\n&  = \\beta_0 + \\beta_1x_i + u_i + \\log(\\text{inv.logit}(\\alpha_0 + \\alpha_1z_i))\n\\end{align}\n\\]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#inlabru-implementation-1",
     "href": "slides/non_linear_predictor_slides.html#inlabru-implementation-1",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "inlabru implementation",
     "text": "inlabru implementation\n\nfunc_probs = function(v,alpha0,alpha1)\n{\n  aa = alpha0 + alpha1 * v\n  return(-log(1+exp(-aa)))\n}\n\n\ncmp =  ~  -1 + \n  beta_0(main = 1, model = \"linear\") +\n  beta_1(main = covariate_x, model = \"linear\")+\n  spatial(loc, model = \"besag\", graph = Q) +\n\n  alpha_0(main = 1, model = \"linear\",\n        mean.linear = b0_mean,\n        prec.linear = 1/(b0_sd)^2) +\n  alpha_1(main = 1, model = \"linear\") \n  \n\nformula =  Y_obs  ~  \n  beta_0 + beta_1 + spatial + \n  func(covariate_z, b0, b1)\n\nlik1 = bru_obs(\"poisson\",\n            formula = formula,\n            data= df, \n            E = E)\n\n\nfit1 &lt;- bru(cmp, lik)\n\nNOTE we have (quite) informative priors for \\(\\alpha_0\\)"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#final-notes",
     "href": "slides/non_linear_predictor_slides.html#final-notes",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Final Notes",
     "text": "Final Notes\n\nBe careful when using this models!!!\nThink carefully if the model makes sense\nThink carefully about priors\nCheck the convergence\n\n\nbru_options_set(bru_verbose = 2)"
   },
@@ -1614,7 +1614,7 @@
     "href": "index.html",
     "title": "Spatio-temporal models with inlabru",
     "section": "",
-    "text": "Welcome to the course!\n\nWelcome to the inlabru workshop in Pamplona!\nThe aim of this workshop is to introduce you to a range of statistical modelling approaches, in particular the temporal, spatial and spatio-temporal modelling as implemented in the inlabru package.\nWorkshop materials are available in the github repository\n\n\n\n\n\n\n\nWarningImportant! ⚠️\n\n\n\nPlease use the instructions provided here to install and check your installation before the course starts.\n\n\n\n\nLearning Objectives for the workshop\nAt the end of the workshop, participants will have an understanding of:\n\nthe motivation for and the challenges of analysing and modelling spatial data\nstatistical models used to analyse spatial and spatio-temporal data\nthe implementation of these models in the inlabru package\nhow to independently analyse spatial data with inlabru\n\n\n\nIntended audience\nThe workshop aims to cater for participants with a range of different backgrounds, who are interested in analysing data with modern spatial and spatio-temporal statistical modelling approaches.\n\n\nPrerequisites\nParticipants should be familiar with the R environment, and general statistical approaches for modelling such as regression, analysis of (co)variance, and generalized linear models.\nNo knowledge of R-INLA or inlabru is required.\n\n\nSchedule\n\nMonday 19\\(^{th}\\)Tuesday 20\\(^{th}\\)Wednesday 21\\(^{st}\\)Thursday 22\\(^{nd}\\)\n\n\n\n\n\nTime\nTopic\n\n\n\n\n9:00 - 9:15\nWelcome and introduction to the course\n\n\n9:15 - 10:00\nSession 1: Introduction to inlabru\n\n\n10:00 - 10:45\nPractical Session 1\n\n\n10:45 - 11:30\nSession 2: The inlabru workflow\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nPractical Session 2\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nSession 3: Time Series Models\n\n\n15:30 - 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 3 cont.: Time Series Models\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n9:00 - 9:15\nRecap\n\n\n9:15 - 10:30\nPractical Session 3\n\n\n10:30 - 11:30\nSession 4: Introduction to Spatial Statistics\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nPractical Session 4\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nSession 5: Areal processes\n\n\n15:30 - 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 5 cont.: Non-linear predictors\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n09:00 - 10:00\nSession 6: Geostatistics\n\n\n10:00 - 11:30\nPractical Session 5\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nSession 7: Point Processes\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nPractical Session 5 (cont.)\n\n\n15:30- 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 8: Spatiotemporal models\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n09:00 - 10:00\nSession 9: Model comparison and evaluation\n\n\n10:00 - 11:30\nPractical Session 6\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nSession 10: Multi-likelihood/joint likelihood models\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nClosing session and discussion\n\n\n15:30- 17:00\nPractical Session 7 & General practice\n\n\n\n\n\n\n\n\nLicence\nCC-BY-4.0\n\n\nCitation\n\n  \n    \n      \n        Citation\n        \n      \n      \n        @Manual{Belmont2026inlabru,\n  title  = {inlabruCourseMarch2026: Course Materials for Pamplona inlabru Course 19-22 October 2026},\n  author = {Belmont, Jafet and Martino, Sara and Illian, Janine},\n  year   = {2026},\n  url    = {https://inlabru-courses.github.io/Pamplona2026/}\n}\n      \n    \n  \n\n\n\n\nBelmont J., Martino S., Illian, J. F (2026). inlabru Course October 2026: Course Materials for Pamplona inlabru 19-22 October 2026. https://inlabru-courses.github.io/Pamplona2026/\n\n\n\n\nContact\nQuestions about the workshop? Join the discussion on GitHub Discussions space"
+    "text": "Welcome to the course!\n\nWelcome to the inlabru workshop in Pamplona!\nThe aim of this workshop is to introduce you to a range of statistical modelling approaches, in particular the temporal, spatial and spatio-temporal modelling as implemented in the inlabru package.\nWorkshop materials are available in the github repository\n\n\n\n\n\n\n\nWarningImportant! ⚠️\n\n\n\nPlease use the instructions provided here to install and check your installation before the course starts.\n\n\n\n\nLearning Objectives for the workshop\nAt the end of the workshop, participants will have an understanding of:\n\nthe motivation for and the challenges of analysing and modelling spatial data\nstatistical models used to analyse spatial and spatio-temporal data\nthe implementation of these models in the inlabru package\nhow to independently analyse spatial data with inlabru\n\n\n\nIntended audience\nThe workshop aims to cater for participants with a range of different backgrounds, who are interested in analysing data with modern spatial and spatio-temporal statistical modelling approaches.\n\n\nPrerequisites\nParticipants should be familiar with the R environment, and general statistical approaches for modelling such as regression, analysis of (co)variance, and generalized linear models.\nNo knowledge of R-INLA or inlabru is required.\n\n\nSchedule\n\nMonday 19\\(^{th}\\)Tuesday 20\\(^{th}\\)Wednesday 21\\(^{st}\\)Thursday 22\\(^{nd}\\)\n\n\n\n\n\nTime\nTopic\n\n\n\n\n9:00 - 9:15\nWelcome and introduction to the course\n\n\n9:15 - 10:00\nSession 1: Introduction to inlabru\n\n\n10:00 - 10:45\nPractical Session 1\n\n\n10:45 - 11:30\nSession 2: The inlabru workflow\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nPractical Session 2\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nSession 3: Time Series Models\n\n\n15:30 - 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 3 cont.: Time Series Models\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n9:00 - 9:15\nRecap\n\n\n9:15 - 10:30\nPractical Session 3\n\n\n10:30 - 11:30\nSession 4: Introduction to Spatial Statistics\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nPractical Session 4\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nSession 5: Areal processes\n\n\n15:30 - 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 5 cont.: Non-linear predictors\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n9:00 - 9:15\nRecap\n\n\n09:15 - 10:00\nSession 6: Geostatistics\n\n\n10:00 - 11:30\nPractical Session 5\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nSession 7: Point Processes\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nPractical Session 5 (cont.)\n\n\n15:30- 15:45\nCoffee break ☕\n\n\n15:45 - 17:00\nSession 8: Spatiotemporal models\n\n\n\n\n\n\n\n\nTime\nTopic\n\n\n\n\n09:00 - 10:00\nSession 9: Model comparison and evaluation\n\n\n10:00 - 11:30\nPractical Session 6\n\n\n11:30 - 12:00\nCoffee break ☕\n\n\n12:00 - 13:00\nSession 10: Multi-likelihood/joint likelihood models\n\n\n13:00 - 14:30\nLunch 🍽️\n\n\n14:30 - 15:30\nClosing session and discussion\n\n\n15:30- 17:00\nPractical Session 7 & General practice\n\n\n\n\n\n\n\n\nLicence\nCC-BY-4.0\n\n\nCitation\n\n  \n    \n      \n        Citation\n        \n      \n      \n        @Manual{Belmont2026inlabru,\n  title  = {inlabruCourseMarch2026: Course Materials for Pamplona inlabru Course 19-22 October 2026},\n  author = {Belmont, Jafet and Martino, Sara and Illian, Janine},\n  year   = {2026},\n  url    = {https://inlabru-courses.github.io/Pamplona2026/}\n}\n      \n    \n  \n\n\n\n\nBelmont J., Martino S., Illian, J. F (2026). inlabru Course October 2026: Course Materials for Pamplona inlabru 19-22 October 2026. https://inlabru-courses.github.io/Pamplona2026/\n\n\n\n\nContact\nQuestions about the workshop? Join the discussion on GitHub Discussions space"
   },
   {
     "objectID": "slides/welcome.html#introductions",
@@ -1971,7 +1971,7 @@
     "href": "slides/slides_recap1.html#modelling-temporal-dependence",
     "title": "Recap from yesterday",
     "section": "Modelling temporal dependence",
-    "text": "Modelling temporal dependence\nData are often observed in time, and time dependence is often expected.\n\n\n\nObservations are correlated in time"
+    "text": "Modelling temporal dependence\nData are often observed in time, and time dependence is often expected.\n\n\n\n\n\n\n\n\n\n. . .\n\nObservations are correlated in time"
   },
   {
     "objectID": "slides/slides_recap1.html#motivation",
@@ -1992,7 +1992,7 @@
     "href": "slides/slides_recap1.html#discrete-time-models",
     "title": "Recap from yesterday",
     "section": "Discrete time models",
-    "text": "Discrete time models\n\n\nRandom Walks\n\nRW1: Assume independent first-order increments \\(\\Delta u_t = u_t − u_t−1 \\sim  N(0, \\tau^{−1})\\)\nRW2 Assume independent second-order increments \\(\\Delta^2 u_t = u_t - u_{i-t} + u_{i-t} \\sim N(0, \\tau^{−1})\\)\n\n\n\nIntrinsic model \\(\\rightarrow\\) sum-to-zero constrain.\n\n\ncmp = ~ Intercept(1) +\n  time(year, model = \"rw1\",\n       constr = TRUE,\n       hyper = list(prec =\n                      list(prior = \"pc.prec\",\n                           param = c(0.5, 0.5))))\n\n\n\nSmall \\(\\tau\\) \\(\\rightarrow\\) large variation \\(\\rightarrow\\) less smooth effect\nLarge \\(\\tau\\) \\(\\rightarrow\\) small variation \\(\\rightarrow\\) smoother effect\nPC-prior: \\(\\text{Prob}(\\sigma&gt;U) = \\alpha\\) \\(\\rightarrow\\) penalize models with small precision or large variances (Baseline \\(\\tau=0\\)).\n\n\nAR(1)\n\n\\(u_t = \\phi u_{t-1} + \\epsilon_t; \\qquad \\phi\\in(-1,1), \\ \\epsilon_t\\sim\\mathcal{N}(0,\\tau^{-1})\\)\n\n\n\npc_prior &lt;- list(theta = list(prior = \"pc.prec\",\n                              param = c(1, 0.01)),\n                 rho = list(prior = \"pc.cor0\", \n                            param = c(0.5, 0.3))) \n\ncmp = ~ Intercept(1) +\n  time(year, model = \"ar1\",\n       hyper = pc_prior)\n\n\n\nThe precision \\(\\tau\\)\nPC prior \\(\\text{Prob}(\\sigma &gt; U) = \\alpha\\) (Baseline \\(\\tau=0\\)).\nThe autocorrelation parameter \\(\\phi\\in(0,1)\\):\n\nPC prior \\(\\text{Prob}(|\\rho| &gt; u) = \\alpha\\) (Baseline \\(\\phi = 0\\) pc.cor0)\nPC prior \\(\\text{Prob}(\\rho &gt; u) = \\alpha\\) (Baseline \\(\\phi = 1\\) pc.cor1)"
+    "text": "Discrete time models\n\n\nRandom Walks\n\nRW1: Assume independent first-order increments \\(\\Delta u_t = u_t − u_t−1 \\sim  N(0, \\tau^{−1})\\)\nRW2 Assume independent second-order increments \\(\\Delta^2 u_t = u_t - u_{i-t} + u_{i-t} \\sim N(0, \\tau^{−1})\\)\n\n\n\nIntrinsic model \\(\\rightarrow\\) sum-to-zero constrain.\n\n\ncmp = ~ Intercept(1) +\n  time(year, model = \"rw1\",\n       constr = TRUE,\n       hyper = list(prec =\n                      list(prior = \"pc.prec\",\n                           param = c(0.5, 0.5))))\n\n\n\n\nSmall \\(\\tau\\) \\(\\rightarrow\\) large variation \\(\\rightarrow\\) less smooth effect\nLarge \\(\\tau\\) \\(\\rightarrow\\) small variation \\(\\rightarrow\\) smoother effect\nPC-prior: \\(\\text{Prob}(\\sigma&gt;U) = \\alpha\\) \\(\\rightarrow\\) penalize models with small precision or large variances (Baseline \\(\\tau=0\\)).\n\n\n\nAR(1)\n\n\\(u_t = \\phi u_{t-1} + \\epsilon_t; \\qquad \\phi\\in(-1,1), \\ \\epsilon_t\\sim\\mathcal{N}(0,\\tau^{-1})\\)\n\n\n\npc_prior &lt;- list(theta1 = list(prior = \"pc.prec\",\n                              param = c(1, 0.01)),\n                 rho = list(prior = \"pc.cor0\", \n                            param = c(0.5, 0.3))) \n\ncmp = ~ Intercept(1) +\n  time(year, model = \"ar1\",\n       hyper = pc_prior)\n\n\n\n\nThe precision \\(\\tau\\)\nPC prior \\(\\text{Prob}(\\sigma &gt; U) = \\alpha\\) (Baseline \\(\\tau=0\\)).\nThe autocorrelation parameter \\(\\phi\\in(0,1)\\):\n\nPC prior \\(\\text{Prob}(|\\rho| &gt; u) = \\alpha\\) (Baseline \\(\\phi = 0\\) pc.cor0)\nPC prior \\(\\text{Prob}(\\rho &gt; u) = \\alpha\\) (Baseline \\(\\phi = 1\\) pc.cor1)"
   },
   {
     "objectID": "slides/slides_recap1.html#continuous-time-models",
@@ -2020,7 +2020,7 @@
     "href": "slides/slides_areal.html#areal-data-1",
     "title": "Lecture 5",
     "section": "Areal Data",
-    "text": "Areal Data\n \n\nAreal data are data which come from well-defined geographical units such as postcode areas, health boards, or pixels on a satellite image.\nAs with other types of spatial modelling, our goal is to observe and explain spatial variation in our data.\nAgain, we are trying to understand and account for spatial dependence.\nGenerally, we aim to produce a smoothed map that summarises the spatial patterns observed in our data."
+    "text": "Areal Data\n \n\n\nAreal data are data which come from well-defined geographical units such as postcode areas, health boards, or pixels on a satellite image.\nAs with other types of spatial modelling, our goal is to observe and explain spatial variation in our data.\nAgain, we are trying to understand and account for spatial dependence.\nGenerally, we aim to produce a smoothed map that summarises the spatial patterns observed in our data."
   },
   {
     "objectID": "slides/slides_areal.html#overview-of-areal-processes",
@@ -2034,7 +2034,7 @@
     "href": "slides/slides_areal.html#neighbourhood-structures",
     "title": "Lecture 5",
     "section": "Neighbourhood structures",
-    "text": "Neighbourhood structures\n\nEach of our regions \\(B_i\\) has a set of other nearby which can be considered neighbours\nWe might expect that areas have more in common with their neighbours.\nTherefore, we can construct dependence structures based on the principle that neighbours are correlated and non-neighbours are uncorrelated.\nFirst, we need to come up with a sensible way of defining what a neighbour is in this context."
+    "text": "Neighbourhood structures\n\n\nEach of our regions \\(B_i\\) has a set of other nearby which can be considered neighbours\nWe might expect that areas have more in common with their neighbours.\nTherefore, we can construct dependence structures based on the principle that neighbours are correlated and non-neighbours are uncorrelated.\nFirst, we need to come up with a sensible way of defining what a neighbour is in this context."
   },
   {
     "objectID": "slides/slides_areal.html#defining-a-neighbourhood",
@@ -2048,7 +2048,7 @@
     "href": "slides/slides_areal.html#neighbourhood-matrix",
     "title": "Lecture 5",
     "section": "Neighbourhood matrix",
-    "text": "Neighbourhood matrix\n\nOnce we have identified a set of neighbours we construct a neighbourhood matrix (or proximity matrix), which defines how each of our \\(m\\) regions relate to each other.\nLet \\(W\\) denote an \\(m \\times m\\) matrix where the \\((i,j)\\)th entry, \\(w_{ij}\\) denotes the proximity between regions \\(B_i\\) and \\(B_j\\).\n\n\n\n\n\n\nNote\n\n\nThe values of this matrix can be discrete (which regions are neighbours) or continuous (how far apart are the regions).\nThe spdep package in R can be used on an sf spatial polygon object to define \\(W\\) using the poly2nb() and nb2mat() functions."
+    "text": "Neighbourhood matrix\n\n\nOnce we have identified a set of neighbours we construct a neighbourhood matrix (or proximity matrix), which defines how each of our \\(m\\) regions relate to each other.\nLet \\(W\\) denote an \\(m \\times m\\) matrix where the \\((i,j)\\)th entry, \\(w_{ij}\\) denotes the proximity between regions \\(B_i\\) and \\(B_j\\).\n\n\n\n\n\n\nNote\n\n\n\nThe values of this matrix can be discrete (which regions are neighbours) or continuous (how far apart are the regions).\nThe spdep package in R can be used on an sf spatial polygon object to define \\(W\\) using the poly2nb() and nb2mat() functions."
   },
   {
     "objectID": "slides/slides_areal.html#binary-neighbourhood-matrix",
@@ -2153,7 +2153,7 @@
     "href": "slides/slides_areal.html#modelling-spatial-similarity",
     "title": "Lecture 5",
     "section": "Modelling spatial similarity",
-    "text": "Modelling spatial similarity\n\n\n\nAn example of a GMRF is the the Besag model a.k.a. Intrinsic Conditional Autoregressive (ICAR) model. The conditional distribution for \\(u_i\\) is\n\\[\nu_i|\\mathbf{u}_{-i},\\tau_u, \\sim N\\left(\\frac{1}{d_i}\\sum_{j\\sim i}u_j,\\frac{1}{d_i\\tau_u}\\right)\n\\]\n\n\\(\\mathbf{u}_{-i} = (u_i,\\ldots,u_{i-1},u_{i+1},\\ldots,u_n)^T\\)\n\\(\\tau_u\\) is the precision parameter (inverse variance).\n\\(d_i\\) is the number of neighbours\nThe mean of \\(u_i\\) is equivalent to the the mean of the effects over all neighbours, and the precision is proportional to the number of neighbours (e.g., if an area has many neighbors then its variance will be smaller)"
+    "text": "Modelling spatial similarity\n\n\n\nAn example of a GMRF is the the Besag model a.k.a. Intrinsic Conditional Autoregressive (ICAR) model. The conditional distribution for \\(u_i\\) is\n\\[\nu_i|\\mathbf{u}_{-i},\\tau_u, \\sim N\\left(\\frac{1}{d_i}\\sum_{j\\sim i}u_j,\\frac{1}{d_i\\tau_u}\\right)\n\\]\n\n\n\\(\\mathbf{u}_{-i} = (u_i,\\ldots,u_{i-1},u_{i+1},\\ldots,u_n)^T\\)\n\\(\\tau_u\\) is the precision parameter (inverse variance).\n\\(d_i\\) is the number of neighbours\nThe mean of \\(u_i\\) is equivalent to the the mean of the effects over all neighbours, and the precision is proportional to the number of neighbours (e.g., if an area has many neighbors then its variance will be smaller)"
   },
   {
     "objectID": "slides/slides_areal.html#modelling-spatial-similarity-1",
@@ -2209,7 +2209,7 @@
     "href": "slides/slides_areal.html#bym-model",
     "title": "Lecture 5",
     "section": "BYM model",
-    "text": "BYM model\n\nThe ICAR model accounts only for spatially structured variability and does not include a limiting case where no spatial structure is present.\n\nWe typically add an unstructured random effect \\(z_i|\\tau_z \\sim N(0,\\tau_{z}^{-1})\\)\nThe resulting model \\(v_i = u_i + z_i\\) is known as the Besag-York-Mollié model (BYM)\nThe structured spatial effect is controlled by \\(\\tau_u\\) which control the degree of smoothing:\n\nHigher \\(\\tau_u\\) values lead to stronger smoothing (less spatial variability).\nLower \\(\\tau_u\\) values allow for greater local variation.\n\nIn the next example we will illustrate how to fit this model using inlabru."
+    "text": "BYM model\n\nThe ICAR model accounts only for spatially structured variability and does not include a limiting case where no spatial structure is present.\n\n\nWe typically add an unstructured random effect \\(z_i|\\tau_z \\sim N(0,\\tau_{z}^{-1})\\)\nThe resulting model \\(v_i = u_i + z_i\\) is known as the Besag-York-Mollié model (BYM)\nThe structured spatial effect is controlled by \\(\\tau_u\\) which control the degree of smoothing:\n\nHigher \\(\\tau_u\\) values lead to stronger smoothing (less spatial variability).\nLower \\(\\tau_u\\) values allow for greater local variation.\n\nIn the next example we will illustrate how to fit this model using inlabru."
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisations-in-glasgow-1",
@@ -2223,49 +2223,49 @@
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\nRecall that a LGM consists of three elements:\n\n\n\nStage 1: We assume the responses are Poisson distributed: \\[          \n\\begin{aligned}y_i|\\eta_i & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\\text{log}(\\lambda_i) = \\color{#FF6B6B}{\\boxed{\\eta_i}} & = \\color{#FF6B6B}{\\boxed{\\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i} }\\end{aligned}\n\\]\n\n\n\n\n\n\nStage 2: \\(\\eta_i\\) is a linear function of four components: an intercept, pm10 effect , a spatially structured effect \\(u\\) and an unstructured iid random effect \\(z\\):\n\\[\n\\eta_i = \\beta_0 +  \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\]\n\n\n\n\n\n\nStage 3: \\(\\{\\tau_{z},\\tau_u\\}\\): Precision parameters for the random effects\n\n\n\nThe latent field is \\(\\mathbf{u}= (\\beta_0, \\beta_1, u_1, u_2,\\ldots, u_n,z_1,...)\\), the hyperparameters are \\(\\boldsymbol{\\theta} = (\\tau_u,\\tau_z)\\), and must be given a prior."
+    "text": "Respiratory hospitalisation in Glasgow\nRecall that a LGM consists of three elements:\n\n\nStage 1: We assume the responses are Poisson distributed: \\[          \n\\begin{aligned}y_i|\\eta_i & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\\text{log}(\\lambda_i) = \\color{#FF6B6B}{\\boxed{\\eta_i}} & = \\color{#FF6B6B}{\\boxed{\\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i} }\\end{aligned}\n\\]\n\n\n\n\nStage 2: \\(\\eta_i\\) is a linear function of four components: an intercept, pm10 effect , a spatially structured effect \\(u\\) and an unstructured iid random effect \\(z\\):\n\\[\n\\eta_i = \\beta_0 +  \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\]\n\n\n\n\nStage 3: \\(\\{\\tau_{z},\\tau_u\\}\\): Precision parameters for the random effects\n\n\nThe latent field is \\(\\mathbf{u}= (\\beta_0, \\beta_1, u_1, u_2,\\ldots, u_n,z_1,...)\\), the hyperparameters are \\(\\boldsymbol{\\theta} = (\\tau_u,\\tau_z)\\), and must be given a prior."
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-1",
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-1",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) = \\eta_i & = \\color{#FF6B6B}{\\boxed{\\beta_0}} + \\color{#FF6B6B}{\\boxed{\\beta_1 \\mathrm{pm10}}} + \\color{#FF6B6B}{\\boxed{u_i}} + \\color{#FF6B6B}{\\boxed{z_i}}\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) = \\eta_i & = \\color{#FF6B6B}{\\boxed{\\beta_0}} + \\color{#FF6B6B}{\\boxed{\\beta_1 \\mathrm{pm10}}} + \\color{#FF6B6B}{\\boxed{u_i}} + \\color{#FF6B6B}{\\boxed{z_i}}\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)\nR &lt;- nb2mat(W.nb, style = \"B\", zero.policy = TRUE)\ndiag = apply(R,1,sum)\nQ = -R\ndiag(Q) = diag"
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-2",
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-2",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) =  \\color{#FF6B6B}{\\boxed{\\eta_i}} & = \\color{#FF6B6B}{\\boxed{\\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i}}\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\") \n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) =  \\color{#FF6B6B}{\\boxed{\\eta_i}} & = \\color{#FF6B6B}{\\boxed{\\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i}}\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\") \n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)\nR &lt;- nb2mat(W.nb, style = \"B\", zero.policy = TRUE)\ndiag = apply(R,1,sum)\nQ = -R\ndiag(Q) = diag"
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-3",
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-3",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\n\\color{#FF6B6B}{\\boxed{y_i|\\eta_t}} & \\sim \\color{#FF6B6B}{\\boxed{\\text{Poisson}(E_i\\lambda_i)}}\\\\\n\\text{log}(\\lambda_i) =  \\eta_i & = \\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\")\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\n\\color{#FF6B6B}{\\boxed{y_i|\\eta_t}} & \\sim \\color{#FF6B6B}{\\boxed{\\text{Poisson}(E_i\\lambda_i)}}\\\\\n\\text{log}(\\lambda_i) =  \\eta_i & = \\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\")\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)\nR &lt;- nb2mat(W.nb, style = \"B\", zero.policy = TRUE)\ndiag = apply(R,1,sum)\nQ = -R\ndiag(Q) = diag"
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-4",
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-4",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) =  \\eta_i & = \\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\")\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta,  \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nThe Model\n\\[\n\\begin{aligned}\ny_i|\\eta_t & \\sim \\text{Poisson}(E_i\\lambda_i)\\\\\n\\text{log}(\\lambda_i) =  \\eta_i & = \\beta_0 + \\beta_1 \\mathrm{pm10} + u_i + z_i\n\\end{aligned}\n\\]\nThe code\n\n# define model component\ncmp = ~ Intercept(1) + pm10(pm10, model = \"linear\")\n  ui(region_id, model = \"besag\", graph = Q) + \n  vi(region_id, model = \"iid\") \n\n# define model predictor\neta =  observed ~ Intercept + ui + vi + pm10\n\n# build the observation model\nlik = bru_obs(formula = eta,  \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit1 = bru(cmp, lik)\n\n\nneighbourhood structure\n\nlibrary(spdep)\nW.nb &lt;- poly2nb(GGHB.IZ,queen = TRUE)\nR &lt;- nb2mat(W.nb, style = \"B\", zero.policy = TRUE)\ndiag = apply(R,1,sum)\nQ = -R\ndiag(Q) = diag"
   },
   {
     "objectID": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-5",
     "href": "slides/slides_areal.html#respiratory-hospitalisation-in-glasgow-5",
     "title": "Lecture 5",
     "section": "Respiratory hospitalisation in Glasgow",
-    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,825.09\n1,421.07\n85,673.37\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit1, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
+    "text": "Respiratory hospitalisation in Glasgow\n\n\nPosterior summaries\n\n\n\n\n\n\n\n\n\nmean\n0.025quant\n0.975quant\n\n\n\n\nIntercept\n−1.52\n−1.91\n−1.12\n\n\npm10\n0.09\n0.07\n0.12\n\n\nPrecision for ui\n2.82\n2.28\n3.45\n\n\nPrecision for vi\n21,825.34\n1,420.71\n85,680.09\n\n\n\n\n\n\n\n\nEstimated relative risks\n\npred = predict(fit1, resp_cases,\n ~data.frame(\n log_risk = Intercept + ui + vi + pm10,\n risk = exp(Intercept + ui + vi+  pm10)),\n      n.samples = 1000)"
   },
   {
     "objectID": "slides/slides_areal.html#bym2-model",
     "href": "slides/slides_areal.html#bym2-model",
     "title": "Lecture 5",
     "section": "BYM2 Model",
-    "text": "BYM2 Model\n\nIn the original BYM, the spatially structured component must be scaled so that \\(\\tau_u\\) produces consistent smoothness across different neighborhood structures.\nSimpson et al. (2017) proposed a new parametrization of the BYM model that improves parameter interpretability.\n\\[\n    \\mathbf{b} = \\dfrac{1}{\\sqrt{\\tau_b}} \\left(\\sqrt{1-\\phi}v^*+\\sqrt{\\phi}u^*\\right).\n\\]\n\nThe precision \\(\\tau_b&gt;0\\) controls the marginal variance contribution of the weighted sum \\(u^*\\) and \\(v^*\\).\nThe mixing parameter \\(0 \\leq \\phi \\leq 1\\) measures the proportion of the marginal variance explained by the structured effect \\(u^*\\)\n\nif \\(\\phi =1\\) the model captures only spatially structured variability\nif \\(\\phi = 0\\) it accounts solely for unstructured spatial noise.\n\n\n\n\nThe problem is that the data only ever inform the sum \\(u_i + v_i\\) never the two pieces separately.\n\nFor a single area you have one observation (or one likelihood contribution) but two latent variables to split it into.\nAny observed \\(\\eta_i = u_i + v_i\\) can be explained by infinitely many combinations of \\(u_i\\) and \\(v_i\\) that add to the same value\nThe two components are not individually identifiable from the likelihood — only their sum is."
+    "text": "BYM2 Model\n\nIn the original BYM, the spatially structured component must be scaled so that \\(\\tau_u\\) produces consistent smoothness across different neighborhood structures.\nSimpson et al. (2017) proposed a new parametrization of the BYM model that improves parameter interpretability.\n\\[\n    \\mathbf{b} = \\dfrac{1}{\\sqrt{\\tau_b}} \\left(\\sqrt{1-\\phi}v^*+\\sqrt{\\phi}u^*\\right).\n\\]\n\n\nThe precision \\(\\tau_b&gt;0\\) controls the marginal variance contribution of the weighted sum \\(u^*\\) and \\(v^*\\).\nThe mixing parameter \\(0 \\leq \\phi \\leq 1\\) measures the proportion of the marginal variance explained by the structured effect \\(u^*\\)\n\nif \\(\\phi =1\\) the model captures only spatially structured variability\nif \\(\\phi = 0\\) it accounts solely for unstructured spatial noise.\n\n\n\n\n\nThe problem is that the data only ever inform the sum \\(u_i + v_i\\) never the two pieces separately.\n\nFor a single area you have one observation (or one likelihood contribution) but two latent variables to split it into.\nAny observed \\(\\eta_i = u_i + v_i\\) can be explained by infinitely many combinations of \\(u_i\\) and \\(v_i\\) that add to the same value\nThe two components are not individually identifiable from the likelihood — only their sum is."
   },
   {
     "objectID": "slides/slides_areal.html#bym2-pc-priors",
@@ -3217,21 +3217,21 @@
     "href": "slides/slides_areal.html#from-the-proximity-matrix-to-spatially-correlated-models-icar-model",
     "title": "Lecture 5",
     "section": "From the proximity matrix to spatially correlated models (ICAR model)",
-    "text": "From the proximity matrix to spatially correlated models (ICAR model)\nStarting from the proximity matrix we can build a GMRF \\(\\mathbf{u}\\) that accounts for spatial correlation: \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q})\n\\] with\n\\[\n\\mathbf{Q} = \\tau(\\mathbf{D} - \\mathbf{W}),\n\\]\nwhere \\(\\mathbf{D} = \\{d_1,\\dots,d_n\\}\\) and \\(d_i = \\sum_{j = 1}^nw_{ij}\\) (number of neighbours of node \\(i\\))\nWhat does this imply?\n\nConditional marginal\n\\[\nu_i∣\\mathbf{u}_{−i},\\tau\\sim\\mathcal{N}\\left(\\frac{\\sum_{j = 1}^n w_{ij}u_j}{d_i},\\frac{1}{d_j\\tau}\\right),\n\\]\nThe expected value for each node is average of it’s neighbours\nThe more neighbours, the less variance\nNOTE The BYM model is intrinsic (same as the RW1) and has rank deficiency 1"
+    "text": "From the proximity matrix to spatially correlated models (ICAR model)\nStarting from the proximity matrix we can build a GMRF \\(\\mathbf{u}\\) that accounts for spatial correlation: \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q})\n\\] with\n\\[\n\\mathbf{Q} = \\tau(\\mathbf{D} - \\mathbf{W}),\n\\]\nwhere \\(\\mathbf{D} = \\{d_1,\\dots,d_n\\}\\) and \\(d_i = \\sum_{j = 1}^nw_{ij}\\) (number of neighbours of node \\(i\\))\nWhat does this imply?\n. . .\nConditional marginal\n\\[\nu_i∣\\mathbf{u}_{−i},\\tau\\sim\\mathcal{N}\\left(\\frac{\\sum_{j = 1}^n w_{ij}u_j}{d_i},\\frac{1}{d_j\\tau}\\right),\n\\]\nThe expected value for each node is average of it’s neighbours\nThe more neighbours, the less variance\nNOTE The Besag model is intrinsic (same as the RW1) and has rank deficiency 1"
   },
   {
     "objectID": "slides/slides_areal.html#bym-model---a-note-on-the-smoothing-parameter",
     "href": "slides/slides_areal.html#bym-model---a-note-on-the-smoothing-parameter",
     "title": "Lecture 5",
     "section": "BYM model - A note on the smoothing parameter",
-    "text": "BYM model - A note on the smoothing parameter\n\nImportant The smootheness of the GMRF \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q}), \\qquad Q =  \\tau(\\mathbf{D} - \\mathbf{W})\n\\] depends on:\n\n\nThe smoothing parameter \\(\\tau\\) AND\nThe neighbouring structure of the precision matrix \\(\\mathbf{Q}\\)\n\nTo compare smoothness we need to scale the model (this is NOT done by defult in the definition of the besag model in inlabru)\n\n\nFor disconnected graphs (or graphs with islands) some care is needed when defining the sum-to-zero constraints\n\n\n\nSee this paper where the problem is discussed!"
+    "text": "BYM model - A note on the smoothing parameter\n\nImportant The smootheness of the GMRF \\[\n\\mathbf{u}|\\tau\\sim\\mathcal{N}(0,\\mathbf{Q}), \\qquad Q =  \\tau(\\mathbf{D} - \\mathbf{W})\n\\] depends on:\n\n\nThe smoothing parameter \\(\\tau\\) AND\nThe neighbouring structure of the precision matrix \\(\\mathbf{Q}\\)\n\nTo compare smoothness we need to scale the model (this is NOT done by default in the definition of the besag model in inlabru)\n\n\nFor disconnected graphs (or graphs with islands) some care is needed when defining the sum-to-zero constraints\n\n\n\nSee this paper where the problem is discussed!"
   },
   {
     "objectID": "slides/slides_areal.html#parameters-from-bym2-model",
     "href": "slides/slides_areal.html#parameters-from-bym2-model",
     "title": "Lecture 5",
     "section": "Parameters from BYM2 model",
-    "text": "Parameters from BYM2 model\n\n# define model component\ncmp2 = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"bym2\", graph = Q, # priors\n               hyper = list(theta1 = list(\"PCprior\", c(1.61, 0.01)), # Pr(sd&gt;1) = 0.01 \n                            theta2 = list(\"PCprior\", c(0.5, 0.66)))) # Pr(phi&lt;0.5)=0.66\n\n# define model predictor\neta2 =  observed ~ Intercept + ui  + pm10\n\n# build the observation model\nlik2 = bru_obs(formula = eta2, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit2 = bru(cmp2, lik2)\n\nround(fit1$summary.hyperpar,3)\n\n                      mean        sd 0.025quant  0.5quant 0.975quant     mode\nPrecision for ui     2.821     0.299      2.275     2.806      3.452    2.777\nPrecision for vi 21825.085 24049.721   1421.067 14264.670  85673.369 3857.661\n\nround(fit2$summary.hyperpar,3)\n\n                  mean    sd 0.025quant 0.5quant 0.975quant  mode\nPrecision for ui 7.307 0.947      5.572    7.263      9.293 7.207\nPhi for ui       0.824 0.092      0.605    0.841      0.958 0.880"
+    "text": "Parameters from BYM2 model\n\n# define model component\ncmp2 = ~ Intercept(1) +  pm10(pm10, model = \"linear\") +\n  ui(region_id, model = \"bym2\", graph = Q, # priors\n               hyper = list(theta1 = list(\"PCprior\", c(1.61, 0.01)), # Pr(sd&gt;1) = 0.01 \n                            theta2 = list(\"PCprior\", c(0.5, 0.66)))) # Pr(phi&lt;0.5)=0.66\n\n# define model predictor\neta2 =  observed ~ Intercept + ui  + pm10\n\n# build the observation model\nlik2 = bru_obs(formula = eta2, \n              family = \"poisson\",\n              E = expected,\n              data = resp_cases)\n\n# fit the model\nfit2 = bru(cmp2, lik2)\n\nround(fit1$summary.hyperpar,3)\n\n                      mean        sd 0.025quant  0.5quant 0.975quant     mode\nPrecision for ui     2.821     0.299      2.275     2.806      3.452    2.777\nPrecision for vi 21825.337 24052.207   1420.707 14263.922  85680.086 3856.483\n\nround(fit2$summary.hyperpar,3)\n\n                  mean    sd 0.025quant 0.5quant 0.975quant  mode\nPrecision for ui 7.305 0.947      5.573    7.260      9.293 7.202\nPhi for ui       0.824 0.093      0.604    0.841      0.958 0.880"
   },
   {
     "objectID": "slides/slides_areal.html#bym2-model---specification",
@@ -3271,15 +3271,36 @@
   {
     "objectID": "slides/non_linear_predictor_slides.html#check-iterations",
     "href": "slides/non_linear_predictor_slides.html#check-iterations",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "Check iterations",
-    "text": "Check iterations\n\n\nbru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11600% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 946% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 1.88% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
+    "text": "Check iterations\n\n\nbru: Preprocessing\n\n\niinla: Iteration 1 [max: 20]\n\n\niinla: Iteration 2 [max: 20]\n\n\niinla: Max deviation from previous: 11200% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 3 [max: 20]\n\n\niinla: Max deviation from previous: 947% of SD, and line search is active\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Iteration 4 [max: 20]\n\n\niinla: Max deviation from previous: 1.76% of SD, and line search is inactive\n[stop if: &lt; 10% and line search inactive]\n\n\niinla: Convergence criterion met.\n       Running final INLA integration step with known theta mode.\n\n\niinla: Iteration 5 [max: 20]"
   },
   {
     "objectID": "slides/non_linear_predictor_slides.html#a-bayesian-spatial-extension-of-the-lee-carter-model",
     "href": "slides/non_linear_predictor_slides.html#a-bayesian-spatial-extension-of-the-lee-carter-model",
-    "title": "Lecture",
+    "title": "Lecture 5b.",
     "section": "A (Bayesian) spatial extension of the Lee-Carter model",
     "text": "A (Bayesian) spatial extension of the Lee-Carter model\n\\[\\begin{align*}\nY_{xt} \\mid \\lambda_{xt} &\\sim \\text{Poisson}(E_{xt} \\lambda_{xt})\\\\\n\\log(\\lambda_{xts}) &= \\alpha_x + \\beta_x \\kappa_t + \\omega_{sg_x} +  z_{xts}\n\\end{align*}\n\\] with\n\n\\(\\alpha_x \\mid \\tau_\\alpha \\sim \\mathcal{N}(0, \\tau_\\alpha)\\), for \\(x=1, \\ldots, N\\).\n\\(\\beta_x \\mid \\tau_\\beta \\sim \\mathcal{N}(0, \\tau_\\beta)\\), for \\(x=1, \\ldots, N\\), with \\(\\sum_x \\beta_x = 1\\)\n\\(\\kappa_t = \\phi \\cdot t  + \\kappa^\\star_{t}\\), \\(t=1, \\ldots, T\\), where \\({\\kappa}^\\star\\) follows a RW1(\\(\\tau_\\kappa\\)) and \\(\\sum \\kappa_t = 0\\)\n\\(\\omega_{sg_x} \\mid \\tau_\\omega\\) Age specific spatial effect\n\\(z_{xts} \\mid \\tau_z\\) iid effect to allow for extra variability\n\n\nSee this paper for further details.\nCode and simulated data available here"
+  },
+  {
+    "objectID": "slides/non_linear_predictor_slides.html",
+    "href": "slides/non_linear_predictor_slides.html",
+    "title": "Lecture 5b.",
+    "section": "",
+    "text": "In all the models we have seen \\[\n\\eta = \\text{linear function}(\\text{components})\n\\]\n\nSometimes one is interested in models whose parameters interact in a non-linear way\n\n. . .\n\nA simple growth model\nLee-Carter Model\nUnder-reported counts"
+  },
+  {
+    "objectID": "slides/slides_recap1.html",
+    "href": "slides/slides_recap1.html",
+    "title": "Recap from yesterday",
+    "section": "",
+    "text": "# #| include: false\n\nknitr::opts_chunk$set(echo = TRUE,\n                      message=FALSE,\n                      warning=FALSE,\n                      strip.white=TRUE,\n                      prompt=FALSE,\n                      fig.align=\"center\",\n                       out.width = \"60%\")\n\nlibrary(knitr)    # For knitting document and include_graphics function\nlibrary(ggplot2)  # For plotting\nlibrary(png)\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ lubridate 1.9.5     ✔ tibble    3.3.1\n✔ purrr     1.2.2     ✔ tidyr     1.3.2\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(INLA)\n\nLoading required package: Matrix\n\nAttaching package: 'Matrix'\n\nThe following objects are masked from 'package:tidyr':\n\n    expand, pack, unpack\n\nlibrary(BAS)\nlibrary(patchwork)\nlibrary(DAAG)\nlibrary(inlabru)\nlibrary(fmesher)\nlibrary(cowplot) # needs install.packages(\"magick\") to draw images\n\n\nAttaching package: 'cowplot'\n\nThe following object is masked from 'package:patchwork':\n\n    align_plots\n\nThe following object is masked from 'package:lubridate':\n\n    stamp"
+  },
+  {
+    "objectID": "slides/slides_areal.html",
+    "href": "slides/slides_areal.html",
+    "title": "Lecture 5",
+    "section": "",
+    "text": "# #| include: false\n\nknitr::opts_chunk$set(echo = FALSE,\n                      message=FALSE,\n                      warning=FALSE,\n                      strip.white=TRUE,\n                      prompt=FALSE,\n                      fig.align=\"center\",\n                       out.width = \"60%\")\n\nlibrary(knitr)    # For knitting document and include_graphics function\nlibrary(ggplot2)  # For plotting\nlibrary(png)\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ lubridate 1.9.5     ✔ tibble    3.3.1\n✔ purrr     1.2.2     ✔ tidyr     1.3.2\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(INLA)\n\nLoading required package: Matrix\n\nAttaching package: 'Matrix'\n\nThe following objects are masked from 'package:tidyr':\n\n    expand, pack, unpack\n\nlibrary(BAS)\nlibrary(patchwork)\nlibrary(inlabru)"
   }
 ]

@@ -99,7 +99,8 @@ No knowledge of `R-INLA` or `inlabru` is required.
 
 | Time | Topic |
 |:----------------------------------:|:----------------------------------:|
-| 09:00 - 10:00 |  [**Session 6**: Geostatistics](slides/slides_geostats.html) |
+| 9:00 - 9:15  | [Recap](slides/slides_recap2.html) |
+| 09:15 - 10:00 |  [**Session 6**: Geostatistics](slides/slides_geostats.html) | 
 | 10:00 - 11:30 |  [Practical Session 5](day3_practical_5.html) |
 | 11:30 - 12:00 | Coffee break ☕ |
 | 12:00 - 13:00 | [**Session 7**: Point Processes](slides/slides_points.html) |

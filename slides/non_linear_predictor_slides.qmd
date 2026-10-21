@@ -1,5 +1,5 @@
 ---
-title: "Lecture"
+title: "Lecture 5b."
 from: markdown+emoji
 subtitle: "Non-linear models in `inlabru`" 
 format:
@@ -560,7 +560,7 @@ cmp_model1 = ~ -1 +
   random(rand2, model = "iid")
 
 
-formula_model = Y ~    Intercept + subgraphs +  alpha +
+formula_model = Y ~    Intercept  +  alpha +
   beta * kappa +  spatial + random
 
 likelihood = bru_obs(formula = formula_model,
